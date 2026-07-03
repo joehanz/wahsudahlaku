@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rewang Iklan">
+  <meta property="og:locale" content="id_ID">
+
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <title>Share Iklan</title>
+
+  <script>
+  const id = new URLSearchParams(location.search).get("id");
+  if(id){
+    setTimeout(() => {
+      location.href = "https://rewangiklan.my.id/iklan.html?id=" + id;
+    }, 3000);
+  }
+  </script>
+
+</head>
+<body>
+
+ 
+  <!-- =========================
+LAYOUT
+========================= -->
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-item {
+  background-color: ;
+  padding: 10px;
+  font-size: ;
+  text-align: justify;
+  width: 100%;
+}
+
+/* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+</style>
+
+
+
+
+
+
+<main>
+  <div class="form-page">
+    <div class="form-card">
+      <div style="padding:25px;">
+        <div class="detail-wrapper">
+          <div class="detail-card">
+            <div class="breadcrumb" style="padding:10px;">
+              <a href="javascript:history.back()">Beranda</a>
+              <span>›</span>
+              <span id="adCategory">Memuat...</span>
+            </div>
+
+            <div class="flex-container">
+              <div class="flex-item">
+                <div class="detail-image">
+                  <img
+                    alt="Iklan"
+                    id="adImage"
+                    loading="lazy"
+                    src="image/no-image.webp"
+                    style="width:100%; height:300px;"
+                  />
+                </div>
+              </div>
+              <div class="flex-item">
+                <div class="detail-content" style="padding:10px;">
+                  <div class="detail-meta">
+                    <div class="detail-description">
+                      <p id="adDescription">Sedang memuat...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end detail-card -->
+        </div>
+        <!-- end detail-wrapper -->
+      </div>
+      <!-- end padding -->
+    </div>
+    <!-- end form-card -->
+  </div>
+  <!-- end form-page -->
+</main>
+
+
+
+
+
+
+  
+ </body>
+</html>
