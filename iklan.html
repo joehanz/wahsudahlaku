@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!id || !wa || !fb) return;
 
-  const shareUrl = `https://rewangiklan.my.id/iklan.html?id=${id}`;
+  const shareUrl = `https://rewangiklan.my.id/share.html?id=${id}`;
 
   wa.setAttribute("href", "https://wa.me/?text=" + encodeURIComponent(shareUrl));
   fb.setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl));
