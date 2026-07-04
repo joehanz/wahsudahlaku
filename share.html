@@ -24,7 +24,7 @@
     const id = new URLSearchParams(location.search).get("id");
     if(id){
       setTimeout(() => {
-        location.href = "https://rewangiklan.my.id/iklan.html?id=" + id;
+        location.href = "https://rewangiklan.my.id/iklan.html?id=${id}" + id;
       }, 3000);
     }
   </script>
