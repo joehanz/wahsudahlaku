@@ -2,7 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Share Iklan | Rewang Iklan</title>
+  <title>Share Iklan | <script>
+    const id = new URLSearchParams(location.search).get("id");
+    if(id){
+      setTimeout(() => {
+        location.href = "https://rewangiklan.my.id/iklan.html?id=" + id;
+      }, 3000);
+    }
+  </script></title>
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
