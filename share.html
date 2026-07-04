@@ -1,35 +1,60 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <title>Share Iklan | <meta property="og:url" content="https://rewangiklan.my.id/iklan.html?id=" + id;"></title>
+<meta charset="utf-8">
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Rewang Iklan">
-  <meta property="og:locale" content="id_ID">
-  <meta property="og:title" content="Jual Motor Bekas">
-  <meta property="og:description" content="Motor masih mulus, tahun 2020, harga nego.">
-  <meta property="og:url" content="https://rewangiklan.my.id/iklan.html?id=123">
-  <meta property="og:image" content="https://rewangiklan.my.id/img/motor.jpg">
+<title>Share Iklan</title>
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Jual Motor Bekas">
-  <meta name="twitter:description" content="Motor masih mulus, tahun 2020, harga nego.">
-  <meta name="twitter:image" content="https://rewangiklan.my.id/img/motor.jpg">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Rewang Iklan">
+<meta property="og:locale" content="id_ID">
 
-  <!-- Redirect untuk user biasa -->
-  <script>
-    const id = new URLSearchParams(location.search).get("id");
-    if(id){
-      setTimeout(() => {
-        location.href = "https://rewangiklan.my.id/iklan.html?id=" + id;
-      }, 3000);
-    }
-  </script>
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="">
+
+<script>
+const id = new URLSearchParams(location.search).get("id") || "";
+
+const title = "Iklan " + id;
+const desc  = "Lihat detail iklan " + id;
+const url   = "https://rewangiklan.my.id/iklan.html?id=" + id;
+const image = "https://rewangiklan.my.id/img/default.jpg";
+
+// Title
+document.title = title;
+
+// Open Graph
+document.querySelector('meta[property="og:title"]').setAttribute("content", title);
+document.querySelector('meta[property="og:description"]').setAttribute("content", desc);
+document.querySelector('meta[property="og:url"]').setAttribute("content", url);
+document.querySelector('meta[property="og:image"]').setAttribute("content", image);
+
+// Twitter
+document.querySelector('meta[name="twitter:title"]').setAttribute("content", title);
+document.querySelector('meta[name="twitter:description"]').setAttribute("content", desc);
+document.querySelector('meta[name="twitter:image"]').setAttribute("content", image);
+
+// Redirect
+setTimeout(function(){
+    location.replace(url);
+},1000);
+</script>
+
 </head>
+
 <body>
-  <p>Memuat iklan...</p>
+<center>
+<h3>Memuat iklan...</h3>
+<p>Mohon tunggu sebentar...</p>
+</center>
 </body>
 </html>
