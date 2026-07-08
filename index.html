@@ -8,14 +8,15 @@
 </head>
 <body>
     <div class="phone-shell">
-        <button class="scroll-up" id="scrollUpBtn">↑</button>
-        <button class="scroll-down" id="scrollDownBtn">↓</button>
+        <!-- Panah hanya tampil di desktop -->
+        <button class="scroll-btn scroll-up" id="scrollUp">↑</button>
+        <button class="scroll-btn scroll-down" id="scrollDown">↓</button>
 
         <div class="phone-screen">
             <div class="content-area" id="mainContent">
                 <div class="page active">
                     <div class="top-bar">
-                        <input type="text" class="search-box" id="searchInput" placeholder="Cari Iklan...">
+                        <input type="text" class="search-box" id="searchInput" placeholder="Cari iklan...">
                         <button class="btn-post-main" onclick="window.location.href='pasang.html'">Pasang Iklan</button>
                     </div>
 
@@ -24,9 +25,8 @@
                     </div>
 
                     <div class="category-wrapper">
-                        <button class="cat-arrow left">‹</button>
                         <div class="category-grid" id="categoryScroll">
-                            <div class="cat-item" data-cat="Semua"><div class="cat-icon">📋</div><span>Semua</span></div>
+                            <div class="cat-item active" data-cat="Semua"><div class="cat-icon">📋</div><span>Semua</span></div>
                             <div class="cat-item" data-cat="Mobil"><div class="cat-icon">🚗</div><span>Mobil</span></div>
                             <div class="cat-item" data-cat="Motor"><div class="cat-icon">🏍️</div><span>Motor</span></div>
                             <div class="cat-item" data-cat="Properti"><div class="cat-icon">🏠</div><span>Properti</span></div>
@@ -36,11 +36,11 @@
                             <div class="cat-item" data-cat="Hobi"><div class="cat-icon">🎮</div><span>Hobi</span></div>
                             <div class="cat-item" data-cat="Fashion"><div class="cat-icon">👕</div><span>Fashion</span></div>
                         </div>
-                        <button class="cat-arrow right">›</button>
                     </div>
 
                     <div class="section-title">
                         <span>Iklan Terbaru</span>
+                        <span>Total: <span id="totalAds">0</span></span>
                     </div>
 
                     <div id="adsContainer"></div>
@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="bottom-nav">
-                        <div class="nav-item">📊 Total: <span id="totalAds">0</span></div>
+                        <div class="nav-item">📊 Total Iklan</div>
                         <button class="btn-add-center" onclick="window.location.href='pasang.html'">+</button>
                         <div class="nav-item dola-logo" id="dolaBtn">🤖 Dola</div>
                     </div>
