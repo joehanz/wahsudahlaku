@@ -2,38 +2,16 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7l
 let allAds = [];
 let currentPage = 0;
 const perPage = 10;
-const CACHE_KEY = "rewang_ads_cache";
-const CACHE_TIME = 10 * 60 * 1000; // 10 menit sekali ambil data baru
 
-// === BANTUAN SCROLL ===
-const content = document.getElementById('mainContent');
-const scrollStep = 220;
-if(document.getElementById('scrollUpBtn')){
-    document.getElementById('scrollUpBtn').addEventListener('click', () => {
-        let current = parseInt(content.style.top) || 0;
-        content.style.top = Math.min(current + scrollStep, 0) + "px";
-    });
-    document.getElementById('scrollDownBtn').addEventListener('click', () => {
-        let current = parseInt(content.style.top) || 0;
-        let maxScroll = content.scrollHeight - content.clientHeight;
-        content.style.top = Math.max(current - scrollStep, -maxScroll) + "px";
-    });
-}
-
-// === GESER KATEGORI ===
-const catScroll = document.getElementById('categoryScroll');
-document.querySelector('.cat-arrow.left')?.addEventListener('click', () => catScroll.scrollBy({left: -120, behavior: 'smooth'}));
-document.querySelector('.cat-arrow.right')?.addEventListener('click', () => catScroll.scrollBy({left: 120, behavior: 'smooth'}));
-
-// === FUNGSI BANTU ===
+// Fungsi Bantu
 function truncateText(text, max = 250) {
-    return text?.length > max ? text.substring(0, max) + "..." : text || "";
+    return text && text.length > max ? text.substring(0, max) + "..." : text || "";
 }
 
 function timeAgo(dateStr) {
-    if(!dateStr) return "Baru saja";
+    if (!dateStr) return "Baru saja";
     const date = new Date(dateStr);
-    const diff = Math.floor((new Date() - date) / 60000);
+    const diff = Math.floor((Date.now() - date) / 60000);
     if (diff < 60) return `${diff} menit lalu`;
     if (diff < 1440) return `${Math.floor(diff/60)} jam lalu`;
     return `${Math.floor(diff/1440)} hari lalu`;
@@ -43,41 +21,34 @@ function openDetail(id) {
     window.location.href = `iklan-saya.html?id=${id}`;
 }
 
-// === AMBIL DATA DENGAN CACHE ===
+// Geser Kategori
+document.querySelector('.cat-arrow.left')?.addEventListener('click', () => {
+    document.getElementById('categoryScroll').scrollBy({ left: -110, behavior: 'smooth' });
+});
+document.querySelector('.cat-arrow.right')?.addEventListener('click', () => {
+    document.getElementById('categoryScroll').scrollBy({ left: 110, behavior: 'smooth' });
+});
+
+// Ambil Data Iklan
 async function loadAllAds() {
     const container = document.getElementById('adsContainer');
     container.innerHTML = "<p style='text-align:center; padding:2rem; color:#888;'>Memuat iklan...</p>";
 
-    // Cek dulu cache lokal
-    const cache = localStorage.getItem(CACHE_KEY);
-    const cacheData = cache ? JSON.parse(cache) : null;
-    const now = Date.now();
-
-    if (cacheData && (now - cacheData.timestamp) < CACHE_TIME) {
-        allAds = cacheData.data;
-        renderAds();
-        document.getElementById('totalAds').textContent = allAds.length;
-        return;
-    }
-
-    // Kalau kadaluarsa atau belum ada, ambil baru
     try {
-        const res = await fetch(API_URL, {cache: "no-cache"});
+        const res = await fetch(API_URL, { method: "GET", redirect: "follow" });
         allAds = await res.json();
-        // Simpan ke cache
-        localStorage.setItem(CACHE_KEY, JSON.stringify({
-            timestamp: now,
-            data: allAds
-        }));
+        allAds.sort((a, b) => new Date(b.date) - new Date(a.date)); // Urut terbaru di atas
+
         document.getElementById('totalAds').textContent = allAds.length;
+        currentPage = 0;
         renderAds();
     } catch (err) {
-        container.innerHTML = "<p style='text-align:center; padding:2rem; color:red;'>Gagal memuat iklan, coba muat ulang</p>";
+        container.innerHTML = "<p style='text-align:center; padding:2rem; color:red;'>Gagal memuat data. Coba muat ulang.</p>";
         console.error(err);
     }
 }
 
-// === TAMPILKAN IKLAN ===
+// Tampilkan Iklan
 function renderAds() {
     const start = currentPage * perPage;
     const end = start + perPage;
@@ -95,16 +66,15 @@ function renderAds() {
         const pos = start + idx + 1;
         html += `
             <div class="ad-item-row" onclick="openDetail('${ad.id}')">
-                <div class="ad-img" loading="lazy" style="background-image:url('${ad.image || 'https://rewangiklan.my.id/image/no-image.webp'}')"></div>
+                <div class="ad-img" style="background-image:url('${ad.image || 'https://rewangiklan.my.id/image/no-image.webp'}')"></div>
                 <div class="ad-info">
                     <h4 class="ad-title">${ad.title || "Tanpa Judul"}</h4>
                     <p class="ad-desc">${truncateText(ad.description)}</p>
-                    <p class="ad-meta">📍 ${ad.location || "-"} • 📅 ${timeAgo(ad.date)} • 👁️ ${ad.views || 0} kali</p>
+                    <p class="ad-meta">📍 ${ad.location || "-"} • 📅 ${timeAgo(ad.date)} • 👁️ ${ad.views || 0}</p>
                     <span class="read-more">Baca selengkapnya →</span>
                 </div>
             </div>
         `;
-        // Sisip banner setiap 5 iklan
         if (pos % 5 === 0) {
             html += `<div class="ad-banner-box">BANNER IKLAN 300×300</div>`;
         }
@@ -116,14 +86,13 @@ function renderAds() {
     document.getElementById('loadMoreBox').style.display = end < allAds.length ? "block" : "none";
 }
 
-// === TOMBOL MUAT LEBIH BANYAK ===
+// Tombol Muat Lebih Banyak
 document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
     currentPage++;
     renderAds();
-    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
 });
 
-// === LAYER DOLA ===
+// Layer Dola
 document.getElementById('dolaBtn')?.addEventListener('click', () => {
     document.getElementById('dolaLayer').classList.add('active');
 });
@@ -131,7 +100,7 @@ document.getElementById('dolaClose')?.addEventListener('click', () => {
     document.getElementById('dolaLayer').classList.remove('active');
 });
 
-// === JALANKAN ===
-if(window.location.pathname.includes('index.html') || window.location.pathname === '/'){
+// Jalankan
+if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
     window.addEventListener('load', loadAllAds);
 }
