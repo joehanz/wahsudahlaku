@@ -371,3 +371,38 @@ if (window.location.pathname.includes('pasang.html')) {
 
     window.onload = initForm;
 }
+
+// Pemicu Install PWA
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Simpan peristiwa agar bisa dipicu nanti
+    e.preventDefault();
+    deferredPrompt = e;
+    // Tampilkan tombol install
+    document.getElementById('pwaInstallBtn').style.display = 'block';
+});
+
+// Klik tombol untuk mulai pasang
+document.getElementById('pwaInstallBtn')?.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+        alert("Aplikasi sudah terpasang atau browser tidak mendukung fitur ini.");
+        return;
+    }
+    // Tampilkan jendela pasang dari browser
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+        console.log('Pengguna setuju memasang aplikasi');
+    } else {
+        console.log('Pengguna menolak pemasangan');
+    }
+    // Hapus penyimpanan
+    deferredPrompt = null;
+});
+
+// Sembunyikan tombol jika sudah terpasang
+window.addEventListener('appinstalled', () => {
+    document.getElementById('pwaInstallBtn').style.display = 'none';
+    deferredPrompt = null;
+});
