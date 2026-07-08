@@ -8,8 +8,8 @@
 </head>
 <body>
     <div class="phone-shell">
-        <button class="scroll-up" id="scrollUpBtn">↑</button>
-        <button class="scroll-down" id="scrollDownBtn">↓</button>
+        <button class="scroll-btn scroll-up" id="scrollUp">↑</button>
+        <button class="scroll-btn scroll-down" id="scrollDown">↓</button>
 
         <div class="phone-screen">
             <div class="content-area" id="mainContent">
@@ -27,7 +27,7 @@
                         <p style="color:#666; margin-bottom:12px;">👁️ Dilihat <span id="detailViews"></span> kali</p>
                         <div class="detail-desc" id="detailDesc"></div>
                         <button class="btn-wa" id="btnWa">💬 Hubungi via WhatsApp</button>
-                        <button class="btn-manage" onclick="window.location.href='kelola.html'">⚙️ Edit / Hapus Iklan</button>
+                        <button class="btn-manage" id="btnManage">⚙️ Kelola / Edit / Hapus Iklan</button>
                     </div>
                 </div>
             </div>
@@ -35,32 +35,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        let currentId = "";
-        async function loadDetail() {
-            const params = new URLSearchParams(window.location.search);
-            currentId = params.get('id');
-            if (!currentId) {
-                document.querySelector('.detail-content').innerHTML = "<p>Iklan tidak ditemukan</p>";
-                return;
-            }
-            try {
-                const res = await fetch(`${API_URL}?action=detail&id=${currentId}`);
-                const data = await res.json();
-                if (!data.success) throw new Error(data.error);
-                const ad = data.ad;
-                document.getElementById('detailImg').style.backgroundImage = `url('${ad.image || 'https://rewangiklan.my.id/image/no-image.webp'}')`;
-                document.getElementById('detailTitle').textContent = ad.title;
-                document.getElementById('detailCat').textContent = ad.category;
-                document.getElementById('detailLoc').textContent = ad.location;
-                document.getElementById('detailViews').textContent = ad.views;
-                document.getElementById('detailDesc').textContent = ad.description;
-                document.getElementById('btnWa').onclick = () => window.open(`https://wa.me/${ad.whatsapp}`, '_blank');
-            } catch (err) {
-                document.querySelector('.detail-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-            }
-        }
-        window.onload = loadDetail;
-    </script>
 </body>
 </html>
