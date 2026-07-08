@@ -564,3 +564,17 @@ body {
     border-radius: 4px;
     text-align: center;
 }
+
+/* Tambahan untuk tombol install PWA */
+#pwaInstallBtn {
+    color: #2563eb;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+#pwaInstallBtn:hover {
+    background: #eef2ff;
+}
