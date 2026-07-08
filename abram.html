@@ -3,375 +3,597 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abram Iklan - Trial</title>
+    <title>Abram Iklan</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* Desktop View */
+        /* === TAMPILAN DESKTOP === */
         @media (min-width: 768px) {
             body {
+                background: #f0f2f5;
                 display: flex;
                 justify-content: center;
                 align-items: flex-start;
                 min-height: 100vh;
-                background-color: #f0f0f0;
-                padding: 2rem 0;
-                overflow: hidden; /* Tidak bisa geser layar utama */
+                padding: 20px 0;
+                overflow: hidden; /* Tidak bisa geser layar luar */
             }
 
-            .phone-frame {
+            .phone-shell {
                 width: 375px;
                 height: 812px;
-                background-color: #fff;
-                border: 12px solid #333;
-                border-radius: 40px;
-                box-shadow: 0 0 20px rgba(0,0,0,0.3);
+                background: #000;
+                border-radius: 44px;
+                padding: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.25);
                 position: relative;
-                overflow: hidden; /* Hanya isi hp yang bisa gulir via panah */
+                overflow: hidden;
             }
 
-            .scroll-arrows {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 40px;
-                height: 40px;
-                background-color: rgba(0,0,0,0.5);
-                color: white;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                z-index: 100;
-            }
-
-            .arrow-up {
-                top: 20px;
-            }
-
-            .arrow-down {
-                bottom: 20px;
-            }
-
-            .content-wrapper {
+            .phone-screen {
                 width: 100%;
                 height: 100%;
-                overflow-y: hidden; /* Matikan scroll default */
+                background: #fff;
+                border-radius: 32px;
+                overflow: hidden;
+                position: relative;
+            }
+
+            /* Panah gulir hanya di desktop */
+            .scroll-up, .scroll-down {
+                position: absolute;
+                right: -50px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #2563eb;
+                color: white;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99;
+            }
+            .scroll-up { top: 40%; }
+            .scroll-down { bottom: 40%; }
+
+            .content-area {
+                width: 100%;
+                height: 100%;
+                overflow-y: hidden;
                 position: relative;
                 top: 0;
-                transition: top 0.3s ease;
+                transition: top 0.25s ease;
             }
         }
 
-        /* Mobile View */
+        /* === TAMPILAN HP ASLI === */
         @media (max-width: 767px) {
             body {
-                background-color: #fff;
+                background: #fff;
             }
-
-            .phone-frame {
+            .phone-shell {
                 width: 100%;
                 height: 100vh;
-                position: relative;
             }
-
-            .scroll-arrows {
-                display: none; /* Sembunyikan panah di hp asli */
+            .scroll-up, .scroll-down {
+                display: none;
             }
-
-            .content-wrapper {
+            .content-area {
                 width: 100%;
                 height: 100%;
                 overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
         }
 
-        /* Halaman Umum */
+        /* === HALAMAN DASAR === */
         .page {
-            width: 100%;
+            display: none;
             min-height: 100%;
-            padding: 1.5rem;
-            display: none; /* Semua halaman tersembunyi awalnya */
+            padding-bottom: 80px;
         }
-
         .page.active {
-            display: block; /* Hanya halaman aktif yang muncul */
+            display: block;
         }
 
-        /* Halaman Utama (Index Dummy) */
-        .home-header {
+        /* --- HALAMAN UTAMA --- */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #2b3a55;
+            color: white;
+        }
+        .search-box {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: none;
+            background: white;
+            color: #333;
+        }
+        .btn-post-main {
+            background: #f97316;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .banner {
+            margin: 12px 16px;
+            padding: 20px 16px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #2563eb 0%, #f59e0b 100%);
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
 
-        .home-header h1 {
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        .btn-post {
-            padding: 0.5rem 1rem;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .ads-grid {
+        .category-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 0 16px 20px;
         }
-
-        .ad-item {
-            background-color: #f9fafb;
-            border-radius: 8px;
-            padding: 1rem;
+        .cat-item {
+            text-align: center;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .ad-dummy-img {
-            width: 100%;
-            height: 80px;
-            background-color: #d1d5db;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-        }
-
-        .ad-title {
-            font-size: 0.9rem;
-            color: #333;
-            margin-bottom: 0.3rem;
-        }
-
-        .ad-price {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #16a34a;
-        }
-
-                /* Halaman Detail Iklan (Dummy) */
-        .detail-img {
-            width: 100%;
-            height: 200px;
-            background-color: #d1d5db;
+        .cat-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 6px;
+            background: #f3f4f6;
             border-radius: 8px;
-            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
         }
 
-        .detail-title {
-            font-size: 1.2rem;
-            color: #333;
-            margin-bottom: 0.5rem;
+        .section-title {
+            padding: 0 16px 10px;
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .link-more {
+            color: #2563eb;
+            font-size: 14px;
+            cursor: pointer;
         }
 
-        .detail-price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #16a34a;
-            margin-bottom: 1rem;
+        .ad-item-row {
+            margin: 0 16px 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            display: flex;
+            cursor: pointer;
         }
+        .ad-img {
+            width: 110px;
+            height: 80px;
+            background: #e5e7eb;
+        }
+        .ad-info {
+            padding: 10px;
+            flex: 1;
+        }
+        .ad-label {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: white;
+            margin-bottom: 6px;
+        }
+        .label-jual { background: #16a34a; }
+        .label-sewa { background: #2563eb; }
 
-        .detail-desc {
-            font-size: 0.95rem;
+        /* Menu Bawah */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .nav-item {
+            text-align: center;
+            font-size: 13px;
             color: #6b7280;
-            margin-bottom: 2rem;
+            cursor: pointer;
         }
-
-        .btn-manage {
-            padding: 0.7rem 1.5rem;
-            background-color: #f59e0b;
+        .nav-item.active { color: #2563eb; }
+        .btn-add-center {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f97316;
             color: white;
             border: none;
-            border-radius: 8px;
+            font-size: 22px;
             cursor: pointer;
+        }
+
+                /* --- HALAMAN DETAIL IKLAN --- */
+        .back-bar {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #2b3a55;
+            color: white;
+            gap: 10px;
+        }
+        .btn-back {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .detail-main-img {
             width: 100%;
+            height: 220px;
+            background: #e5e7eb;
+        }
+        .detail-content {
+            padding: 16px;
+        }
+        .detail-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .detail-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-bottom: 16px;
+        }
+        .detail-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .btn-action-row {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .btn-call {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-wa {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #16a34a;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-manage {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        /* Halaman Form (Dummy) */
+        /* --- HALAMAN PASANG IKLAN --- */
+        .form-container {
+            padding: 16px;
+        }
+        .upload-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .img-preview {
+            width: 70px;
+            height: 70px;
+            border-radius: 6px;
+            background: #e5e7eb;
+            position: relative;
+        }
+        .btn-add-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 6px;
+            border: 1px dashed #9ca3af;
+            background: #f9fafb;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+        }
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 16px;
         }
-
         .form-group label {
             display: block;
-            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-weight: 500;
             color: #333;
-            margin-bottom: 0.3rem;
         }
-
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 0.7rem;
+            padding: 10px;
             border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: 6px;
+            font-size: 15px;
         }
-
-        .form-actions {
+        .map-placeholder {
+            width: 100%;
+            height: 120px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        .form-buttons {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 10px;
+            margin-top: 25px;
         }
-
-        .btn-save {
+        .btn-send {
             flex: 1;
-            padding: 0.7rem;
-            background-color: #16a34a;
-            color: white;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            font-weight: 500;
             cursor: pointer;
         }
-
+        .btn-edit {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #6b7280;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
         .btn-delete {
             flex: 1;
-            padding: 0.7rem;
-            background-color: #dc2626;
-            color: white;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
+            background: #dc2626;
+            color: white;
+            font-weight: 500;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="phone-frame">
-        <!-- Panah Scroll (Hanya Desktop) -->
-        <div class="scroll-arrows arrow-up">&#8593;</div>
-        <div class="scroll-arrows arrow-down">&#8595;</div>
+    <div class="phone-shell">
+        <button class="scroll-up" id="scrollUpBtn">↑</button>
+        <button class="scroll-down" id="scrollDownBtn">↓</button>
 
-        <!-- Semua Konten dalam Satu Wrapper -->
-        <div class="content-wrapper">
-            <!-- Halaman Utama (Aktif Awal) -->
-            <div class="page home active">
-                <div class="home-header">
-                    <h1>Abram Iklan</h1>
-                    <button class="btn-post" id="btn-go-to-form">Pasang Iklan</button>
+        <div class="phone-screen">
+            <div class="content-area" id="mainContent">
+
+                <!-- HALAMAN UTAMA -->
+                <div class="page home active" id="pageHome">
+                    <div class="top-bar">
+                        <input type="text" class="search-box" placeholder="Cari Iklan...">
+                        <button class="btn-post-main" id="goToForm">Pasang Iklan</button>
+                    </div>
+
+                    <div class="banner">
+                        <div>
+                            <h3>Jual & Beli Mudah & Cepat!</h3>
+                        </div>
+                    </div>
+
+                    <div class="category-grid">
+                        <div class="cat-item">
+                            <div class="cat-icon">🚗</div>
+                            <span>Mobil</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">🏍️</div>
+                            <span>Motor</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">🏠</div>
+                            <span>Properti</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">📱</div>
+                            <span>Elektronik</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">💼</div>
+                            <span>Lowongan</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">🔧</div>
+                            <span>Jasa</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">🎮</div>
+                            <span>Hobi</span>
+                        </div>
+                        <div class="cat-item">
+                            <div class="cat-icon">👕</div>
+                            <span>Fashion</span>
+                        </div>
+                    </div>
+
+                    <div class="section-title">
+                        <span>Iklan Terbaru</span>
+                        <span class="link-more">Lihat Semua ▾</span>
+                    </div>
+
+                    <div class="ad-item-row" id="ad1">
+                        <div class="ad-img"></div>
+                        <div class="ad-info">
+                            <span class="ad-label label-jual">Dijual</span>
+                            <h4>Toyota Avanza 2018</h4>
+                            <p style="font-weight:bold; color:#16a34a;">Rp 120.000.000</p>
+                            <p style="font-size:12px; color:#6b7280;">Jakarta Selatan • 3 menit lalu</p>
+                        </div>
+                    </div>
+
+                    <div class="ad-item-row" id="ad2">
+                        <div class="ad-img"></div>
+                        <div class="ad-info">
+                            <span class="ad-label label-sewa">Disewakan</span>
+                            <h4>Apartemen Mewah</h4>
+                            <p style="font-weight:bold; color:#16a34a;">Rp 5.000.000/Bulan</p>
+                            <p style="font-size:12px; color:#6b7280;">Bandung • 1 jam lalu</p>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <div class="nav-item active">🏠<br>Beranda</div>
+                        <div class="nav-item">🤍<br>Favorit</div>
+                        <button class="btn-add-center" id="goToForm2">+</button>
+                        <div class="nav-item">💬<br>Chat</div>
+                        <div class="nav-item">👤<br>Akun</div>
+                    </div>
                 </div>
-                <div class="ads-grid">
-                    <!-- Dummy Grid Data -->
-                    <div class="ad-item" data-ad-id="1">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">Laptop Second</div>
-                        <div class="ad-price">Rp 2.500.000</div>
+
+                                <!-- HALAMAN DETAIL IKLAN -->
+                <div class="page detail" id="pageDetail">
+                    <div class="back-bar">
+                        <button class="btn-back" id="backFromDetail">←</button>
+                        <h4>Detail Iklan</h4>
                     </div>
-                    <div class="ad-item" data-ad-id="2">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">HP Android</div>
-                        <div class="ad-price">Rp 1.200.000</div>
-                    </div>
-                    <div class="ad-item" data-ad-id="3">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">Sepeda Gunung</div>
-                        <div class="ad-price">Rp 1.800.000</div>
-                    </div>
-                    <div class="ad-item" data-ad-id="4">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">Meja Belajar</div>
-                        <div class="ad-price">Rp 800.000</div>
-                    </div>
-                    <div class="ad-item" data-ad-id="5">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">Kamera Kamera</div>
-                        <div class="ad-price">Rp 3.500.000</div>
-                    </div>
-                    <div class="ad-item" data-ad-id="6">
-                        <div class="ad-dummy-img"></div>
-                        <div class="ad-title">Kasur Busa</div>
-                        <div class="ad-price">Rp 950.000</div>
+
+                    <div class="detail-main-img"></div>
+                    <div class="detail-content">
+                        <h2 class="detail-title" id="detailTitle">Apartemen Mewah</h2>
+                        <div class="detail-price" id="detailPrice">Rp 5.000.000 / Bulan</div>
+                        <div class="detail-location">📍 Bandung</div>
+                        <div class="detail-location">🕒 2 jam lalu</div>
+
+                        <div class="btn-action-row">
+                            <button class="btn-call">📞 Telepon</button>
+                            <button class="btn-wa">💬 WhatsApp</button>
+                        </div>
+
+                        <button class="btn-manage" id="goToFormFromDetail">⚙️ Kelola Iklan</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Halaman Detail Iklan (Tersembunyi) -->
-            <div class="page detail" id="detail-page">
-                <div class="detail-img"></div>
-                <h2 class="detail-title" id="detail-title">Laptop Second</h2>
-                <div class="detail-price" id="detail-price">Rp 2.500.000</div>
-                <p class="detail-desc">
-                    Laptop kondisi bagus, sudah dipakai 1 tahun. Spesifikasi: Intel Core i5, RAM 8GB, SSD 256GB. Cocok untuk kerja dan kuliah.
-                </p>
-                <button class="btn-manage" id="btn-detail-to-form">Kelola Iklan</button>
-            </div>
+                <!-- HALAMAN PASANG / EDIT IKLAN -->
+                <div class="page form" id="pageForm">
+                    <div class="back-bar">
+                        <button class="btn-back" id="backFromForm">←</button>
+                        <h4>Pasang / Edit Iklan</h4>
+                    </div>
 
-            <!-- Halaman Form (Tersembunyi) -->
-            <div class="page form" id="form-page">
-                <h2>Form Iklan</h2>
-                <form id="ad-form">
-                    <div class="form-group">
-                        <label>Nama Barang</label>
-                        <input type="text" id="form-title" placeholder="Nama barang..." value="Laptop Second">
+                    <div class="form-container">
+                        <div class="upload-row">
+                            <div class="img-preview"></div>
+                            <div class="img-preview"></div>
+                            <div class="img-preview"></div>
+                            <button class="btn-add-img">+</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Judul Iklan</label>
+                            <input type="text" id="formJudul" value="Apartemen Mewah">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <textarea rows="4" id="formDeskripsi">Di sewa apartemen mewah dengan fasilitas lengkap, lokasi strategis view kota.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Harga</label>
+                            <input type="text" id="formHarga" value="Rp 5.000.000 / Bulan">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Lokasi</label>
+                            <input type="text" id="formLokasi" value="Jl. Gandapura No. 34, Bandung">
+                            <div class="map-placeholder"></div>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button class="btn-send">Kirim Iklan</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Hapus</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Harga</label>
-                        <input type="text" id="form-price" placeholder="Rp..." value="2500000">
-                    </div>
-                    <div class="form-group">
-                        <label>Deskripsi</label>
-                        <textarea id="form-desc" rows="4" placeholder="Deskripsi barang...">Laptop kondisi bagus, sudah dipakai 1 tahun. Spesifikasi: Intel Core i5, RAM 8GB, SSD 256GB. Cocok untuk kerja dan kuliah.</textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-save">Simpan/Edit</button>
-                        <button type="button" class="btn-delete">Hapus</button>
-                    </div>
-                </form>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // Elemen
-        const contentWrapper = document.querySelector('.content-wrapper');
-        const arrowUp = document.querySelector('.arrow-up');
-        const arrowDown = document.querySelector('.arrow-down');
-        const adItems = document.querySelectorAll('.ad-item');
-        const btnGoToForm = document.getElementById('btn-go-to-form');
-        const btnDetailToForm = document.getElementById('btn-detail-to-form');
-        const pages = document.querySelectorAll('.page');
-
-        // Fungsi ganti halaman
-        function showPage(pageClass) {
-            pages.forEach(page => page.classList.remove('active'));
-            document.querySelector(`.${pageClass}`).classList.add('active');
-            contentWrapper.style.top = '0'; // Kembali ke atas saat ganti halaman
+        // Ganti halaman
+        function setPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('mainContent').style.top = "0px";
         }
 
-        // Fungsi scroll dengan panah (desktop)
-        const scrollStep = 200;
-        arrowUp.addEventListener('click', () => {
-            contentWrapper.style.top = `${Math.max(0, parseInt(contentWrapper.style.top || 0) + scrollStep)}px`;
+        // Gulir di mode desktop
+        const content = document.getElementById('mainContent');
+        const scrollStep = 220;
+        document.getElementById('scrollUpBtn').addEventListener('click', () => {
+            let current = parseInt(content.style.top) || 0;
+            content.style.top = Math.min(current + scrollStep, 0) + "px";
         });
-        arrowDown.addEventListener('click', () => {
-            const maxScroll = contentWrapper.scrollHeight - contentWrapper.clientHeight;
-            contentWrapper.style.top = `${Math.min(-maxScroll, parseInt(contentWrapper.style.top || 0) - scrollStep)}px`;
-        });
-
-        // Klik grid ke detail
-        adItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const title = item.querySelector('.ad-title').textContent;
-                const price = item.querySelector('.ad-price').textContent;
-                document.getElementById('detail-title').textContent = title;
-                document.getElementById('detail-price').textContent = price;
-                showPage('detail');
-            });
+        document.getElementById('scrollDownBtn').addEventListener('click', () => {
+            let current = parseInt(content.style.top) || 0;
+            let maxScroll = content.scrollHeight - content.clientHeight;
+            content.style.top = Math.max(current - scrollStep, -maxScroll) + "px";
         });
 
-        // Klik tombol ke form
-        btnGoToForm.addEventListener('click', () => showPage('form'));
-        btnDetailToForm.addEventListener('click', () => showPage('form'));
+        // Navigasi
+        document.getElementById('ad1').addEventListener('click', () => setPage('pageDetail'));
+        document.getElementById('ad2').addEventListener('click', () => setPage('pageDetail'));
+        document.getElementById('goToForm').addEventListener('click', () => setPage('pageForm'));
+        document.getElementById('goToForm2').addEventListener('click', () => setPage('pageForm'));
+        document.getElementById('goToFormFromDetail').addEventListener('click', () => setPage('pageForm'));
+        document.getElementById('backFromDetail').addEventListener('click', () => setPage('pageHome'));
+        document.getElementById('backFromForm').addEventListener('click', () => setPage('pageHome'));
     </script>
 </body>
 </html>
