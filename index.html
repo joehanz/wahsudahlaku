@@ -13,7 +13,6 @@
 
         <div class="phone-screen">
             <div class="content-area" id="mainContent">
-
                 <div class="page active">
                     <div class="top-bar">
                         <input type="text" class="search-box" id="searchInput" placeholder="Cari Iklan...">
@@ -24,32 +23,46 @@
                         <h3>Jual & Beli Mudah & Cepat!</h3>
                     </div>
 
-                    <div class="category-grid">
-                        <div class="cat-item" data-cat="Semua"><div class="cat-icon">📋</div><span>Semua</span></div>
-                        <div class="cat-item" data-cat="Properti"><div class="cat-icon">🏠</div><span>Properti</span></div>
-                        <div class="cat-item" data-cat="Jasa"><div class="cat-icon">🔧</div><span>Jasa</span></div>
-                        <div class="cat-item" data-cat="Lainnya"><div class="cat-icon">📦</div><span>Lainnya</span></div>
+                    <div class="category-wrapper">
+                        <button class="cat-arrow left">‹</button>
+                        <div class="category-grid" id="categoryScroll">
+                            <div class="cat-item" data-cat="Semua"><div class="cat-icon">📋</div><span>Semua</span></div>
+                            <div class="cat-item" data-cat="Mobil"><div class="cat-icon">🚗</div><span>Mobil</span></div>
+                            <div class="cat-item" data-cat="Motor"><div class="cat-icon">🏍️</div><span>Motor</span></div>
+                            <div class="cat-item" data-cat="Properti"><div class="cat-icon">🏠</div><span>Properti</span></div>
+                            <div class="cat-item" data-cat="Elektronik"><div class="cat-icon">📱</div><span>Elektronik</span></div>
+                            <div class="cat-item" data-cat="Lowongan"><div class="cat-icon">💼</div><span>Lowongan</span></div>
+                            <div class="cat-item" data-cat="Jasa"><div class="cat-icon">🔧</div><span>Jasa</span></div>
+                            <div class="cat-item" data-cat="Hobi"><div class="cat-icon">🎮</div><span>Hobi</span></div>
+                            <div class="cat-item" data-cat="Fashion"><div class="cat-icon">👕</div><span>Fashion</span></div>
+                        </div>
+                        <button class="cat-arrow right">›</button>
                     </div>
 
                     <div class="section-title">
                         <span>Iklan Terbaru</span>
-                        <span class="link-more">Lihat Semua ▾</span>
                     </div>
 
-                    <div id="adsContainer">
-                        <p style="text-align:center; padding:2rem; color:#888;">Memuat iklan...</p>
+                    <div id="adsContainer"></div>
+                    <div id="loadMoreBox" class="load-more-box" style="display:none;">
+                        <button id="loadMoreBtn" class="btn-load-more">Muat Lebih Banyak</button>
                     </div>
 
                     <div class="bottom-nav">
-                        <div class="nav-item active">🏠<br>Beranda</div>
-                        <div class="nav-item" onclick="window.location.href='pasang.html'">⚙️<br>Kelola</div>
+                        <div class="nav-item">📊 Total: <span id="totalAds">0</span></div>
                         <button class="btn-add-center" onclick="window.location.href='pasang.html'">+</button>
-                        <div class="nav-item">💬<br>Chat</div>
-                        <div class="nav-item">👤<br>Akun</div>
+                        <div class="nav-item dola-logo" id="dolaBtn">🤖 Dola</div>
                     </div>
                 </div>
-
             </div>
+        </div>
+    </div>
+
+    <div id="dolaLayer" class="dola-layer">
+        <div class="dola-content">
+            <button class="dola-close" id="dolaClose">×</button>
+            <h2>Halo, saya Dola!</h2>
+            <p>Siap bantu urusan situs ini dan apapun yang kamu butuhkan 😎</p>
         </div>
     </div>
 
