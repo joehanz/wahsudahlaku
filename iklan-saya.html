@@ -1,246 +1,68 @@
 <!DOCTYPE html>
 <html lang="id">
-
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Iklan Saya | Rewang Iklan</title>
-    <meta name="description" content="Pasang iklan baris gratis di Rewang Iklan. Jual beli properti, kendaraan, elektronik, lowongan kerja, jasa, hewan peliharaan, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="author" content="Rewang Iklan">
-    <meta name="theme-color" content="#000000">
-    <link rel="canonical" href="https://joehanz.github.io/wahsudahlaku/iklan-saya.html">
-    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
-    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
-
-<!-- Open Graph -->
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Rewang Iklan">
-    <meta property="og:locale" content="id_ID">
-    <meta property="og:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
-    <meta property="og:description" content="Pasang iklan gratis dan temukan properti, kendaraan, elektronik, lowongan kerja, jasa, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
-    <meta property="og:url" content="https://joehanz.github.io/wahsudahlaku/">
-    <meta property="og:image" content="https://joehanz.github.io/wahsudahlaku/image/iklanbaris3.png">
-    <meta property="og:image:secure_url" content="https://joehanz.github.io/wahsudahlaku/image/iklanbaris3.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Rewang Iklan">
-
-<!-- Twitter -->
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
-    <meta name="twitter:description" content="Pasang iklan gratis dan temukan berbagai produk serta jasa dari seluruh Indonesia.">
-    <meta name="twitter:image" content="https://joehanz.github.io/wahsudahlaku/image/iklanbaris3.png">
-    <meta name="twitter:image:alt" content="Rewang Iklan">
-
-<!-- Icon -->
-
-    <link rel="icon" type="image/webp" href="https://joehanz.github.io/wahsudahlaku/image/iklanbaris.webp">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Iklan</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    
-<!-- Bonus I -->
+</head>
+<body>
+    <div class="phone-shell">
+        <button class="scroll-up" id="scrollUpBtn">↑</button>
+        <button class="scroll-down" id="scrollDownBtn">↓</button>
 
-    <meta name="application-name" content="Rewang Iklan">
-    <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-<!-- Bonus II -->
+        <div class="phone-screen">
+            <div class="content-area" id="mainContent">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <div class="page">
+                    <div class="back-bar">
+                        <button class="btn-back" onclick="window.history.back()">←</button>
+                        <h4>Detail Iklan</h4>
+                    </div>
 
-<!-- Website Schema -->
+                    <div class="detail-main-img" id="detailImg"></div>
+                    <div class="detail-content">
+                        <h2 class="detail-title" id="detailTitle"></h2>
+                        <p style="color:#666; margin-bottom:10px;">Kategori: <span id="detailCat"></span></p>
+                        <p style="color:#666; margin-bottom:10px;">📍 <span id="detailLoc"></span></p>
+                        <p style="color:#666; margin-bottom:10px;">👁️ Dilihat <span id="detailViews"></span> kali</p>
+                        <div class="detail-desc" id="detailDesc"></div>
+                        <button class="btn-wa" id="btnWa">💬 Hubungi via WhatsApp</button>
+                        <button class="btn-manage" onclick="window.location.href='pasang.html?mode=edit&id=' + currentId">⚙️ Kelola Iklan Ini</button>
+                    </div>
+                </div>
 
-<script type="application/ld+json">
-{
- "@context":"https://schema.org",
- "@type":"WebSite",
- "name":"Rewang Iklan",
- "alternateName":"Iklan Baris Gratis Indonesia",
- "url":"https://joehanz.github.io/wahsudahlaku/",
- "description":"Pasang iklan baris gratis Indonesia.",
- "inLanguage":"id-ID",
- "potentialAction":{
-   "@type":"SearchAction",
-   "target":"https://joehanz.github.io/wahsudahlaku/?q={search_term_string}",
-   "query-input":"required name=search_term_string"
- }
-}
-</script>
-
-<!-- Organization -->
-
-<script type="application/ld+json">
-{
- "@context":"https://schema.org",
- "@type":"Organization",
- "name":"Rewang Iklan",
- "url":"https://joehanz.github.io/wahsudahlaku/",
- "logo":"https://joehanz.github.io/wahsudahlaku/image/iklanbaris3.png"
-}
-</script>
-
-    <script type="application/ld+json">
-{
-"@context":"https://schema.org",
-
-"@type":"CollectionPage",
-
-"name":"Rewang Iklan",
-
-"description":"Daftar iklan baris gratis Indonesia",
-
-"url":"https://joehanz.github.io/wahsudahlaku/",
-
-"mainEntity":{
-
-"@type":"ItemList",
-
-"numberOfItems":"1000",
-
-"itemListOrder":"https://schema.org/ItemListOrderDescending"
-
-}
-}
-</script>
-
-</head> 
-  
-  <body>
-    <!-- =========================
-HEADER
-========================= -->
-
-    <header class="top-header">
-      <div class="logo-box">
-        <h1>REWANG IKLAN</h1>
-
-        <p>Iklan Baris Gratis, Tanpa Daftar Langsung Tayang!</p>
-      </div>
-
-      <div class="footer-banner">BANNER IKLAN 468x60</div>
-
-      <a href="index.html" class="post-btn"> LIHAT IKLAN TERPASANG </a>
-    </header>
-
-    <!-- =========================
-MENU
-========================= -->
-
-    <nav class="main-menu">
-      <h2 style="color: white;">KELOLA IKLAN SAYA</h2>
-    </nav>
-
-    <!-- =========================
-LAYOUT
-========================= -->
-
-    <main>
-      <div class="form-page">
-        <div class="form-card">
-          <div style="padding:25px;">
-            <div class="form-group">
-              <label> ID Iklan </label>
-
-              <input type="text" id="adId" placeholder="Contoh: IKL000123" />
             </div>
-
-            <div class="form-group">
-              <label> Kode Kelola </label>
-
-              <input
-                type="text"
-                id="secretCode"
-                placeholder="Contoh: Q8M7X2KP"
-              />
-            </div>
-
-            <button id="checkBtn" class="submit-btn">TAMPILKAN IKLAN</button>
-
-            <div
-              id="resultBox"
-              class="status-box"
-              style="margin-top:20px;"
-            ></div>
-          </div>
         </div>
-      </div>
-
-      <script src="iklan-saya.js"></script>
-    </main>
-
-    <!-- =========================
-FOOTER BANNER
-========================= -->
-    <div id="mobileAds"></div>
-
-    <div class="footer-banner"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
-     crossorigin="anonymous"></script>
-<!-- ptdwiprima_jika_AdSense1_1x1_as -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-6458870303612779"
-     data-ad-slot="9722825270"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></div>
-
-    <!-- =========================
-FOOTER
-========================= -->
-
-    <footer class="footer">
-      <div class="footer-grid">
-        <div>
-          <h4>REWANG IKLAN</h4>
-
-          <p>Situs pasang iklan baris tanpa daftar iklan jual beli properti kendaraan elektronik lowongan kerja jasa hewan peliharaan dan berbagai kebutuhan lainnya di seluruh Indonesia langsung tayang tanpa bayar</p>
-        </div>
-
-        <div>
-          <h4>LINK</h4>
-
-          <ul>
-            <li>Iklan Update</li>
-
-            <li>Pasang Iklan</li>
-
-            <li>Kelola Iklan</li>
-            
-          </ul>
-        </div>
-
-        <div>
-          <h4>BANTUAN</h4>
-
-          <ul>
-            <li>Cara Pasang</li>
-
-            <li>Tips Aman</li>
-
-            <li>Kebijakan</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>KONTAK</h4>
-
-          <p>info@domain.com</p>
-
-          <p>WhatsApp: 0812-3456-7890</p>
-        </div>
-      </div>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
-  </body>
+    <script>
+        let currentId = "";
+        async function loadDetail() {
+            const params = new URLSearchParams(window.location.search);
+            currentId = params.get('id');
+            if (!currentId) {
+                document.querySelector('.detail-content').innerHTML = "<p>Iklan tidak ditemukan</p>";
+                return;
+            }
+            try {
+                const res = await fetch(`${API_URL}?action=detail&id=${currentId}`);
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error);
+                const ad = data.ad;
+                document.getElementById('detailImg').style.backgroundImage = `url('${ad.image || 'https://rewangiklan.my.id/image/no-image.webp'}')`;
+                document.getElementById('detailTitle').textContent = ad.title;
+                document.getElementById('detailCat').textContent = ad.category;
+                document.getElementById('detailLoc').textContent = ad.location;
+                document.getElementById('detailViews').textContent = ad.views;
+                document.getElementById('detailDesc').textContent = ad.description;
+                document.getElementById('btnWa').onclick = () => window.open(`https://wa.me/${ad.whatsapp}`, '_blank');
+            } catch (err) {
+                document.querySelector('.detail-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+            }
+        }
+        window.onload = loadDetail;
+    </script>
+</body>
 </html>
