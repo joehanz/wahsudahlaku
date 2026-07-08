@@ -1,4 +1,7 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbx-BaNk5IxrhHHp6wSJlBM9OI4t2y1uAjwUlLFAW8whVcI2xtvlj3D8zx3SkN52Fc15Eg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+let allAds = [];
+let currentPage = 0;
+const perPage = 10;
 
 // Scroll desktop
 const content = document.getElementById('mainContent');
@@ -15,12 +18,17 @@ if(document.getElementById('scrollUpBtn')){
     });
 }
 
-// Potong teks maks 250 karakter
+// Geser kategori
+const catScroll = document.getElementById('categoryScroll');
+document.querySelector('.cat-arrow.left').addEventListener('click', () => catScroll.scrollBy({left: -120, behavior: 'smooth'}));
+document.querySelector('.cat-arrow.right').addEventListener('click', () => catScroll.scrollBy({left: 120, behavior: 'smooth'}));
+
+// Potong teks
 function truncateText(text, max = 250) {
     return text.length > max ? text.substring(0, max) + "..." : text;
 }
 
-// Format waktu
+// Waktu relatif
 function timeAgo(dateStr) {
     const date = new Date(dateStr);
     const diff = Math.floor((new Date() - date) / 60000);
@@ -29,18 +37,35 @@ function timeAgo(dateStr) {
     return `${Math.floor(diff/1440)} hari lalu`;
 }
 
-// Muat daftar iklan untuk index.html
-async function loadAds() {
+// Buka halaman detail
+function openDetail(id) {
+    window.location.href = `iklan-saya.html?id=${id}`;
+}
+
+// Muat semua iklan
+async function loadAllAds() {
     try {
         const res = await fetch(API_URL);
-        const data = await res.json();
-        const container = document.getElementById('adsContainer');
-        if (!data || data.length === 0) {
-            container.innerHTML = "<p style='text-align:center; padding:2rem; color:#888;'>Belum ada iklan aktif</p>";
-            return;
-        }
-        container.innerHTML = data.map(ad => `
-            <div class="ad-item-row" onclick="window.location.href='iklan-saya.html?id=${ad.id}'">
+        allAds = await res.json();
+        document.getElementById('totalAds').textContent = allAds.length;
+        renderAds();
+    } catch (err) {
+        document.getElementById('adsContainer').innerHTML = "<p style='text-align:center; padding:2rem; color:red;'>Gagal memuat iklan</p>";
+    }
+}
+
+// Tampilkan iklan per halaman + sisip banner setiap 5 iklan
+function renderAds() {
+    const start = currentPage * perPage;
+    const end = start + perPage;
+    const pageAds = allAds.slice(start, end);
+    const container = document.getElementById('adsContainer');
+
+    let html = "";
+    pageAds.forEach((ad, idx) => {
+        const pos = start + idx + 1;
+        html += `
+            <div class="ad-item-row" onclick="openDetail('${ad.id}')">
                 <div class="ad-img" style="background-image:url('${ad.image || 'https://rewangiklan.my.id/image/no-image.webp'}')"></div>
                 <div class="ad-info">
                     <h4 class="ad-title">${ad.title}</h4>
@@ -49,13 +74,33 @@ async function loadAds() {
                     <span class="read-more">Baca selengkapnya →</span>
                 </div>
             </div>
-        `).join('');
-    } catch (err) {
-        document.getElementById('adsContainer').innerHTML = "<p style='text-align:center; padding:2rem; color:red;'>Gagal memuat iklan</p>";
-    }
+        `;
+        if (pos % 5 === 0) {
+            html += `<div class="ad-banner-box">BANNER IKLAN 300×300</div>`;
+        }
+    });
+
+    if (currentPage === 0) container.innerHTML = html;
+    else container.innerHTML += html;
+
+    document.getElementById('loadMoreBox').style.display = end < allAds.length ? "block" : "none";
 }
 
-// Jalankan jika di halaman index
+// Tombol muat lebih banyak
+document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+    currentPage++;
+    renderAds();
+});
+
+// Layer Dola
+document.getElementById('dolaBtn')?.addEventListener('click', () => {
+    document.getElementById('dolaLayer').classList.add('active');
+});
+document.getElementById('dolaClose')?.addEventListener('click', () => {
+    document.getElementById('dolaLayer').classList.remove('active');
+});
+
+// Jalankan saat halaman dimuat
 if(window.location.pathname.includes('index.html') || window.location.pathname === '/'){
-    window.onload = loadAds;
+    window.onload = loadAllAds;
 }
