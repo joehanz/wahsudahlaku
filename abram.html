@@ -3,168 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iklan Baris Mobile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Abram Iklan - Trial</title>
     <style>
-        /* Custom scrollbar tersembunyi tapi tetap bisa scroll jika konten panjang */
-        body::-webkit-scrollbar {
-            display: none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-        body {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            background-color: #f3f4f6;
+
+        /* Desktop View */
+        @media (min-width: 768px) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                min-height: 100vh;
+                background-color: #f0f0f0;
+                padding: 2rem 0;
+                overflow: hidden; /* Tidak bisa geser layar utama */
+            }
+
+            .phone-frame {
+                width: 375px;
+                height: 812px;
+                background-color: #fff;
+                border: 12px solid #333;
+                border-radius: 40px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.3);
+                position: relative;
+                overflow: hidden; /* Hanya isi hp yang bisa gulir via panah */
+            }
+
+            .scroll-arrows {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 40px;
+                background-color: rgba(0,0,0,0.5);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                z-index: 100;
+            }
+
+            .arrow-up {
+                top: 20px;
+            }
+
+            .arrow-down {
+                bottom: 20px;
+            }
+
+            .content-wrapper {
+                width: 100%;
+                height: 100%;
+                overflow-y: hidden; /* Matikan scroll default */
+                position: relative;
+                top: 0;
+                transition: top 0.3s ease;
+            }
+        }
+
+        /* Mobile View */
+        @media (max-width: 767px) {
+            body {
+                background-color: #fff;
+            }
+
+            .phone-frame {
+                width: 100%;
+                height: 100vh;
+                position: relative;
+            }
+
+            .scroll-arrows {
+                display: none; /* Sembunyikan panah di hp asli */
+            }
+
+            .content-wrapper {
+                width: 100%;
+                height: 100%;
+                overflow-y: auto;
+            }
+        }
+
+        /* Halaman Umum */
+        .page {
+            width: 100%;
+            min-height: 100%;
+            padding: 1.5rem;
+            display: none; /* Semua halaman tersembunyi awalnya */
+        }
+
+        .page.active {
+            display: block; /* Hanya halaman aktif yang muncul */
+        }
+
+        /* Halaman Utama (Index Dummy) */
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .home-header h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .btn-post {
+            padding: 0.5rem 1rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .ad-item {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .ad-dummy-img {
+            width: 100%;
+            height: 80px;
+            background-color: #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .ad-title {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .ad-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+                /* Halaman Detail Iklan (Dummy) */
+        .detail-img {
+            width: 100%;
+            height: 200px;
+            background-color: #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #16a34a;
+            margin-bottom: 1rem;
+        }
+
+        .detail-desc {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .btn-manage {
+            padding: 0.7rem 1.5rem;
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Halaman Form (Dummy) */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 0.7rem;
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            flex: 1;
+            padding: 0.7rem;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body class="flex justify-center items-center min-h-screen">
+<body>
+    <div class="phone-frame">
+        <!-- Panah Scroll (Hanya Desktop) -->
+        <div class="scroll-arrows arrow-up">&#8593;</div>
+        <div class="scroll-arrows arrow-down">&#8595;</div>
 
-    <div class="w-full max-w-md bg-[#f7f9fa] min-h-screen shadow-lg relative flex flex-col pb-24">
-        
-        <div class="bg-[#1a3150] px-4 pt-4 pb-3 sticky top-0 z-50">
-            <div class="flex items-center gap-3">
-                <div class="relative flex-1">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="text" placeholder="Cari Iklan..." class="w-full bg-white text-gray-800 pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none shadow-inner">
+        <!-- Semua Konten dalam Satu Wrapper -->
+        <div class="content-wrapper">
+            <!-- Halaman Utama (Aktif Awal) -->
+            <div class="page home active">
+                <div class="home-header">
+                    <h1>Abram Iklan</h1>
+                    <button class="btn-post" id="btn-go-to-form">Pasang Iklan</button>
                 </div>
-                <button class="relative text-white text-xl p-1">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="absolute top-0 right-0 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">?</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="p-4">
-            <div class="bg-gradient-to-r from-blue-600 via-teal-500 to-orange-400 rounded-xl p-4 flex justify-between items-center text-white shadow-sm">
-                <div>
-                    <h2 class="font-bold text-base leading-tight">Jual & Beli Mudah & Cepat!</h2>
-                </div>
-                <button class="bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                    Pasang Iklan
-                </button>
-            </div>
-        </div>
-
-        <div class="px-4 mb-4">
-            <div class="grid grid-cols-4 gap-3">
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-orange-500 mb-1"><i class="fa-solid fa-car"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Mobil</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-slate-700 mb-1"><i class="fa-solid fa-motorcycle"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Motor</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-orange-600 mb-1"><i class="fa-solid fa-house-chimney"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Properti</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-blue-400 mb-1"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Elektronik</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-slate-600 mb-1"><i class="fa-solid fa-briefcase"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Lowongan</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-blue-600 mb-1"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Jasa</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-slate-600 mb-1"><i class="fa-solid fa-gamepad"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Hobi</span>
-                </div>
-                <div class="bg-white p-3 rounded-xl flex flex-col items-center justify-center shadow-sm border border-gray-100 cursor-pointer">
-                    <div class="text-3xl text-orange-500 mb-1"><i class="fa-solid fa-shirt"></i></div>
-                    <span class="text-xs font-semibold text-gray-700">Fashion</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="px-4 flex-1">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-gray-800 text-base">Iklan Terbaru</h3>
-                <a href="#" class="text-sm text-blue-600 font-medium flex items-center gap-1">Lihat Semua <i class="fa-solid fa-caret-down text-xs"></i></a>
-            </div>
-
-            <div class="space-y-3">
-                
-                <div class="bg-white p-3 rounded-xl flex gap-3 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition">
-                    <div class="w-28 h-20 bg-gray-200 rounded-lg overflow-hidden relative flex-shrink-0">
-                        <span class="absolute top-1 left-1 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Dijual</span>
-                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=300&auto=format&fit=crop&q=60" alt="Toyota Avanza" class="w-full h-full object-cover">
+                <div class="ads-grid">
+                    <!-- Dummy Grid Data -->
+                    <div class="ad-item" data-ad-id="1">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">Laptop Second</div>
+                        <div class="ad-price">Rp 2.500.000</div>
                     </div>
-                    <div class="flex flex-col justify-between py-0.5">
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-sm line-clamp-1">Toyota Avanza 2018</h4>
-                            <p class="font-bold text-blue-900 text-sm mt-0.5">Rp 120.000.000</p>
-                        </div>
-                        <div class="flex items-center gap-3 text-[10px] text-gray-400">
-                            <span><i class="fa-solid fa-location-dot mr-1"></i>Jakarta Selatan</span>
-                            <span><i class="fa-regular fa-clock mr-1"></i>3 menit lalu</span>
-                        </div>
+                    <div class="ad-item" data-ad-id="2">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">HP Android</div>
+                        <div class="ad-price">Rp 1.200.000</div>
+                    </div>
+                    <div class="ad-item" data-ad-id="3">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">Sepeda Gunung</div>
+                        <div class="ad-price">Rp 1.800.000</div>
+                    </div>
+                    <div class="ad-item" data-ad-id="4">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">Meja Belajar</div>
+                        <div class="ad-price">Rp 800.000</div>
+                    </div>
+                    <div class="ad-item" data-ad-id="5">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">Kamera Kamera</div>
+                        <div class="ad-price">Rp 3.500.000</div>
+                    </div>
+                    <div class="ad-item" data-ad-id="6">
+                        <div class="ad-dummy-img"></div>
+                        <div class="ad-title">Kasur Busa</div>
+                        <div class="ad-price">Rp 950.000</div>
                     </div>
                 </div>
+            </div>
 
-                <div class="bg-white p-3 rounded-xl flex gap-3 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition">
-                    <div class="w-28 h-20 bg-gray-200 rounded-lg overflow-hidden relative flex-shrink-0">
-                        <span class="absolute top-1 left-1 bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Disewakan</span>
-                        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=300&auto=format&fit=crop&q=60" alt="Apartemen Mewah" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex flex-col justify-between py-0.5">
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-sm line-clamp-1">Apartemen Mewah</h4>
-                            <p class="font-bold text-blue-900 text-sm mt-0.5">Rp 5.000.000/Bulan</p>
-                        </div>
-                        <div class="flex items-center gap-3 text-[10px] text-gray-400">
-                            <span><i class="fa-solid fa-location-dot mr-1"></i>Bandung</span>
-                            <span><i class="fa-regular fa-clock mr-1"></i>1 jam lalu</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Halaman Detail Iklan (Tersembunyi) -->
+            <div class="page detail" id="detail-page">
+                <div class="detail-img"></div>
+                <h2 class="detail-title" id="detail-title">Laptop Second</h2>
+                <div class="detail-price" id="detail-price">Rp 2.500.000</div>
+                <p class="detail-desc">
+                    Laptop kondisi bagus, sudah dipakai 1 tahun. Spesifikasi: Intel Core i5, RAM 8GB, SSD 256GB. Cocok untuk kerja dan kuliah.
+                </p>
+                <button class="btn-manage" id="btn-detail-to-form">Kelola Iklan</button>
+            </div>
 
+            <!-- Halaman Form (Tersembunyi) -->
+            <div class="page form" id="form-page">
+                <h2>Form Iklan</h2>
+                <form id="ad-form">
+                    <div class="form-group">
+                        <label>Nama Barang</label>
+                        <input type="text" id="form-title" placeholder="Nama barang..." value="Laptop Second">
+                    </div>
+                    <div class="form-group">
+                        <label>Harga</label>
+                        <input type="text" id="form-price" placeholder="Rp..." value="2500000">
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <textarea id="form-desc" rows="4" placeholder="Deskripsi barang...">Laptop kondisi bagus, sudah dipakai 1 tahun. Spesifikasi: Intel Core i5, RAM 8GB, SSD 256GB. Cocok untuk kerja dan kuliah.</textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-save">Simpan/Edit</button>
+                        <button type="button" class="btn-delete">Hapus</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div class="absolute bottom-0 inset-x-0 bg-white border-t border-gray-200 py-2 px-4 flex justify-between items-center z-50">
-            <button class="flex flex-col items-center justify-center text-[#1a3150] w-14">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] font-bold mt-1">Beranda</span>
-            </button>
-            <button class="flex flex-col items-center justify-center text-gray-400 hover:text-[#1a3150] w-14">
-                <i class="fa-solid fa-heart text-lg text-orange-500"></i>
-                <span class="text-[10px] font-bold mt-1 text-gray-600">Favorit</span>
-            </button>
-            <button class="flex flex-col items-center justify-center w-14 -translate-y-4">
-                <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-md border-4 border-white text-xl">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <span class="text-[10px] font-bold mt-0.5 text-gray-600">Pasang Iklan</span>
-            </button>
-            <button class="flex flex-col items-center justify-center text-gray-400 hover:text-[#1a3150] w-14">
-                <i class="fa-solid fa-comment-dots text-lg text-slate-700"></i>
-                <span class="text-[10px] font-bold mt-1 text-gray-600">Chat</span>
-            </button>
-            <button class="flex flex-col items-center justify-center text-gray-400 hover:text-[#1a3150] w-14">
-                <i class="fa-solid fa-user text-lg text-slate-700"></i>
-                <span class="text-[10px] font-bold mt-1 text-gray-600">Akun</span>
-            </button>
-        </div>
-
     </div>
 
     <script>
-        // Logika interaktif sederhana jika nanti Anda ingin menambahkan aksi klik
-        document.querySelectorAll('.grid > div').forEach(item => {
+        // Elemen
+        const contentWrapper = document.querySelector('.content-wrapper');
+        const arrowUp = document.querySelector('.arrow-up');
+        const arrowDown = document.querySelector('.arrow-down');
+        const adItems = document.querySelectorAll('.ad-item');
+        const btnGoToForm = document.getElementById('btn-go-to-form');
+        const btnDetailToForm = document.getElementById('btn-detail-to-form');
+        const pages = document.querySelectorAll('.page');
+
+        // Fungsi ganti halaman
+        function showPage(pageClass) {
+            pages.forEach(page => page.classList.remove('active'));
+            document.querySelector(`.${pageClass}`).classList.add('active');
+            contentWrapper.style.top = '0'; // Kembali ke atas saat ganti halaman
+        }
+
+        // Fungsi scroll dengan panah (desktop)
+        const scrollStep = 200;
+        arrowUp.addEventListener('click', () => {
+            contentWrapper.style.top = `${Math.max(0, parseInt(contentWrapper.style.top || 0) + scrollStep)}px`;
+        });
+        arrowDown.addEventListener('click', () => {
+            const maxScroll = contentWrapper.scrollHeight - contentWrapper.clientHeight;
+            contentWrapper.style.top = `${Math.min(-maxScroll, parseInt(contentWrapper.style.top || 0) - scrollStep)}px`;
+        });
+
+        // Klik grid ke detail
+        adItems.forEach(item => {
             item.addEventListener('click', () => {
-                const kategori = item.querySelector('span').innerText;
-                alert('Membuka kategori: ' + kategori);
+                const title = item.querySelector('.ad-title').textContent;
+                const price = item.querySelector('.ad-price').textContent;
+                document.getElementById('detail-title').textContent = title;
+                document.getElementById('detail-price').textContent = price;
+                showPage('detail');
             });
         });
+
+        // Klik tombol ke form
+        btnGoToForm.addEventListener('click', () => showPage('form'));
+        btnDetailToForm.addEventListener('click', () => showPage('form'));
     </script>
 </body>
 </html>
