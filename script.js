@@ -134,14 +134,6 @@ document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
     }
 });
 
-// === LAYER DOLA ===
-document.getElementById('dolaBtn')?.addEventListener('click', () => {
-    document.getElementById('dolaLayer').classList.add('active');
-});
-document.getElementById('dolaClose')?.addEventListener('click', () => {
-    document.getElementById('dolaLayer').classList.remove('active');
-});
-
 // === JALANKAN SAAT HALAMAN BERANDA DIBUKA ===
 if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
     window.addEventListener('load', loadAllAds);
@@ -406,3 +398,68 @@ window.addEventListener('appinstalled', () => {
     document.getElementById('pwaInstallBtn').style.display = 'none';
     deferredPrompt = null;
 });
+
+// Fungsi Buka-Tutup Dola AI
+const dolaOverlay = document.getElementById('dolaOverlay');
+const dolaCloseBtn = document.getElementById('dolaCloseBtn');
+const dolaBtnNav = document.getElementById('dolaBtn'); // Tombol di nav bawah
+
+// Buka saat klik tombol Dola di navigasi
+if (dolaBtnNav) {
+  dolaBtnNav.addEventListener('click', () => {
+    dolaOverlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Kunci gulir halaman belakang
+  });
+}
+
+// Tutup saat klik tombol silang
+if (dolaCloseBtn) {
+  dolaCloseBtn.addEventListener('click', () => {
+    dolaOverlay.style.display = 'none';
+    document.body.style.overflow = ''; // Kembalikan gulir
+  });
+}
+
+// Tutup juga jika klik area gelap di luar kotak
+if (dolaOverlay) {
+  dolaOverlay.addEventListener('click', (e) => {
+    if (e.target === dolaOverlay) {
+      dolaOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+}
+
+// Contoh fungsi balasan Dola (bisa disesuaikan nanti)
+const dolaInput = document.getElementById('dolaInput');
+const dolaSendBtn = document.getElementById('dolaSendBtn');
+const dolaChatBox = document.getElementById('dolaChatBox');
+
+function kirimPesanDola() {
+  const pesan = dolaInput.value.trim();
+  if (!pesan) return;
+
+  // Tampilkan pesan pengguna
+  dolaChatBox.innerHTML += `<p style="text-align: right; background: #e0f2fe; padding: 8px; border-radius: 6px; margin: 6px 0;">${pesan}</p>`;
+  dolaInput.value = '';
+  dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+
+  // Balasan otomatis Dola (bisa diganti panggilan API AI nanti)
+  setTimeout(() => {
+    let balasan = "Maaf, saya belum mengerti pertanyaan Anda. Bisa jelaskan lebih rinci?";
+    if (pesan.toLowerCase().includes("iklan") || pesan.toLowerCase().includes("pasang")) {
+      balasan = "Anda bisa pasang iklan gratis dengan klik tombol ➕ di halaman utama. Tidak perlu daftar, langsung tayang!";
+    } else if (pesan.toLowerCase().includes("edit") || pesan.toLowerCase().includes("hapus")) {
+      balasan = "Untuk mengedit atau menghapus iklan, buka detail iklan lalu pilih 'Kelola', dan masukkan ID serta Kode Rahasia yang Anda dapatkan saat pasang.";
+    } else if (pesan.toLowerCase().includes("wa") || pesan.toLowerCase().includes("whatsapp")) {
+      balasan = "Pastikan nomor WhatsApp diawali kode negara, contoh: 6281234567890.";
+    }
+
+    dolaChatBox.innerHTML += `<p style="text-align: left; background: #f3f4f6; padding: 8px; border-radius: 6px; margin: 6px 0;">🤖 ${balasan}</p>`;
+    dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+  }, 600);
+}
+
+// Kirim dengan klik tombol atau tekan Enter
+if (dolaSendBtn) dolaSendBtn.addEventListener('click', kirimPesanDola);
+if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') kirimPesanDola(); });
