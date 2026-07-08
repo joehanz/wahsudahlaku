@@ -3,154 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasang / Edit Iklan</title>
+    <title>Pasang / Kelola Iklan | Rewang Iklan</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="phone-shell">
-        <button class="scroll-up" id="scrollUpBtn">↑</button>
-        <button class="scroll-down" id="scrollDownBtn">↓</button>
+        <button class="scroll-btn scroll-up" id="scrollUp">↑</button>
+        <button class="scroll-btn scroll-down" id="scrollDown">↓</button>
 
         <div class="phone-screen">
             <div class="content-area" id="mainContent">
-
                 <div class="page">
                     <div class="back-bar">
                         <button class="btn-back" onclick="window.location.href='index.html'">←</button>
                         <h4 id="formTitle">Pasang Iklan Baru</h4>
                     </div>
 
-                    <div class="form-container">
-                        <div class="form-group">
-                            <label>Judul Iklan</label>
-                            <input type="text" id="formJudul" placeholder="Contoh: Apartemen Disewakan">
-                        </div>
-                        <div class="form-group">
-                            <label>Kategori</label>
-                            <select id="formKategori">
-                                <option value="Properti">Properti</option>
-                                <option value="Jasa">Jasa</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Lokasi</label>
-                            <input type="text" id="formLokasi" placeholder="Contoh: Surabaya Barat">
-                        </div>
-                        <div class="form-group">
-                            <label>Nomor WhatsApp (awali 62)</label>
-                            <input type="text" id="formWa" placeholder="Contoh: 628123456789">
-                        </div>
-                        <div class="form-group">
-                            <label>Deskripsi Lengkap</label>
-                            <textarea rows="5" id="formDeskripsi" placeholder="Jelaskan secara rinci..."></textarea>
-                        </div>
-                        <div class="form-group" id="secretField" style="display:none;">
-                            <label>Kode Kelola</label>
-                            <input type="text" id="formSecret" placeholder="Masukkan kode rahasia">
-                        </div>
-                        <div class="form-buttons">
-                            <button class="btn-send" id="btnSubmit">Kirim Iklan</button>
-                            <button class="btn-edit" id="btnUpdate" style="display:none;">Simpan Perubahan</button>
-                            <button class="btn-delete" id="btnDelete" style="display:none;">Hapus Iklan</button>
+                    <div class="form-page">
+                        <div class="form-card">
+                            <form id="adForm">
+                                <div class="form-layout">
+                                    <div class="upload-side">
+                                        <label class="upload-title">Foto Iklan</label>
+                                        <input type="file" id="imageInput" accept="image/*">
+                                        <p class="help">Format JPG/PNG, otomatis diubah ke WebP</p>
+                                        <div class="preview-box">
+                                            <img id="previewImage" alt="Pratinjau Gambar">
+                                        </div>
+                                    </div>
+
+                                    <div class="data-side">
+                                        <div class="form-group">
+                                            <label>Judul Iklan</label>
+                                            <input type="text" id="title" maxlength="80" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kategori</label>
+                                            <select id="category" required>
+                                                <option value="">Pilih Kategori</option>
+                                                <option>Mobil</option>
+                                                <option>Motor</option>
+                                                <option>Properti</option>
+                                                <option>Elektronik</option>
+                                                <option>Lowongan</option>
+                                                <option>Jasa</option>
+                                                <option>Hobi</option>
+                                                <option>Fashion</option>
+                                                <option>Lainnya</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Lokasi / Kota</label>
+                                            <input type="text" id="location" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Nomor WhatsApp</label>
+                                            <input type="text" id="whatsapp" placeholder="Contoh: 6281234567890" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Deskripsi Iklan</label>
+                                            <textarea id="description" maxlength="500" required></textarea>
+                                            <div id="charCount" class="char-count">0 / 500</div>
+                                        </div>
+
+                                        <div class="form-group" id="secretGroup" style="display:none;">
+                                            <label>Kode Kelola</label>
+                                            <input type="text" id="secretCode" placeholder="Masukkan kode rahasia Anda">
+                                            <p class="help">Kode ini didapat saat pertama kali pasang iklan</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn-kirim" id="btnKirim">✅ Pasang Iklan</button>
+                                    <button type="button" class="btn-edit" id="btnEdit">✏️ Simpan Perubahan</button>
+                                    <button type="button" class="btn-hapus" id="btnHapus">🗑️ Hapus Iklan</button>
+                                </div>
+                            </form>
+
+                            <div id="statusBox" class="status-box"></div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        let currentEditId = "";
-        async function initForm() {
-            const params = new URLSearchParams(window.location.search);
-            const mode = params.get('mode');
-            currentEditId = params.get('id');
-
-            if(mode === 'edit' && currentEditId){
-                document.getElementById('formTitle').textContent = "Edit Iklan";
-                document.getElementById('secretField').style.display = "block";
-                document.getElementById('btnSubmit').style.display = "none";
-                document.getElementById('btnUpdate').style.display = "block";
-                document.getElementById('btnDelete').style.display = "block";
-                try {
-                    const res = await fetch(`${API_URL}?action=detail&id=${currentEditId}`);
-                    const data = await res.json();
-                    if(data.success){
-                        const ad = data.ad;
-                        document.getElementById('formJudul').value = ad.title;
-                        document.getElementById('formKategori').value = ad.category;
-                        document.getElementById('formLokasi').value = ad.location;
-                        document.getElementById('formWa').value = ad.whatsapp;
-                        document.getElementById('formDeskripsi').value = ad.description;
-                    }
-                } catch(e) { alert("Gagal memuat data iklan"); }
-            }
-        }
-
-        // Kirim iklan baru
-        async function submitAd() {
-            const data = {
-                title: document.getElementById('formJudul').value.trim(),
-                category: document.getElementById('formKategori').value,
-                location: document.getElementById('formLokasi').value.trim(),
-                whatsapp: document.getElementById('formWa').value.replace(/\D/g, ''),
-                description: document.getElementById('formDeskripsi').value.trim(),
-                date: new Date().toISOString()
-            };
-            if(!data.title || !data.whatsapp || !data.description) return alert("Isi semua kolom wajib!");
-            try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) });
-                const result = await res.json();
-                if(result.success){
-                    alert(`Berhasil!\nID: ${result.id}\nKode Kelola: ${result.secret_code}`);
-                    window.location.href = 'index.html';
-                } else throw new Error(result.error);
-            } catch(e) { alert("Gagal: " + e.message); }
-        }
-
-        // Update iklan
-        async function updateAd() {
-            const secret = document.getElementById('formSecret').value.trim();
-            if(!secret) return alert("Masukkan kode kelola!");
-            const data = {
-                id: currentEditId,
-                secret_code: secret,
-                title: document.getElementById('formJudul').value.trim(),
-                category: document.getElementById('formKategori').value,
-                location: document.getElementById('formLokasi').value.trim(),
-                description: document.getElementById('formDeskripsi').value.trim()
-            };
-            try {
-                const res = await fetch(`${API_URL}?action=updateAd`, { method: 'POST', body: JSON.stringify(data) });
-                const result = await res.json();
-                if(result.success){
-                    alert("Berhasil diperbarui!");
-                    window.location.href = 'index.html';
-                } else throw new Error(result.error);
-            } catch(e) { alert("Gagal: " + e.message); }
-        }
-
-        // Hapus iklan
-        async function deleteAd() {
-            const secret = document.getElementById('formSecret').value.trim();
-            if(!secret || !confirm("Yakin hapus iklan?")) return;
-            try {
-                const res = await fetch(`${API_URL}?action=deleteAd&id=${currentEditId}&secret_code=${secret}`);
-                const result = await res.json();
-                if(result.success){
-                    alert("Berhasil dihapus!");
-                    window.location.href = 'index.html';
-                } else throw new Error(result.error);
-            } catch(e) { alert("Gagal: " + e.message); }
-        }
-
-        window.onload = initForm;
-        document.getElementById('btnSubmit').addEventListener('click', submitAd);
-        document.getElementById('btnUpdate').addEventListener('click', updateAd);
-        document.getElementById('btnDelete').addEventListener('click', deleteAd);
-    </script>
 </body>
 </html>
