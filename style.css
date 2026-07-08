@@ -266,3 +266,19 @@
     cursor: pointer;
     color: #666;
 }
+
+/* Percepat pemuatan gambar */
+.ad-img {
+    content-visibility: auto;
+    contain: layout paint size;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Matikan animasi berat kalau masih terasa lambat */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
