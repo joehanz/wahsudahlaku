@@ -466,8 +466,9 @@ if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Ent
 
 
 // script.js - Semua dalam satu file, tanpa HTML/CSS terpisah
+// script.js - Semua fitur digabung dalam satu berkas
 (function () {
-  // 1. Buat elemen HTML dan masukkan CSS secara otomatis
+  // Masukkan gaya CSS secara otomatis
   const style = document.createElement('style');
   style.textContent = `
     /* ======================================
@@ -546,7 +547,7 @@ if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Ent
   `;
   document.head.appendChild(style);
 
-  // 2. Buat struktur elemen notifikasi
+  // Buat struktur tampilan notifikasi
   const notifierEl = document.createElement('div');
   notifierEl.className = 'desktop-notifier';
   notifierEl.innerHTML = `
@@ -559,7 +560,7 @@ if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Ent
   `;
   document.body.appendChild(notifierEl);
 
-  // 3. Fungsi tampilkan dan sembunyikan notifikasi
+  // Fungsi tampil dan tutup
   function tampilkanNotifikasi() {
     notifierEl.style.display = 'flex';
   }
@@ -568,9 +569,9 @@ if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Ent
     notifierEl.style.display = 'none';
   }
 
-  // 4. Pasang aksi pada tombol
+  // Aksi tombol
   document.getElementById('btnPaham').addEventListener('click', tutupNotifikasi);
 
-  // 5. Jalankan otomatis saat halaman siap
+  // Muncul otomatis saat halaman siap
   window.addEventListener('load', tampilkanNotifikasi);
 })();
