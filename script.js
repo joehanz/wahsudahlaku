@@ -463,3 +463,114 @@ function kirimPesanDola() {
 // Kirim dengan klik tombol atau tekan Enter
 if (dolaSendBtn) dolaSendBtn.addEventListener('click', kirimPesanDola);
 if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') kirimPesanDola(); });
+
+
+// script.js - Semua dalam satu file, tanpa HTML/CSS terpisah
+(function () {
+  // 1. Buat elemen HTML dan masukkan CSS secara otomatis
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ======================================
+       FITUR TAMBAHAN
+    ====================================== */
+    .desktop-notifier {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        display: none;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 10vh;
+    }
+
+    .notifier-content {
+        background: #1c1c1e;
+        border: 1px solid #2c2c2e;
+        padding: 30px;
+        width: 90%;
+        max-width: 420px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: bounceDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .notifier-content i {
+        color: #34c759;
+        margin-bottom: 15px;
+        font-size: 2.5rem;
+    }
+
+    .notifier-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .notifier-content p {
+        font-size: 0.9rem;
+        color: #aaa;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .notifier-content button {
+        background: #fff;
+        color: #000;
+        border: none;
+        padding: 12px 30px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        width: 100%;
+    }
+
+    .notifier-content button:active {
+        transform: scale(0.95);
+    }
+
+    @keyframes bounceDown {
+        0% { transform: translateY(-150%); opacity: 0; }
+        60% { transform: translateY(10%); opacity: 1; }
+        80% { transform: translateY(-5%); }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 2. Buat struktur elemen notifikasi
+  const notifierEl = document.createElement('div');
+  notifierEl.className = 'desktop-notifier';
+  notifierEl.innerHTML = `
+    <div class="notifier-content">
+      <i>📱</i>
+      <h3>Tampilan Lebih Asyik di HP!</h3>
+      <p>Situs ini didesain khusus untuk kenyamanan layar mobile. Rekomendasi terbaik gunakan smartphone kamu ya, bro!</p>
+      <button id="btnPaham">Siap, Paham!</button>
+    </div>
+  `;
+  document.body.appendChild(notifierEl);
+
+  // 3. Fungsi tampilkan dan sembunyikan notifikasi
+  function tampilkanNotifikasi() {
+    notifierEl.style.display = 'flex';
+  }
+
+  function tutupNotifikasi() {
+    notifierEl.style.display = 'none';
+  }
+
+  // 4. Pasang aksi pada tombol
+  document.getElementById('btnPaham').addEventListener('click', tutupNotifikasi);
+
+  // 5. Jalankan otomatis saat halaman siap
+  window.addEventListener('load', tampilkanNotifikasi);
+})();
