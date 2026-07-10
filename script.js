@@ -400,35 +400,71 @@ window.addEventListener('appinstalled', () => {
 });
 
 // script.js - Gabungan Notifikasi + Dola AI Chat (Semua dalam satu file)
-// script.js - Rewang: Asisten & Teman Pembantu Situs Iklan
+// ==================================================
+// Rewang - Asisten Situs Iklan | Versi Aman GitHub
+// ==================================================
 (function () {
   window.addEventListener('load', function () {
 
     // === GAYA TAMPILAN ===
     const style = document.createElement('style');
     style.textContent = `
-      * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
       body { margin: 0; }
-      .dola-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: flex-start; justify-content: center; padding-top: 10vh; }
-      .dola-content { background: #1c1c1e; border: 1px solid #2c2c2e; width: 90%; max-width: 420px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: bounceDown 0.6s forwards; overflow: hidden; }
-      @keyframes bounceDown {0%{transform:translateY(-150%);opacity:0}60%{transform:translateY(10%);opacity:1}80%{transform:translateY(-5%)}100%{transform:translateY(0);opacity:1}}
+
+      .dola-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 99999;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 10vh;
+      }
+
+      .dola-content {
+        background: #1c1c1e;
+        border: 1px solid #2c2c2e;
+        width: 90%;
+        max-width: 420px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        animation: bounceDown 0.6s ease-out forwards;
+        overflow: hidden;
+      }
+
+      @keyframes bounceDown {
+        0% { transform: translateY(-150%); opacity: 0; }
+        60% { transform: translateY(10%); opacity: 1; }
+        80% { transform: translateY(-5%); opacity: 1; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+
       .notif-view { padding: 30px; text-align: center; }
       .notif-view i { color: #34c759; font-size: 2.5rem; margin-bottom: 15px; }
-      .notif-view h3 { font-size: 1.4rem; color: #fff; margin-bottom: 10px; }
-      .notif-view p { color: #aaa; margin-bottom: 20px; line-height: 1.5; }
-      .notif-view button { width: 100%; border: none; padding: 12px; border-radius: 25px; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
+      .notif-view h3 { font-size: 1.4rem; color: #fff; margin-bottom: 10px; font-weight: 600; }
+      .notif-view p { color: #aaa; margin-bottom: 20px; line-height: 1.5; font-size: 0.95rem; }
+      .notif-view button { width: 100%; border: none; padding: 12px; border-radius: 25px; font-weight: bold; margin-bottom: 10px; cursor: pointer; font-size: 1rem; }
       .btn-paham { background: #fff; color: #000; }
       .btn-chat { background: #007aff; color: #fff; }
+
       .chat-view { display: flex; flex-direction: column; height: 75vh; max-height: 600px; }
       .chat-header { background: #2c2c2e; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a3a3c; }
-      .chat-header h3 { color: #fff; font-size: 1.1rem; }
+      .chat-header h3 { color: #fff; font-size: 1.1rem; font-weight: 600; margin: 0; }
       .chat-close { background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
       .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #121214; }
       .chat-input-area { display: flex; gap: 10px; padding: 12px; background: #2c2c2e; }
-      .chat-input-area input { flex: 1; padding: 12px; border-radius: 20px; border: none; background: #3a3a3c; color: #fff; outline: none; }
-      .chat-input-area button { padding: 12px 18px; border-radius: 20px; border: none; background: #fff; color: #000; font-weight: bold; cursor: pointer; }
-      .pesan-pengguna { text-align: right; background: #007aff; color: #fff; padding: 10px 14px; border-radius: 16px 16px 4px 16px; margin: 8px 0; max-width: 85%; margin-left: auto; line-height: 1.5; }
-      .pesan-dola { text-align: left; background: #2c2c2e; color: #fff; padding: 10px 14px; border-radius: 16px 16px 16px 4px; margin: 8px 0; max-width: 85%; margin-right: auto; line-height: 1.5; }
+      .chat-input-area input { flex: 1; padding: 12px 15px; border-radius: 20px; border: none; background: #3a3a3c; color: #fff; outline: none; font-size: 0.95rem; }
+      .chat-input-area input::placeholder { color: #999; }
+      .chat-input-area button { padding: 12px 18px; border-radius: 20px; border: none; background: #fff; color: #000; font-weight: bold; cursor: pointer; font-size: 0.95rem; }
+
+      .pesan-pengguna { text-align: right; background: #007aff; color: #fff; padding: 10px 14px; border-radius: 16px 16px 4px 16px; margin: 8px 0; max-width: 85%; margin-left: auto; line-height: 1.5; font-size: 0.95rem; }
+      .pesan-dola { text-align: left; background: #2c2c2e; color: #fff; padding: 10px 14px; border-radius: 16px 16px 16px 4px; margin: 8px 0; max-width: 85%; margin-right: auto; line-height: 1.5; font-size: 0.95rem; white-space: pre-line; }
     `;
     document.head.appendChild(style);
 
@@ -439,82 +475,78 @@ window.addEventListener('appinstalled', () => {
       <div class="dola-content" id="kontenUtama">
         <div class="notif-view" id="tampilanNotif">
           <i>📱</i>
-          <h3>Tampilan Lebih Asyik di HP!</h3>
-          <p>Situs ini didesain khusus untuk kenyamanan layar mobile. Gunakan smartphone untuk pengalaman terbaik ya!</p>
-          <button class="btn-paham" id="btnPaham">Siap, Paham!</button>
-          <button class="btn-chat" id="btnMulaiChat">💬 Tanya Rewang</button>
+          <h3>Tampilan Lebih Nyaman di HP</h3>
+          <p>Situs ini dioptimalkan untuk layar ponsel agar lebih mudah digunakan.</p>
+          <button class="btn-paham" id="btnPaham">Siap, Mengerti</button>
+          <button class="btn-chat" id="btnMulaiChat">💬 Ngobrol Sama Rewang</button>
         </div>
-        <div class="chat-view" id="tampilanChat" style="display:none;">
+        <div class="chat-view" id="tampilanChat" style="display: none;">
           <div class="chat-header"><h3>🤝 Rewang - Teman & Pembantu</h3><button id="tutupChat">&times;</button></div>
           <div class="chat-messages" id="kotakPesan"></div>
-          <div class="chat-input-area">
-            <input type="text" id="inputPesan" placeholder="Mau tanya apa atau butuh bantuan?">
-            <button id="kirimPesan">Kirim</button>
-          </div>
+          <div class="chat-input-area"><input type="text" id="inputPesan" placeholder="Tulis pertanyaan atau permintaan..."><button id="kirimPesan">Kirim</button></div>
         </div>
       </div>
     `;
     document.body.appendChild(overlay);
 
-    // === ⚙️ PENGATURAN UTAMA ===
+    // === ⚙️ PENGATURAN UTAMA (TANPA KUNCI DI SINI) ===
     const config = {
-      namaSitus: "Situs Iklan Gratis", // Ganti dengan nama situsmu
+      namaSitus: "Situs Iklan Gratis", // Ganti nama situsmu
       urlSitus: window.location.origin,
-      apiKey: "", // 📌 TEMPEL KUNCI BARU KAMU DI SINI
+      apiKey: window.GEMINI_API_KEY || "", // Ambil kunci dari luar kode
       model: "gemini-1.5-flash"
     };
 
-    // === 📜 PERAN & ATURAN REWANG ===
+    // === 📜 ATURAN JAWAB SESUAI PERMINTAANMU ===
     const sistemPrompt = `
-Kamu adalah **Rewang**, teman sekaligus pembantu di situs **${config.namaSitus}** (alamat: ${config.urlSitus}).
-Nama "Rewang" berarti teman yang siap membantu, setia, dan selalu mendukung.
+Kamu adalah **Rewang**, asisten dan teman pembantu resmi di situs **${config.namaSitus}**.
 
-✅ TUGAS UTAMA:
-1. Menjadi teman bicara dan penolong semua pengunjung situs ini.
-2. Bantu siapa saja yang bingung membuat **konten iklan yang menarik, jelas, dan ramah SEO** agar mudah ditemukan orang lewat pencarian.
-3. Jelaskan semua kelebihan pasang iklan di sini: **GRATIS selamanya, tanpa daftar, langsung tayang, mudah dikelola**.
-4. Jika ada yang butuh saran: berikan panduan agar iklan informatif, lengkap, dan menarik minat pembeli.
-5. Jika ada pertanyaan lain seputar situs, jawab dengan jelas dan arahkan ke fitur atau iklan yang ada di situs ini saja.
-6. Jika belum tahu jawaban rinci, katakan: "Saya belum punya informasi itu, tapi kamu bisa hubungi admin kami lewat halaman kontak ya."
+✅ **ATURAN JAWAB WAJIB**:
+1. Jawab **hanya berdasarkan konten iklan yang terdaftar & terupdate di situs ini saja**.
+2. Jika barang/jasa ditanyakan **belum ada**:
+   - Tawarkan: "Belum ada iklan itu di sini. Tapi kamu bisa pasang GRATIS, dan saya siap bantu buatkan kontennya yang menarik & SEO."
+   - Tambahkan: "Fitur edit & hapus sangat mudah, bisa kapan saja dikelola sendiri."
+3. Jika ditanya "Kenapa harus dari sini saja?" atau dibandingkan situs lain:
+   - Jawab: "Lebih baik pakai solusi yang ada di situs ini saja, lebih pas & aman. Mana yang lebih nyaman buatmu: cari jawaban di sini atau keluar ke tempat lain?"
+4. Jika masih memaksa/pertanyaan tidak nyambung/keberatan:
+   - Jawab: "Kalau ada hal yang kurang pas, silakan konsultasi dengan admin situs ya."
 
-❌ ATURAN WAJIB DIPATUHI:
-- JANGAN PERNAH menyebutkan, merekomendasikan, atau mengarahkan ke situs iklan lain seperti OLX, Tokopedia, Bukalapak, dll.
-- Semua solusi dan saran harus ditujukan agar pengunjung tetap menggunakan layanan dan fitur di situs ini.
-- Nada bicara santai, ramah, seperti teman sendiri yang siap bantu tanpa biaya.
-- Jangan berikan informasi yang tidak ada hubungannya dengan situs ini.
+❌ **DILARANG**:
+- Jangan sebut/arahkan ke situs iklan lain.
+- Nada bicara santai, ramah, tidak menyinggung.
     `;
 
     // === 🚀 FUNGSI PANGGIL AI ===
     async function tanyaRewang(teksPengguna) {
-      if (!config.apiKey) {
-        return "Kunci akses belum diatur. Silakan hubungi admin ya.";
+      const kunciBersih = config.apiKey.trim();
+      if (!kunciBersih) {
+        return "ℹ️ Sistem belum siap. Silakan hubungi admin.";
       }
+
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${config.model}:generateContent?key=${config.apiKey}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${config.model}:generateContent?key=${kunciBersih}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [
-              {
-                role: "user",
-                parts: [
-                  { text: `${sistemPrompt}\n\nPertanyaan / Permintaan pengguna: ${teksPengguna}` }
-                ]
-              }
-            ]
+            contents: [{ role: "user", parts: [{ text: `${sistemPrompt}\n\nPertanyaan: ${teksPengguna}` }] }],
+            generationConfig: { temperature: 0.7, maxOutputTokens: 1200 }
           })
         });
 
         const data = await res.json();
-        const balasan = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        return balasan || "Sedang ada gangguan sebentar. Coba tanya lagi ya 😊";
+        if (data.error) {
+          console.log("Error:", data.error);
+          return "ℹ️ Sedang ada gangguan, coba lagi sebentar.";
+        }
+        return data?.candidates?.[0]?.content?.parts?.[0]?.text || "🤝 Silakan tanya lagi ya.";
+
       } catch (err) {
-        console.error("Koneksi ke AI gagal:", err);
-        return "Maaf, sistem sedang sibuk. Silakan coba lagi nanti.";
+        console.error("Kesalahan:", err);
+        return "🚫 Gangguan jaringan, coba lagi.";
       }
     }
 
-    // === 🖱️ INTERAKSI PENGGUNA ===
+    // === 🖱️ INTERAKSI ===
     const tampilanNotif = document.getElementById('tampilanNotif');
     const tampilanChat = document.getElementById('tampilanChat');
     const btnPaham = document.getElementById('btnPaham');
@@ -524,41 +556,26 @@ Nama "Rewang" berarti teman yang siap membantu, setia, dan selalu mendukung.
     const inputPesan = document.getElementById('inputPesan');
     const kirimPesan = document.getElementById('kirimPesan');
 
-    function tutupSemua() {
-      overlay.style.display = 'none';
-      document.body.style.overflow = '';
-    }
-
+    function tutupSemua() { overlay.style.display = 'none'; document.body.style.overflow = ''; }
     function bukaChat() {
-      tampilanNotif.style.display = 'none';
-      tampilanChat.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      tampilanNotif.style.display = 'none'; tampilanChat.style.display = 'flex';
       if (!kotakPesan.innerHTML) {
-        kotakPesan.innerHTML = `<div class="pesan-dola">🤝 Halo! Saya Rewang, teman sekaligus pembantu di sini. Mau tanya apa atau butuh bantuan bikin teks iklan yang bagus? Sampaikan saja ya 😊</div>`;
+        kotakPesan.innerHTML = `<div class="pesan-dola">🤝 Halo! Saya Rewang. Mau tanya apa atau butuh bantuan pasang iklan? Silakan sampaikan 😊</div>`;
       }
     }
 
-    // Event klik
     tutupChat.addEventListener('click', tutupSemua);
     btnPaham.addEventListener('click', tutupSemua);
     btnMulaiChat.addEventListener('click', bukaChat);
     overlay.addEventListener('click', e => e.target === overlay && tutupSemua());
 
-    // Kirim pesan
     async function prosesKirim() {
       const teks = inputPesan.value.trim();
       if (!teks) return;
-
-      // Tampilkan pesan pengguna
       kotakPesan.innerHTML += `<div class="pesan-pengguna">${teks}</div>`;
       inputPesan.value = '';
       kotakPesan.scrollTop = kotakPesan.scrollHeight;
-
-      // Tampilkan status memproses
-      kotakPesan.innerHTML += `<div class="pesan-dola">🤝 Sedang memikirkan jawaban terbaik...</div>`;
-      kotakPesan.scrollTop = kotakPesan.scrollHeight;
-
-      // Ambil balasan dari AI
+      kotakPesan.innerHTML += `<div class="pesan-dola">🤝 Sedang dipikirkan...</div>`;
       const balasan = await tanyaRewang(teks);
       kotakPesan.lastChild.innerHTML = `🤝 ${balasan}`;
       kotakPesan.scrollTop = kotakPesan.scrollHeight;
