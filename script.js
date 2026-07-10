@@ -7,7 +7,7 @@ let filteredAds = [];
 let currentPage = 0;
 const perPage = 10;
 
-// === PANAH GULIR DESKTOP ===
+// === GULIRAN DESKTOP ===
 const contentArea = document.getElementById('mainContent');
 if (contentArea) {
     const scrollStep = 220;
@@ -166,16 +166,25 @@ if (window.location.pathname.includes('iklan-saya.html')) {
     window.addEventListener('load', loadDetail);
 
     // Notifikasi halaman detail
-    const notifKelola = document.createElement('div');
-    notifKelola.className = 'notif-kelola';
-    notifKelola.innerHTML = `
-        ✅ <b>Iklan Anda sudah tayang!</b><br>
-        Bisa diedit atau dihapus kapan saja dengan Kode Kelola yang didapat saat pasang iklan.<br><br>
-        Semoga laris manis di <b>Rewang Iklan</b> 🤞<br>
-        Bagikan: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
+    const notifStyle = document.createElement('style');
+    notifStyle.textContent = `
+        .notif-kelola {
+            background: #ecfccb; border-left: 5px solid #84cc16;
+            padding: 15px; margin: 15px 0; border-radius: 8px;
+            font-size: 15px; line-height: 1.6;
+        }
+    `;
+    document.head.appendChild(notifStyle);
+    const notifHTML = `
+        <div class="notif-kelola">
+            ✅ <b>Iklan Anda sudah tayang!</b><br>
+            Bisa diedit atau dihapus kapan saja dengan Kode Kelola yang didapat saat pasang iklan.<br><br>
+            Semoga laris manis di <b>Rewang Iklan</b> 🤞<br>
+            Bagikan: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
+        </div>
     `;
     const tempatDetail = document.querySelector('.detail-content');
-    if (tempatDetail) tempatDetail.prepend(notifKelola);
+    if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
 }
 
 // === HALAMAN PASANG / EDIT IKLAN ===
@@ -410,6 +419,7 @@ Jika ditanya "Nama kamu siapa?", jawab:
     const btnTutup = document.getElementById('tutupDola');
     const kotakPesan = document.getElementById('kotakPesanDola');
     const inputPesan = document.getElementById('teksPesanDola');
+    const kontenDola = document.getElementById('kontenDola');
 
     btnBuka.addEventListener('click', () => kontenDola.style.display = 'block');
     btnTutup.addEventListener('click', () => kontenDola.style.display = 'none');
