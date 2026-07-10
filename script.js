@@ -1,4 +1,7 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+const GEMINI_API_KEY = "AIzaSyDg9WbXhQZ7x7u6jG8eK5tQ3wR9yT2u3I1"; // Ganti dengan kunci API Gemini kamu
+const GEMINI_MODEL = "gemini-1.5-flash";
+
 let allAds = [];
 let filteredAds = [];
 let currentPage = 0;
@@ -439,10 +442,9 @@ window.addEventListener('load', function () {
 });
 
 // ==================================================
-// FITUR ASISTEN DOLA & NOTIF KHUSUS MOBILE
+// ASISTEN DOLA BERBASIS AI - LANGSUNG BUATKAN IKLAN
 // ==================================================
 window.addEventListener('load', function () {
-    // Hanya berjalan di tampilan HP
     if (window.innerWidth < 768) {
 
         // --- HALAMAN PASANG.HTML ---
@@ -460,7 +462,7 @@ window.addEventListener('load', function () {
                 }
                 .dola-konten {
                     display: none; position: absolute; bottom: 70px; right: 0;
-                    width: 320px; height: 450px; background: #fff; border-radius: 16px;
+                    width: 320px; height: 480px; background: #fff; border-radius: 16px;
                     box-shadow: 0 5px 20px rgba(0,0,0,0.25); overflow: hidden;
                     border: 1px solid #e5e7eb;
                 }
@@ -469,49 +471,50 @@ window.addEventListener('load', function () {
                     display: flex; justify-content: space-between; align-items: center;
                 }
                 .dola-pesan {
-                    height: 330px; overflow-y: auto; padding: 10px; background: #f9fafb;
+                    height: 360px; overflow-y: auto; padding: 12px; background: #f9fafb;
+                    font-size: 14px; line-height: 1.6;
                 }
                 .pesan-dola {
-                    background: #e2e8f0; padding: 8px 12px; border-radius: 12px 12px 12px 4px;
-                    margin: 6px 0; max-width: 85%; font-size: 14px;
+                    background: #e2e8f0; padding: 10px 14px; border-radius: 14px 14px 14px 4px;
+                    margin: 8px 0; max-width: 90%;
+                    white-space: pre-wrap;
                 }
                 .pesan-user {
-                    background: #dbeafe; padding: 8px 12px; border-radius: 12px 12px 4px 12px;
-                    margin: 6px 0; max-width: 85%; margin-left: auto; font-size: 14px;
+                    background: #dbeafe; padding: 10px 14px; border-radius: 14px 14px 4px 14px;
+                    margin: 8px 0; max-width: 90%; margin-left: auto;
                     text-align: right;
                 }
                 .dola-input {
-                    display: flex; gap: 6px; padding: 8px; border-top: 1px solid #eee;
+                    display: flex; gap: 8px; padding: 10px; border-top: 1px solid #eee;
                 }
                 .dola-input input {
-                    flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px;
+                    flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 20px;
                     font-size: 14px;
                 }
                 .dola-input button {
                     background: #2563eb; color: white; border: none;
-                    padding: 8px 14px; border-radius: 20px;
+                    padding: 10px 16px; border-radius: 20px; font-weight: 500;
                 }
             `;
             document.head.appendChild(dolaStyle);
 
             const dolaHTML = `
                 <div class="dola-chat-box">
-                    <button class="dola-btn-buka" id="bukaDola">💬</button>
+                    <button class="dola-btn-buka" id="bukaDola">Chat AI 💬</button>
                     <div class="dola-konten" id="kontenDola">
                         <div class="dola-header">
-                            <span>🤝 Dola - Bantu Buat Iklan</span>
-                            <button style="background:none; color:white; border:none; font-size:18px;" id="tutupDola">&times;</button>
+                            <span>🤝 Dola - Buat Iklan Otomatis</span>
+                            <button style="background:none; color:white; border:none; font-size:20px;" id="tutupDola">&times;</button>
                         </div>
                         <div class="dola-pesan" id="kotakPesanDola">
                             <div class="pesan-dola">
-                                Halo! Saya Dola 😊 Bingung bikin tulisan iklan? Saya bisa buatkan konten iklan yang menarik, ramah pencarian (SEO), hingga maksimal 1500 karakter. Siap membantu!
-                            </div>
-                            <div class="pesan-dola">
-                                Cukup tulis: Jenis barang/jasa, kelebihannya, kisaran harga, dan lokasi. Nanti saya buatkan judul, isi, dan cantumkan link situs ini ya.
+                                Halo! Saya Dola 😊 Saya bisa buatkan teks iklan yang sudah matang, menarik, dan siap salin.
+                                Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi atau info apa saja yang kamu punya.
+                                Contoh: "Buatkan iklan jual telor asin masir premium, rasa gurih, awet, harga mulai Rp8.000, WA 08123456789, lokasi Surabaya"
                             </div>
                         </div>
                         <div class="dola-input">
-                            <input type="text" id="teksPesanDola" placeholder="Tulis kebutuhan iklanmu...">
+                            <input type="text" id="teksPesanDola" placeholder="Tulis permintaan iklanmu...">
                             <button id="kirimDola">Kirim</button>
                         </div>
                     </div>
@@ -519,16 +522,24 @@ window.addEventListener('load', function () {
             `;
             document.body.insertAdjacentHTML('beforeend', dolaHTML);
 
+            // Aturan khusus untuk AI Dola
             const aturanDola = `
-Anda adalah Dola, asisten pembuat konten iklan di situs Rewang Iklan (rewangiklan.my.id).
+Kamu adalah Dola, asisten pembuat konten iklan di situs Rewang Iklan (rewangiklan.my.id).
+Tugasmu: Langsung buatkan teks iklan yang sudah jadi, rapi, dan siap disalin pengguna.
 
-✅ Aturan jawab:
-1. Buatkan konten maksimal 1500 karakter, rapi, menarik, dan ramah SEO.
-2. Struktur harus ada: Judul Iklan, Isi Iklan, Kisaran Harga, dan cantumkan link situs: https://rewangiklan.my.id
-3. Jika tanya cara upload gambar, nomor HP, atau lokasi: Jawab "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya."
-4. Jika tanya hal lain di luar pembuatan konten iklan: Jawab "Maaf, saya hanya bisa membantu membuatkan teks konten iklan saja 😊"
-5. Jika jawaban sudah jadi, tambahkan: "Silakan salin dan tempel ke kolom formulir ya!"
-6. Nada bicara ramah, santai, dan membantu.
+✅ ATURAN WAJIB:
+1. Buatkan iklan maksimal 1500 karakter, rapi, menarik, dan ramah untuk pencarian.
+2. Susun dengan struktur:
+   - 📌 JUDUL IKLAN
+   - 📝 ISI & KETERANGAN
+   - 💰 KISARAN HARGA
+   - 📞 KONTAK / LOKASI
+   - 🔗 Situs: https://rewangiklan.my.id
+3. Jika ada data yang belum disebutkan pengguna, tulis secara wajar sesuai logika, jangan biarkan kosong.
+4. Jika ditanya cara masukkan foto, nomor, atau alamat: Jawab "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya."
+5. Jika ditanya hal lain selain membuat iklan: Jawab "Maaf, saya hanya bisa membantu buatkan teks iklan saja 😊"
+6. Di akhir tambahkan: "✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!"
+7. Nada bicara santai, ramah, dan profesional.
             `;
 
             const btnBuka = document.getElementById('bukaDola');
@@ -544,46 +555,43 @@ Anda adalah Dola, asisten pembuat konten iklan di situs Rewang Iklan (rewangikla
                 document.getElementById('kontenDola').style.display = 'none';
             });
 
+            // Panggilan ke AI Gemini
+            async function tanyaAI(pertanyaan) {
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPermintaan pengguna: ${pertanyaan}` }] }],
+                            generationConfig: { temperature: 0.7, maxOutputTokens: 1600 }
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.error) throw new Error(data.error.message);
+                    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan sebentar. Coba lagi ya.";
+                } catch (err) {
+                    console.error(err);
+                    if (err.message.includes("API key")) {
+                        return "❌ Kunci API belum aktif atau salah. Silakan cek kembali.";
+                    } else if (err.message.includes("quota")) {
+                        return "⏳ Batas pemakaian hari ini habis. Bisa coba lagi besok.";
+                    }
+                    return "🚫 Sedang ada gangguan jaringan atau sistem. Coba lagi sebentar ya.";
+                }
+            }
+
             async function prosesDola() {
                 const teks = inputPesan.value.trim();
                 if (!teks) return;
+
                 kotakPesan.innerHTML += `<div class="pesan-user">${teks}</div>`;
                 inputPesan.value = '';
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                kotakPesan.innerHTML += `<div class="pesan-dola">Sebentar ya, sedang disusun...</div>`;
+                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun iklannya sebentar...</div>`;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                let balasan = "";
-                const teksLower = teks.toLowerCase();
-
-                if (teksLower.includes("gambar") || teksLower.includes("foto") || teksLower.includes("upload")) {
-                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
-                } else if (teksLower.includes("nomor") || teksLower.includes("hp") || teksLower.includes("wa") || teksLower.includes("telepon")) {
-                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
-                } else if (teksLower.includes("lokasi") || teksLower.includes("alamat")) {
-                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
-                } else if (teksLower.includes("harga") || teksLower.includes("bikin iklan") || teksLower.includes("jual") || teksLower.includes("jasa")) {
-                    balasan = `✅ Berikut konten iklan yang sudah saya buatkan untukmu:
-
-📌 JUDUL IKLAN
-[Judul menarik sesuai barang/jasa]
-
-📝 ISI IKLAN
-[Penjelasan lengkap, kelebihan, spesifikasi, dan manfaatnya]
-
-💰 KISARAN HARGA
-Rp. ... - Rp. ... / Sesuai kesepakatan
-
-🔗 Info lebih lanjut dan pasang iklan gratis di:
-https://rewangiklan.my.id
-
----
-Silakan salin dan tempel ke kolom formulir ya!`;
-                } else {
-                    balasan = "Maaf, saya hanya bisa membantu membuatkan teks konten iklan saja 😊";
-                }
-
+                const balasan = await tanyaAI(teks);
                 kotakPesan.lastChild.innerHTML = balasan;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
             }
