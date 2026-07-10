@@ -399,74 +399,254 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 });
 
-// Fungsi Buka-Tutup Dola AI
-const dolaOverlay = document.getElementById('dolaOverlay');
-const dolaCloseBtn = document.getElementById('dolaCloseBtn');
-const dolaBtnNav = document.getElementById('dolaBtn'); // Tombol di nav bawah
+// script.js - Dola AI Chatbox (Semua dalam satu file)
+(function () {
+  // Jalankan setelah halaman siap
+  window.addEventListener('load', function () {
 
-// Buka saat klik tombol Dola di navigasi
-if (dolaBtnNav) {
-  dolaBtnNav.addEventListener('click', () => {
-    dolaOverlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Kunci gulir halaman belakang
-  });
-}
+    // 1. Masukkan gaya CSS otomatis
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Gaya untuk Dola AI */
+      .dola-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
 
-// Tutup saat klik tombol silang
-if (dolaCloseBtn) {
-  dolaCloseBtn.addEventListener('click', () => {
-    dolaOverlay.style.display = 'none';
-    document.body.style.overflow = ''; // Kembalikan gulir
-  });
-}
+      .dola-chatbox {
+        background: #1c1c1e;
+        border: 1px solid #2c2c2e;
+        width: 100%;
+        max-width: 420px;
+        height: 85vh;
+        max-height: 650px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: fadeInUp 0.4s ease-out forwards;
+      }
 
-// Tutup juga jika klik area gelap di luar kotak
-if (dolaOverlay) {
-  dolaOverlay.addEventListener('click', (e) => {
-    if (e.target === dolaOverlay) {
+      @keyframes fadeInUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      .dola-header {
+        background: #2c2c2e;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #3a3a3c;
+      }
+
+      .dola-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #ffffff;
+        font-family: sans-serif;
+      }
+
+      .dola-close {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 5px;
+      }
+
+      .dola-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background: #121214;
+      }
+
+      .dola-input-area {
+        display: flex;
+        gap: 10px;
+        padding: 12px 15px;
+        background: #2c2c2e;
+        border-top: 1px solid #3a3a3c;
+      }
+
+      .dola-input-area input {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 20px;
+        border: none;
+        background: #3a3a3c;
+        color: #ffffff;
+        font-size: 0.95rem;
+        outline: none;
+      }
+
+      .dola-input-area input::placeholder {
+        color: #aaa;
+      }
+
+      .dola-input-area button {
+        padding: 12px 20px;
+        border-radius: 20px;
+        border: none;
+        background: #ffffff;
+        color: #000000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .dola-input-area button:active {
+        transform: scale(0.95);
+      }
+
+      .pesan-pengguna {
+        text-align: right;
+        background: #007aff;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 16px 16px 4px 16px;
+        margin: 8px 0;
+        max-width: 85%;
+        margin-left: auto;
+        font-family: sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .pesan-dola {
+        text-align: left;
+        background: #2c2c2e;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 16px 16px 16px 4px;
+        margin: 8px 0;
+        max-width: 85%;
+        margin-right: auto;
+        font-family: sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      /* Tombol untuk membuka Dola AI */
+      .tombol-buka-dola {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #007aff;
+        color: #fff;
+        font-size: 24px;
+        border: none;
+        cursor: pointer;
+        z-index: 99998;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 2. Buat struktur HTML secara otomatis
+    document.body.innerHTML += `
+      <!-- Tombol Buka Dola AI -->
+      <button id="dolaBtn" class="tombol-buka-dola">🤖</button>
+
+      <!-- Lapisan & Kotak Obrolan -->
+      <div id="dolaOverlay" class="dola-overlay">
+        <div class="dola-chatbox">
+          <div class="dola-header">
+            <h3>🤖 Dola AI Asisten</h3>
+            <button id="dolaCloseBtn" class="dola-close">&times;</button>
+          </div>
+          <div id="dolaChatBox" class="dola-messages"></div>
+          <div class="dola-input-area">
+            <input type="text" id="dolaInput" placeholder="Ketik pesan Anda...">
+            <button id="dolaSendBtn">Kirim</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // 3. Ambil elemen yang sudah dibuat
+    const dolaOverlay = document.getElementById('dolaOverlay');
+    const dolaCloseBtn = document.getElementById('dolaCloseBtn');
+    const dolaBtnNav = document.getElementById('dolaBtn');
+    const dolaInput = document.getElementById('dolaInput');
+    const dolaSendBtn = document.getElementById('dolaSendBtn');
+    const dolaChatBox = document.getElementById('dolaChatBox');
+
+    // 4. Fungsi Buka
+    dolaBtnNav.addEventListener('click', () => {
+      dolaOverlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+
+    // 5. Fungsi Tutup lewat tombol silang
+    dolaCloseBtn.addEventListener('click', () => {
       dolaOverlay.style.display = 'none';
       document.body.style.overflow = '';
+    });
+
+    // 6. Tutup lewat klik area luar
+    dolaOverlay.addEventListener('click', (e) => {
+      if (e.target === dolaOverlay) {
+        dolaOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+
+    // 7. Fungsi Kirim & Balas Pesan
+    function kirimPesanDola() {
+      const pesan = dolaInput.value.trim();
+      if (!pesan) return;
+
+      // Tampilkan pesan pengguna
+      dolaChatBox.innerHTML += `<div class="pesan-pengguna">${pesan}</div>`;
+      dolaInput.value = '';
+      dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+
+      // Balasan otomatis
+      setTimeout(() => {
+        let balasan = "Maaf, saya belum mengerti pertanyaan Anda. Bisa jelaskan lebih rinci?";
+        if (pesan.toLowerCase().includes("iklan") || pesan.toLowerCase().includes("pasang")) {
+          balasan = "Anda bisa pasang iklan gratis dengan klik tombol ➕ di halaman utama. Tidak perlu daftar, langsung tayang!";
+        } else if (pesan.toLowerCase().includes("edit") || pesan.toLowerCase().includes("hapus")) {
+          balasan = "Untuk mengedit atau menghapus iklan, buka detail iklan lalu pilih 'Kelola', dan masukkan ID serta Kode Rahasia yang Anda dapatkan saat pasang.";
+        } else if (pesan.toLowerCase().includes("wa") || pesan.toLowerCase().includes("whatsapp")) {
+          balasan = "Pastikan nomor WhatsApp diawali kode negara, contoh: 6281234567890.";
+        }
+
+        dolaChatBox.innerHTML += `<div class="pesan-dola">🤖 ${balasan}</div>`;
+        dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+      }, 600);
     }
+
+    // 8. Jalankan pengiriman pesan
+    dolaSendBtn.addEventListener('click', kirimPesanDola);
+    dolaInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') kirimPesanDola();
+    });
+
   });
-}
-
-// Contoh fungsi balasan Dola (bisa disesuaikan nanti)
-const dolaInput = document.getElementById('dolaInput');
-const dolaSendBtn = document.getElementById('dolaSendBtn');
-const dolaChatBox = document.getElementById('dolaChatBox');
-
-function kirimPesanDola() {
-  const pesan = dolaInput.value.trim();
-  if (!pesan) return;
-
-  // Tampilkan pesan pengguna
-  dolaChatBox.innerHTML += `<p style="text-align: right; background: #e0f2fe; padding: 8px; border-radius: 6px; margin: 6px 0;">${pesan}</p>`;
-  dolaInput.value = '';
-  dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
-
-  // Balasan otomatis Dola (bisa diganti panggilan API AI nanti)
-  setTimeout(() => {
-    let balasan = "Maaf, saya belum mengerti pertanyaan Anda. Bisa jelaskan lebih rinci?";
-    if (pesan.toLowerCase().includes("iklan") || pesan.toLowerCase().includes("pasang")) {
-      balasan = "Anda bisa pasang iklan gratis dengan klik tombol ➕ di halaman utama. Tidak perlu daftar, langsung tayang!";
-    } else if (pesan.toLowerCase().includes("edit") || pesan.toLowerCase().includes("hapus")) {
-      balasan = "Untuk mengedit atau menghapus iklan, buka detail iklan lalu pilih 'Kelola', dan masukkan ID serta Kode Rahasia yang Anda dapatkan saat pasang.";
-    } else if (pesan.toLowerCase().includes("wa") || pesan.toLowerCase().includes("whatsapp")) {
-      balasan = "Pastikan nomor WhatsApp diawali kode negara, contoh: 6281234567890.";
-    }
-
-    dolaChatBox.innerHTML += `<p style="text-align: left; background: #f3f4f6; padding: 8px; border-radius: 6px; margin: 6px 0;">🤖 ${balasan}</p>`;
-    dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
-  }, 600);
-}
-
-// Kirim dengan klik tombol atau tekan Enter
-if (dolaSendBtn) dolaSendBtn.addEventListener('click', kirimPesanDola);
-if (dolaInput) dolaInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') kirimPesanDola(); });
-
+})();
 
 // script.js - Semua dalam satu file, tanpa HTML/CSS terpisah
-// script.js - Versi diperbaiki, pasti muncul dan terlihat
 (function () {
   // Tunggu sampai halaman selesai dimuat sepenuhnya
   window.addEventListener('load', function () {
