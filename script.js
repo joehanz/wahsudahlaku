@@ -1,5 +1,6 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-// ❌ TIDAK PERLU ISI KUNCI LAGI, saya ganti cara kerjanya
+// 👇 Pakai kunci yang sudah kamu punya ini
+const GEMINI_API_KEY = "AIzaSyCn80HehU6Jw5G3p7n_QdMoHiMDENY4t_U";
 const GEMINI_MODEL = "gemini-1.5-flash";
 
 let allAds = [];
