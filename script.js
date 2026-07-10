@@ -1,5 +1,5 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-const GEMINI_API_KEY = "AIzaSyDg9WbXhQZ7x7u6jG8eK5tQ3wR9yT2u3I1"; // Ganti dengan kunci API Gemini kamu
+const GEMINI_API_KEY = "AQ.Ab8RN6JD9eiFf5Mhp3knOeut0hA83dHIEyk2U3b42HmwT9JNfw"; // Ganti dengan kunci API Gemini kamu
 const GEMINI_MODEL = "gemini-1.5-flash";
 
 let allAds = [];
