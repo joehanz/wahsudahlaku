@@ -1,7 +1,4 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-// 👇 Pakai kunci yang sudah kamu punya ini
-const GEMINI_API_KEY = "AIzaSyCn80HehU6Jw5G3p7n_QdMoHiMDENY4t_U";
-const GEMINI_MODEL = "gemini-1.5-flash";
 
 let allAds = [];
 let filteredAds = [];
@@ -12,11 +9,11 @@ const perPage = 10;
 const contentArea = document.getElementById('mainContent');
 if (window.innerWidth >= 768 && contentArea) {
     const scrollStep = 220;
-    document.getElementById('scrollUp').addEventListener('click', () => {
+    document.getElementById('scrollUp')?.addEventListener('click', () => {
         let currentTop = parseInt(contentArea.style.top) || 0;
         contentArea.style.top = Math.min(currentTop + scrollStep, 0) + 'px';
     });
-    document.getElementById('scrollDown').addEventListener('click', () => {
+    document.getElementById('scrollDown')?.addEventListener('click', () => {
         let currentTop = parseInt(contentArea.style.top) || 0;
         const maxScroll = contentArea.scrollHeight - contentArea.clientHeight;
         contentArea.style.top = Math.max(currentTop - scrollStep, -maxScroll) + 'px';
@@ -172,7 +169,29 @@ if (window.location.pathname.includes('iklan-saya.html')) {
             document.querySelector('.detail-content').innerHTML = `<p style='color:red; text-align:center; padding:2rem;'>${err.message}</p>`;
         }
     }
-    window.onload = loadDetail;
+    window.addEventListener('load', loadDetail);
+
+    // Notifikasi halaman detail
+    const notifStyle = document.createElement('style');
+    notifStyle.textContent = `
+        .notif-kelola {
+            background: #ecfccb; border-left: 5px solid #84cc16;
+            padding: 15px; margin: 15px 0; border-radius: 8px;
+            font-size: 15px; line-height: 1.6;
+        }
+    `;
+    document.head.appendChild(notifStyle);
+
+    const notifHTML = `
+        <div class="notif-kelola">
+            ✅ <b>Iklan Anda sudah tayang!</b><br>
+            Bisa diedit atau dihapus kapan saja dengan mudah, cukup masukkan <b>Kode Kelola</b> yang Anda dapatkan saat pertama kali memposting iklan.<br><br>
+            Semoga sukses dan laris manis dengan iklannya di <b>Rewang Iklan</b> 🤞<br>
+            Jangan lupa bagikan ke teman: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
+        </div>
+    `;
+    const tempatDetail = document.querySelector('.detail-content');
+    if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
 }
 
 // === FUNGSI UNTUK HALAMAN PASANG ===
@@ -362,7 +381,7 @@ if (window.location.pathname.includes('pasang.html')) {
         }
     });
 
-    window.onload = initForm;
+    window.addEventListener('load', initForm);
 }
 
 // === PEMICU INSTAL PWA ===
@@ -425,190 +444,5 @@ window.addEventListener('load', function () {
         document.body.appendChild(notif);
         notif.querySelector('.btn-paham').addEventListener('click', () => notif.remove());
         notif.addEventListener('click', (e) => e.target === notif && notif.remove());
-    }
-});
-
-// === ASISTEN DOLA - PAKAI GEMINI ASLI ===
-window.addEventListener('load', function () {
-    if (window.innerWidth < 768) {
-
-        if (window.location.pathname.includes('pasang.html')) {
-            const dolaStyle = document.createElement('style');
-            dolaStyle.textContent = `
-                .dola-chat-box {
-                    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-                    font-family: Arial, sans-serif;
-                }
-                .dola-btn-buka {
-                    background: #2563eb; color: white; border: none;
-                    width: 55px; height: 55px; border-radius: 50%;
-                    font-size: 22px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                }
-                .dola-konten {
-                    display: none; position: absolute; bottom: 70px; right: 0;
-                    width: 320px; height: 480px; background: #fff; border-radius: 16px;
-                    box-shadow: 0 5px 20px rgba(0,0,0,0.25); overflow: hidden;
-                    border: 1px solid #e5e7eb;
-                }
-                .dola-header {
-                    background: #2563eb; color: white; padding: 12px;
-                    display: flex; justify-content: space-between; align-items: center;
-                }
-                .dola-pesan {
-                    height: 360px; overflow-y: auto; padding: 12px; background: #f9fafb;
-                    font-size: 14px; line-height: 1.6;
-                }
-                .pesan-dola {
-                    background: #e2e8f0; padding: 10px 14px; border-radius: 14px 14px 14px 4px;
-                    margin: 8px 0; max-width: 90%;
-                    white-space: pre-wrap;
-                }
-                .pesan-user {
-                    background: #dbeafe; padding: 10px 14px; border-radius: 14px 14px 4px 14px;
-                    margin: 8px 0; max-width: 90%; margin-left: auto;
-                    text-align: right;
-                }
-                .dola-input {
-                    display: flex; gap: 8px; padding: 10px; border-top: 1px solid #eee;
-                }
-                .dola-input input {
-                    flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 20px;
-                    font-size: 14px;
-                }
-                .dola-input button {
-                    background: #2563eb; color: white; border: none;
-                    padding: 10px 16px; border-radius: 20px; font-weight: 500;
-                }
-            `;
-            document.head.appendChild(dolaStyle);
-
-            const dolaHTML = `
-                <div class="dola-chat-box">
-                    <button class="dola-btn-buka" id="bukaDola">💬</button>
-                    <div class="dola-konten" id="kontenDola">
-                        <div class="dola-header">
-                            <span>🤝 Dola - Buat Iklan Otomatis</span>
-                            <button style="background:none; color:white; border:none; font-size:20px;" id="tutupDola">&times;</button>
-                        </div>
-                        <div class="dola-pesan" id="kotakPesanDola">
-                            <div class="pesan-dola">
-                                Halo! Saya Dola 😊 Saya pakai AI Gemini asli, bisa buatkan teks iklan yang rapi, menarik, dan siap disalin.
-                                Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi.
-                                Contoh: "Buatkan iklan jual mobil Toyota Avanza 2018, kondisi mulus, harga Rp125 juta, WA 08123456789, Surabaya"
-                            </div>
-                        </div>
-                        <div class="dola-input">
-                            <input type="text" id="teksPesanDola" placeholder="Tulis permintaan iklanmu...">
-                            <button id="kirimDola">Kirim</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', dolaHTML);
-
-            const aturanDola = `
-Kamu adalah Dola, asisten pembuat iklan untuk situs Rewang Iklan.
-Tugasmu: Buatkan teks iklan yang menarik, meyakinkan, rapi, dan siap digunakan.
-Ikuti format ini selalu:
-
-📌 JUDUL IKLAN
-[Judul yang jelas dan menarik]
-
-📝 ISI & KETERANGAN
-[Penjelasan lengkap, sebutkan kelebihan/kondisi barang/jasa, gunakan bahasa yang enak dibaca]
-
-💰 KISARAN HARGA
-[Harga atau tulis "Hubungi penjual" jika belum ada]
-
-📞 KONTAK & LOKASI
-[Nomor WA / Telepon]
-[Kota / Daerah]
-
-🔗 Situs: https://rewangiklan.my.id
-
-✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!
-
-Jangan tambahkan informasi lain di luar format ini.
-`;
-
-            const btnBuka = document.getElementById('bukaDola');
-            const btnTutup = document.getElementById('tutupDola');
-            const kotakPesan = document.getElementById('kotakPesanDola');
-            const inputPesan = document.getElementById('teksPesanDola');
-            const btnKirim = document.getElementById('kirimDola');
-
-            btnBuka.addEventListener('click', () => {
-                document.getElementById('kontenDola').style.display = 'block';
-            });
-            btnTutup.addEventListener('click', () => {
-                document.getElementById('kontenDola').style.display = 'none';
-            });
-
-            async function tanyaGemini(pertanyaan) {
-                try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPermintaan pengguna: ${pertanyaan}` }] }],
-                            generationConfig: { temperature: 0.7, maxOutputTokens: 1500 }
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.error) throw new Error(data.error.message);
-                    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan. Coba lagi ya.";
-                } catch (err) {
-                    console.error(err);
-                    if (err.message.includes("API key")) {
-                        return "❌ Kunci API tidak valid atau belum diaktifkan. Cek kembali ya.";
-                    } else if (err.message.includes("quota")) {
-                        return "⏳ Batas pemakaian hari ini habis. Coba lagi besok.";
-                    }
-                    return "🚫 Sedang ada gangguan jaringan. Coba lagi sebentar.";
-                }
-            }
-
-            async function prosesDola() {
-                const teks = inputPesan.value.trim();
-                if (!teks) return;
-
-                kotakPesan.innerHTML += `<div class="pesan-user">${teks}</div>`;
-                inputPesan.value = '';
-                kotakPesan.scrollTop = kotakPesan.scrollHeight;
-
-                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun oleh AI...</div>`;
-                kotakPesan.scrollTop = kotakPesan.scrollHeight;
-
-                const hasil = await tanyaGemini(teks);
-                kotakPesan.lastChild.innerHTML = hasil;
-                kotakPesan.scrollTop = kotakPesan.scrollHeight;
-            }
-
-            btnKirim.addEventListener('click', prosesDola);
-            inputPesan.addEventListener('keydown', e => e.key === 'Enter' && prosesDola());
-        }
-
-        if (window.location.pathname.includes('iklan-saya.html')) {
-            const notifStyle = document.createElement('style');
-            notifStyle.textContent = `
-                .notif-kelola {
-                    background: #ecfccb; border-left: 5px solid #84cc16;
-                    padding: 15px; margin: 15px 0; border-radius: 8px;
-                    font-size: 15px; line-height: 1.6;
-                }
-            `;
-            document.head.appendChild(notifStyle);
-
-            const notifHTML = `
-                <div class="notif-kelola">
-                    ✅ <b>Iklan Anda sudah tayang!</b><br>
-                    Bisa diedit atau dihapus kapan saja dengan mudah, cukup masukkan <b>Kode Kelola</b> yang Anda dapatkan saat pertama kali memposting iklan.<br><br>
-                    Semoga sukses dan laris manis dengan iklannya di <b>Rewang Iklan</b> 🤞<br>
-                    Jangan lupa bagikan ke teman: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
-                </div>
-            `;
-            const tempatDetail = document.querySelector('.detail-content');
-            if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
-        }
     }
 });
