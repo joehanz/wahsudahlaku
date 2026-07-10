@@ -392,3 +392,53 @@ window.addEventListener('appinstalled', () => {
     document.getElementById('pwaInstallBtn').style.display = 'none';
     deferredPrompt = null;
 });
+
+// ==================================================
+// NOTIFIKASI KHUSUS HANYA UNTUK DESKTOP
+// ==================================================
+window.addEventListener('load', function () {
+    // Cek lebar layar ≥ 768px = tampilan desktop saja
+    if (window.innerWidth >= 768) {
+        // Buat gaya notif
+        const style = document.createElement('style');
+        style.textContent = `
+            .notif-overlay {
+                position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+                z-index: 99999; display: flex; align-items: center; justify-content: center;
+            }
+            .notif-box {
+                background: #ffffff; border-radius: 16px; width: 90%; max-width: 400px;
+                padding: 32px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            }
+            .notif-box h3 {
+                font-size: 1.3rem; margin-bottom: 12px; color: #222;
+            }
+            .notif-box p {
+                font-size: 1rem; color: #555; margin-bottom: 24px; line-height: 1.5;
+            }
+            .btn-paham {
+                background: #2563eb; color: white; border: none; padding: 10px 24px;
+                border-radius: 20px; font-size: 1rem; font-weight: 500; cursor: pointer;
+            }
+            .btn-paham:hover { background: #1d4ed8; }
+        `;
+        document.head.appendChild(style);
+
+        // Tampilkan notif
+        const notif = document.createElement('div');
+        notif.className = 'notif-overlay';
+        notif.innerHTML = `
+            <div class="notif-box">
+                <h3>Tampilan Lebih Nyaman di HP</h3>
+                <p>Situs ini dioptimalkan untuk layar ponsel agar lebih mudah digunakan.</p>
+                <button class="btn-paham">Siap, Mengerti</button>
+            </div>
+        `;
+        document.body.appendChild(notif);
+
+        // Tombol tutup
+        notif.querySelector('.btn-paham').addEventListener('click', () => notif.remove());
+        notif.addEventListener('click', (e) => e.target === notif && notif.remove());
+    }
+});
