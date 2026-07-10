@@ -612,4 +612,4 @@ Jangan tambahkan informasi lain di luar format ini.
             if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
         }
     }
-}); coba kamu cek lagi kenapa sekarang icon chatnya hilang
+});
