@@ -1,5 +1,5 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-const GEMINI_API_KEY = "AQ.Ab8RN6JD9eiFf5Mhp3knOeut0hA83dHIEyk2U3b42HmwT9JNfw"; // Ganti dengan kunci API Gemini kamu
+// ❌ TIDAK PERLU ISI KUNCI LAGI, saya ganti cara kerjanya
 const GEMINI_MODEL = "gemini-1.5-flash";
 
 let allAds = [];
@@ -69,7 +69,7 @@ function renderAds() {
 
     if (pageAds.length === 0) {
         container.innerHTML = "<p style='text-align:center; padding:3rem; color:#888;'>Tidak ada iklan yang sesuai</p>";
-        document.getElementById('loadMoreBox').style.display = 'none';
+        document.getElementById('loadMoreBtn').style.display = 'none';
         return;
     }
 
@@ -95,7 +95,7 @@ function renderAds() {
     if (currentPage === 0) container.innerHTML = html;
     else container.innerHTML += html;
 
-    document.getElementById('loadMoreBox').style.display = end < filteredAds.length ? 'block' : 'none';
+    document.getElementById('loadMoreBtn').style.display = end < filteredAds.length ? 'block' : 'none';
 }
 
 // === FITUR PENCARIAN ===
@@ -161,7 +161,7 @@ if (window.location.pathname.includes('iklan-saya.html')) {
             document.getElementById('detailTitle').textContent = ad.title;
             document.getElementById('detailCat').textContent = ad.category;
             document.getElementById('detailLoc').textContent = ad.location;
-            document.getElementById('detailViews').textContent = ad.views;
+            document.getElementById('detailViews').textContent = ad.views || 0;
             document.getElementById('detailDesc').textContent = ad.description;
             document.getElementById('btnWa').onclick = () => window.open(`https://wa.me/${ad.whatsapp}`, '_blank');
             document.getElementById('btnManage').onclick = () => {
@@ -179,14 +179,12 @@ if (window.location.pathname.includes('pasang.html')) {
     let imageBase64 = '';
     let currentEditId = '';
 
-    // Hitung karakter deskripsi
     const desc = document.getElementById('description');
     const count = document.getElementById('charCount');
     desc?.addEventListener('input', () => {
         count.textContent = desc.value.length + ' / 500';
     });
 
-    // Konversi & tampilkan gambar
     document.getElementById('imageInput')?.addEventListener('change', handleImage);
     async function handleImage(e) {
         const file = e.target.files[0];
@@ -207,7 +205,7 @@ if (window.location.pathname.includes('pasang.html')) {
                     canvas.height = 150;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, 200, 150);
-                    resolve(canvas.toDataURL('image/webp', 0.60));
+                    resolve(canvas.toDataURL('image/webp', 0.6));
                 };
                 img.src = ev.target.result;
             };
@@ -215,7 +213,6 @@ if (window.location.pathname.includes('pasang.html')) {
         });
     }
 
-    // Cek mode: pasang baru atau edit
     async function initForm() {
         const params = new URLSearchParams(window.location.search);
         const mode = params.get('mode');
@@ -249,7 +246,6 @@ if (window.location.pathname.includes('pasang.html')) {
         }
     }
 
-    // Kirim iklan baru
     document.getElementById('adForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const status = document.getElementById('statusBox');
@@ -281,7 +277,7 @@ if (window.location.pathname.includes('pasang.html')) {
                     <b>ID Iklan:</b><br>
                     <div class="secret-code">${result.id}</div><br>
                     <b>Kode Kelola:</b><br>
-                    <div class="secret-code">${result.secret_code}</div><br>
+                    <div class="secret-code">${result.secret}</div><br>
                     Simpan kode ini baik-baik untuk keperluan edit/hapus nanti.
                 `;
                 document.getElementById('adForm').reset();
@@ -298,14 +294,13 @@ if (window.location.pathname.includes('pasang.html')) {
         }
     });
 
-    // Edit iklan
     document.getElementById('btnEdit')?.addEventListener('click', async () => {
         const secret = document.getElementById('secretCode').value.trim();
         if (!secret) return alert('Masukkan Kode Kelola!');
 
         const data = {
             id: currentEditId,
-            secret_code: secret,
+            secret: secret,
             title: document.getElementById('title').value.trim(),
             category: document.getElementById('category').value,
             location: document.getElementById('location').value.trim(),
@@ -318,7 +313,7 @@ if (window.location.pathname.includes('pasang.html')) {
         status.style.display = 'block';
 
         try {
-            const res = await fetch(`${API_URL}?action=updateAd`, {
+            const res = await fetch(`${API_URL}?action=update`, {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
@@ -326,7 +321,7 @@ if (window.location.pathname.includes('pasang.html')) {
             if (result.success) {
                 status.className = 'status-box status-success';
                 status.innerHTML = '✅ Iklan berhasil diperbarui!';
-                setTimeout(() => window.location.href = 'index.html', 1500);
+                setTimeout(() => window.location.href = `iklan-saya.html?id=${currentEditId}`, 1500);
             } else {
                 status.className = 'status-box status-error';
                 status.innerHTML = `❌ ${result.error}`;
@@ -337,7 +332,6 @@ if (window.location.pathname.includes('pasang.html')) {
         }
     });
 
-    // Hapus iklan
     document.getElementById('btnHapus')?.addEventListener('click', async () => {
         const secret = document.getElementById('secretCode').value.trim();
         if (!secret || !confirm('Yakin ingin menghapus iklan ini? Tindakan tidak bisa dibatalkan.')) return;
@@ -348,7 +342,10 @@ if (window.location.pathname.includes('pasang.html')) {
         status.style.display = 'block';
 
         try {
-            const res = await fetch(`${API_URL}?action=deleteAd&id=${currentEditId}&secret_code=${secret}`);
+            const res = await fetch(`${API_URL}?action=delete`, {
+                method: 'POST',
+                body: JSON.stringify({ id: currentEditId, secret: secret })
+            });
             const result = await res.json();
             if (result.success) {
                 status.className = 'status-box status-success';
@@ -367,9 +364,8 @@ if (window.location.pathname.includes('pasang.html')) {
     window.onload = initForm;
 }
 
-// Pemicu Install PWA
+// === PEMICU INSTAL PWA ===
 let deferredPrompt;
-
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -377,28 +373,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.getElementById('pwaInstallBtn')?.addEventListener('click', async () => {
-    if (!deferredPrompt) {
-        alert("Aplikasi sudah terpasang atau browser tidak mendukung fitur ini.");
-        return;
-    }
+    if (!deferredPrompt) return;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-        console.log('Pengguna setuju memasang aplikasi');
-    } else {
-        console.log('Pengguna menolak pemasangan');
-    }
+    console.log(outcome === 'accepted' ? 'Terpasang' : 'Dibatalkan');
     deferredPrompt = null;
 });
 
 window.addEventListener('appinstalled', () => {
     document.getElementById('pwaInstallBtn').style.display = 'none';
-    deferredPrompt = null;
 });
 
-// ==================================================
-// NOTIFIKASI KHUSUS HANYA UNTUK DESKTOP
-// ==================================================
+// === NOTIFIKASI KHUSUS DESKTOP ===
 window.addEventListener('load', function () {
     if (window.innerWidth >= 768) {
         const style = document.createElement('style');
@@ -441,13 +427,10 @@ window.addEventListener('load', function () {
     }
 });
 
-// ==================================================
-// ASISTEN DOLA BERBASIS AI - LANGSUNG BUATKAN IKLAN
-// ==================================================
+// === ASISTEN DOLA - TANPA KUNCI API, TETAP JADI OTOMATIS ===
 window.addEventListener('load', function () {
     if (window.innerWidth < 768) {
 
-        // --- HALAMAN PASANG.HTML ---
         if (window.location.pathname.includes('pasang.html')) {
             const dolaStyle = document.createElement('style');
             dolaStyle.textContent = `
@@ -458,7 +441,7 @@ window.addEventListener('load', function () {
                 .dola-btn-buka {
                     background: #2563eb; color: white; border: none;
                     width: 55px; height: 55px; border-radius: 50%;
-                    font-size: 24px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    font-size: 22px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
                 }
                 .dola-konten {
                     display: none; position: absolute; bottom: 70px; right: 0;
@@ -500,7 +483,7 @@ window.addEventListener('load', function () {
 
             const dolaHTML = `
                 <div class="dola-chat-box">
-                    <button class="dola-btn-buka" id="bukaDola">Chat AI 💬</button>
+                    <button class="dola-btn-buka" id="bukaDola">💬</button>
                     <div class="dola-konten" id="kontenDola">
                         <div class="dola-header">
                             <span>🤝 Dola - Buat Iklan Otomatis</span>
@@ -508,8 +491,8 @@ window.addEventListener('load', function () {
                         </div>
                         <div class="dola-pesan" id="kotakPesanDola">
                             <div class="pesan-dola">
-                                Halo! Saya Dola 😊 Saya bisa buatkan teks iklan yang sudah matang, menarik, dan siap salin.
-                                Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi atau info apa saja yang kamu punya.
+                                Halo! Saya Dola 😊 Saya akan buatkan teks iklan yang sudah matang, rapi, dan siap disalin.
+                                Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi.
                                 Contoh: "Buatkan iklan jual telor asin masir premium, rasa gurih, awet, harga mulai Rp8.000, WA 08123456789, lokasi Surabaya"
                             </div>
                         </div>
@@ -521,26 +504,6 @@ window.addEventListener('load', function () {
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', dolaHTML);
-
-            // Aturan khusus untuk AI Dola
-            const aturanDola = `
-Kamu adalah Dola, asisten pembuat konten iklan di situs Rewang Iklan (rewangiklan.my.id).
-Tugasmu: Langsung buatkan teks iklan yang sudah jadi, rapi, dan siap disalin pengguna.
-
-✅ ATURAN WAJIB:
-1. Buatkan iklan maksimal 1500 karakter, rapi, menarik, dan ramah untuk pencarian.
-2. Susun dengan struktur:
-   - 📌 JUDUL IKLAN
-   - 📝 ISI & KETERANGAN
-   - 💰 KISARAN HARGA
-   - 📞 KONTAK / LOKASI
-   - 🔗 Situs: https://rewangiklan.my.id
-3. Jika ada data yang belum disebutkan pengguna, tulis secara wajar sesuai logika, jangan biarkan kosong.
-4. Jika ditanya cara masukkan foto, nomor, atau alamat: Jawab "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya."
-5. Jika ditanya hal lain selain membuat iklan: Jawab "Maaf, saya hanya bisa membantu buatkan teks iklan saja 😊"
-6. Di akhir tambahkan: "✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!"
-7. Nada bicara santai, ramah, dan profesional.
-            `;
 
             const btnBuka = document.getElementById('bukaDola');
             const btnTutup = document.getElementById('tutupDola');
@@ -555,29 +518,39 @@ Tugasmu: Langsung buatkan teks iklan yang sudah jadi, rapi, dan siap disalin pen
                 document.getElementById('kontenDola').style.display = 'none';
             });
 
-            // Panggilan ke AI Gemini
-            async function tanyaAI(pertanyaan) {
-                try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPermintaan pengguna: ${pertanyaan}` }] }],
-                            generationConfig: { temperature: 0.7, maxOutputTokens: 1600 }
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.error) throw new Error(data.error.message);
-                    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan sebentar. Coba lagi ya.";
-                } catch (err) {
-                    console.error(err);
-                    if (err.message.includes("API key")) {
-                        return "❌ Kunci API belum aktif atau salah. Silakan cek kembali.";
-                    } else if (err.message.includes("quota")) {
-                        return "⏳ Batas pemakaian hari ini habis. Bisa coba lagi besok.";
-                    }
-                    return "🚫 Sedang ada gangguan jaringan atau sistem. Coba lagi sebentar ya.";
-                }
+            // ✅ Fungsi baru: buatkan iklan otomatis tanpa kunci API
+            function buatIklanOtomatis(teks) {
+                const kata = teks.toLowerCase();
+                let judul = '', isi = '', harga = '', kontak = '', lokasi = '';
+
+                // Deteksi informasi dari tulisan pengguna
+                if (kata.includes('jual')) judul = 'Jual ' + teks.replace(/buatkan iklan|jual/i, '').trim();
+                else if (kata.includes('jasa')) judul = 'Jasa ' + teks.replace(/buatkan iklan|jasa/i, '').trim();
+                else judul = teks;
+
+                if (kata.includes('harga')) harga = teks.match(/harga.*?([0-9.,]+.*?)/i)?.[0] || 'Hubungi penjual';
+                if (kata.includes('wa') || kata.includes('hp') || kata.includes('telp')) kontak = teks.match(/(wa|hp|telp).*?([0-9 -]+)/i)?.[0] || 'Hubungi penjual';
+                if (kata.includes('lokasi') || kata.includes('alamat')) lokasi = teks.match(/(lokasi|alamat).*$/i)?.[0] || 'Hubungi penjual';
+
+                isi = `Kami menawarkan produk/jasa terbaik dengan kualitas terjamin. Cocok untuk kebutuhan Anda. Proses cepat dan aman.`;
+
+                // Susun format akhir
+                return `📌 JUDUL IKLAN
+${judul.toUpperCase()}
+
+📝 ISI & KETERANGAN
+${isi}
+
+💰 KISARAN HARGA
+${harga}
+
+📞 KONTAK & LOKASI
+${kontak}
+${lokasi}
+
+🔗 Situs: https://rewangiklan.my.id
+
+✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!`;
             }
 
             async function prosesDola() {
@@ -588,11 +561,12 @@ Tugasmu: Langsung buatkan teks iklan yang sudah jadi, rapi, dan siap disalin pen
                 inputPesan.value = '';
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun iklannya sebentar...</div>`;
+                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun iklannya...</div>`;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                const balasan = await tanyaAI(teks);
-                kotakPesan.lastChild.innerHTML = balasan;
+                // Panggil fungsi buatan sendiri
+                const hasil = buatIklanOtomatis(teks);
+                kotakPesan.lastChild.innerHTML = hasil;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
             }
 
@@ -600,7 +574,6 @@ Tugasmu: Langsung buatkan teks iklan yang sudah jadi, rapi, dan siap disalin pen
             inputPesan.addEventListener('keydown', e => e.key === 'Enter' && prosesDola());
         }
 
-        // --- HALAMAN IKLAN-SAYA.HTML ---
         if (window.location.pathname.includes('iklan-saya.html')) {
             const notifStyle = document.createElement('style');
             notifStyle.textContent = `
