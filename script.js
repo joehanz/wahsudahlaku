@@ -1,4 +1,4 @@
-bener spt itu? berarti github resek. suka bikin org emosi dan tengkar. cek sekali lagi apa script.js sdh benar const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 // 👇 Pakai kunci yang sudah kamu punya ini
 const GEMINI_API_KEY = "AIzaSyCn80HehU6Jw5G3p7n_QdMoHiMDENY4t_U";
 const GEMINI_MODEL = "gemini-1.5-flash";
