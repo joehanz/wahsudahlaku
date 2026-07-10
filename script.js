@@ -399,15 +399,20 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 });
 
-// script.js - Dola AI Chatbox (Semua dalam satu file)
+// script.js - Gabungan Notifikasi + Dola AI Chat (Semua dalam satu file)
 (function () {
-  // Jalankan setelah halaman siap
   window.addEventListener('load', function () {
 
-    // 1. Masukkan gaya CSS otomatis
+    // ======================================
+    // 1. Masukkan Semua Gaya CSS
+    // ======================================
     const style = document.createElement('style');
     style.textContent = `
-      /* Gaya untuk Dola AI */
+      /* Gaya Dasar */
+      * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+      body { margin: 0; }
+
+      /* Lapisan Latar Belakang */
       .dola-overlay {
         position: fixed;
         top: 0;
@@ -417,34 +422,81 @@ window.addEventListener('appinstalled', () => {
         background: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(8px);
         z-index: 99999;
-        display: none;
-        align-items: center;
+        display: flex;
+        align-items: flex-start;
         justify-content: center;
-        padding: 20px;
+        padding-top: 10vh;
         box-sizing: border-box;
       }
 
-      .dola-chatbox {
+      /* Konten Umum (Notifikasi & Chat) */
+      .dola-content {
         background: #1c1c1e;
         border: 1px solid #2c2c2e;
-        width: 100%;
+        width: 90%;
         max-width: 420px;
-        height: 85vh;
-        max-height: 650px;
         border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: bounceDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        overflow: hidden;
+      }
+
+      @keyframes bounceDown {
+        0% { transform: translateY(-150%); opacity: 0; }
+        60% { transform: translateY(10%); opacity: 1; }
+        80% { transform: translateY(-5%); }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+
+      /* === Tampilan Notifikasi Awal === */
+      .notif-view {
+        padding: 30px;
+      }
+      .notif-view i {
+        color: #34c759;
+        margin-bottom: 15px;
+        font-size: 2.5rem;
+        display: inline-block;
+      }
+      .notif-view h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+      .notif-view p {
+        font-size: 0.9rem;
+        color: #aaa;
+        line-height: 1.5;
+        margin-bottom: 20px;
+      }
+      .notif-view button {
+        display: block;
+        width: 100%;
+        border: none;
+        padding: 12px 30px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        margin-bottom: 10px;
+      }
+      .notif-view button:active {
+        transform: scale(0.95);
+      }
+      .btn-paham { background: #fff; color: #000; }
+      .btn-chat { background: #007aff; color: #fff; }
+
+      /* === Tampilan Obrolan Dola AI === */
+      .chat-view {
         display: flex;
         flex-direction: column;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        animation: fadeInUp 0.4s ease-out forwards;
+        height: 75vh;
+        max-height: 600px;
       }
-
-      @keyframes fadeInUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-
-      .dola-header {
+      .chat-header {
         background: #2c2c2e;
         padding: 15px 20px;
         display: flex;
@@ -452,15 +504,12 @@ window.addEventListener('appinstalled', () => {
         justify-content: space-between;
         border-bottom: 1px solid #3a3a3c;
       }
-
-      .dola-header h3 {
+      .chat-header h3 {
         margin: 0;
         font-size: 1.1rem;
         color: #ffffff;
-        font-family: sans-serif;
       }
-
-      .dola-close {
+      .chat-close {
         background: transparent;
         border: none;
         color: #ffffff;
@@ -469,23 +518,21 @@ window.addEventListener('appinstalled', () => {
         line-height: 1;
         padding: 0 5px;
       }
-
-      .dola-messages {
+      .chat-messages {
         flex: 1;
         padding: 15px;
         overflow-y: auto;
         background: #121214;
+        text-align: left;
       }
-
-      .dola-input-area {
+      .chat-input-area {
         display: flex;
         gap: 10px;
         padding: 12px 15px;
         background: #2c2c2e;
         border-top: 1px solid #3a3a3c;
       }
-
-      .dola-input-area input {
+      .chat-input-area input {
         flex: 1;
         padding: 12px 15px;
         border-radius: 20px;
@@ -495,12 +542,10 @@ window.addEventListener('appinstalled', () => {
         font-size: 0.95rem;
         outline: none;
       }
-
-      .dola-input-area input::placeholder {
+      .chat-input-area input::placeholder {
         color: #aaa;
       }
-
-      .dola-input-area button {
+      .chat-input-area button {
         padding: 12px 20px;
         border-radius: 20px;
         border: none;
@@ -510,11 +555,9 @@ window.addEventListener('appinstalled', () => {
         cursor: pointer;
         transition: transform 0.2s;
       }
-
-      .dola-input-area button:active {
+      .chat-input-area button:active {
         transform: scale(0.95);
       }
-
       .pesan-pengguna {
         text-align: right;
         background: #007aff;
@@ -524,11 +567,9 @@ window.addEventListener('appinstalled', () => {
         margin: 8px 0;
         max-width: 85%;
         margin-left: auto;
-        font-family: sans-serif;
         font-size: 0.9rem;
         line-height: 1.4;
       }
-
       .pesan-dola {
         text-align: left;
         background: #2c2c2e;
@@ -538,225 +579,113 @@ window.addEventListener('appinstalled', () => {
         margin: 8px 0;
         max-width: 85%;
         margin-right: auto;
-        font-family: sans-serif;
         font-size: 0.9rem;
         line-height: 1.4;
-      }
-
-      /* Tombol untuk membuka Dola AI */
-      .tombol-buka-dola {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: #007aff;
-        color: #fff;
-        font-size: 24px;
-        border: none;
-        cursor: pointer;
-        z-index: 99998;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       }
     `;
     document.head.appendChild(style);
 
-    // 2. Buat struktur HTML secara otomatis
-    document.body.innerHTML += `
-      <!-- Tombol Buka Dola AI -->
-      <button id="dolaBtn" class="tombol-buka-dola">🤖</button>
+    // ======================================
+    // 2. Buat Struktur Elemen
+    // ======================================
+    const overlay = document.createElement('div');
+    overlay.className = 'dola-overlay';
+    overlay.innerHTML = `
+      <div class="dola-content" id="kontenUtama">
+        <!-- Tampilan Notifikasi -->
+        <div class="notif-view" id="tampilanNotif">
+          <i>📱</i>
+          <h3>Tampilan Lebih Asyik di HP!</h3>
+          <p>Situs ini didesain khusus untuk kenyamanan layar mobile. Rekomendasi terbaik gunakan smartphone kamu ya, bro!</p>
+          <button class="btn-paham" id="btnPaham">Siap, Paham!</button>
+          <button class="btn-chat" id="btnMulaiChat">💬 Chat dengan Dola AI</button>
+        </div>
 
-      <!-- Lapisan & Kotak Obrolan -->
-      <div id="dolaOverlay" class="dola-overlay">
-        <div class="dola-chatbox">
-          <div class="dola-header">
+        <!-- Tampilan Obrolan -->
+        <div class="chat-view" id="tampilanChat" style="display: none;">
+          <div class="chat-header">
             <h3>🤖 Dola AI Asisten</h3>
-            <button id="dolaCloseBtn" class="dola-close">&times;</button>
+            <button class="chat-close" id="tutupChat">&times;</button>
           </div>
-          <div id="dolaChatBox" class="dola-messages"></div>
-          <div class="dola-input-area">
-            <input type="text" id="dolaInput" placeholder="Ketik pesan Anda...">
-            <button id="dolaSendBtn">Kirim</button>
+          <div class="chat-messages" id="kotakPesan"></div>
+          <div class="chat-input-area">
+            <input type="text" id="inputPesan" placeholder="Ketik pertanyaan Anda...">
+            <button id="kirimPesan">Kirim</button>
           </div>
         </div>
       </div>
     `;
+    document.body.appendChild(overlay);
 
-    // 3. Ambil elemen yang sudah dibuat
-    const dolaOverlay = document.getElementById('dolaOverlay');
-    const dolaCloseBtn = document.getElementById('dolaCloseBtn');
-    const dolaBtnNav = document.getElementById('dolaBtn');
-    const dolaInput = document.getElementById('dolaInput');
-    const dolaSendBtn = document.getElementById('dolaSendBtn');
-    const dolaChatBox = document.getElementById('dolaChatBox');
+    // ======================================
+    // 3. Ambil Elemen & Fungsi
+    // ======================================
+    const tampilanNotif = document.getElementById('tampilanNotif');
+    const tampilanChat = document.getElementById('tampilanChat');
+    const btnPaham = document.getElementById('btnPaham');
+    const btnMulaiChat = document.getElementById('btnMulaiChat');
+    const tutupChat = document.getElementById('tutupChat');
+    const kotakPesan = document.getElementById('kotakPesan');
+    const inputPesan = document.getElementById('inputPesan');
+    const kirimPesan = document.getElementById('kirimPesan');
 
-    // 4. Fungsi Buka
-    dolaBtnNav.addEventListener('click', () => {
-      dolaOverlay.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    });
-
-    // 5. Fungsi Tutup lewat tombol silang
-    dolaCloseBtn.addEventListener('click', () => {
-      dolaOverlay.style.display = 'none';
+    // Tutup seluruh jendela
+    function tutupSemua() {
+      overlay.style.display = 'none';
       document.body.style.overflow = '';
-    });
+    }
 
-    // 6. Tutup lewat klik area luar
-    dolaOverlay.addEventListener('click', (e) => {
-      if (e.target === dolaOverlay) {
-        dolaOverlay.style.display = 'none';
-        document.body.style.overflow = '';
+    // Buka tampilan obrolan
+    function bukaChat() {
+      tampilanNotif.style.display = 'none';
+      tampilanChat.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      if (kotakPesan.innerHTML === '') {
+        kotakPesan.innerHTML = `<div class="pesan-dola">🤖 Halo! Ada yang bisa saya bantu?</div>`;
       }
+    }
+
+    // Kembali ke notifikasi / tutup
+    tutupChat.addEventListener('click', tutupSemua);
+    btnPaham.addEventListener('click', tutupSemua);
+    btnMulaiChat.addEventListener('click', bukaChat);
+
+    // Tutup jika klik area luar
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) tutupSemua();
     });
 
-    // 7. Fungsi Kirim & Balas Pesan
-    function kirimPesanDola() {
-      const pesan = dolaInput.value.trim();
-      if (!pesan) return;
+    // Fungsi kirim & balas pesan
+    function prosesKirimPesan() {
+      const teks = inputPesan.value.trim();
+      if (!teks) return;
 
       // Tampilkan pesan pengguna
-      dolaChatBox.innerHTML += `<div class="pesan-pengguna">${pesan}</div>`;
-      dolaInput.value = '';
-      dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+      kotakPesan.innerHTML += `<div class="pesan-pengguna">${teks}</div>`;
+      inputPesan.value = '';
+      kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
       // Balasan otomatis
       setTimeout(() => {
         let balasan = "Maaf, saya belum mengerti pertanyaan Anda. Bisa jelaskan lebih rinci?";
-        if (pesan.toLowerCase().includes("iklan") || pesan.toLowerCase().includes("pasang")) {
+        if (teks.toLowerCase().includes("iklan") || teks.toLowerCase().includes("pasang")) {
           balasan = "Anda bisa pasang iklan gratis dengan klik tombol ➕ di halaman utama. Tidak perlu daftar, langsung tayang!";
-        } else if (pesan.toLowerCase().includes("edit") || pesan.toLowerCase().includes("hapus")) {
+        } else if (teks.toLowerCase().includes("edit") || teks.toLowerCase().includes("hapus")) {
           balasan = "Untuk mengedit atau menghapus iklan, buka detail iklan lalu pilih 'Kelola', dan masukkan ID serta Kode Rahasia yang Anda dapatkan saat pasang.";
-        } else if (pesan.toLowerCase().includes("wa") || pesan.toLowerCase().includes("whatsapp")) {
+        } else if (teks.toLowerCase().includes("wa") || teks.toLowerCase().includes("whatsapp")) {
           balasan = "Pastikan nomor WhatsApp diawali kode negara, contoh: 6281234567890.";
         }
 
-        dolaChatBox.innerHTML += `<div class="pesan-dola">🤖 ${balasan}</div>`;
-        dolaChatBox.scrollTop = dolaChatBox.scrollHeight;
+        kotakPesan.innerHTML += `<div class="pesan-dola">🤖 ${balasan}</div>`;
+        kotakPesan.scrollTop = kotakPesan.scrollHeight;
       }, 600);
     }
 
-    // 8. Jalankan pengiriman pesan
-    dolaSendBtn.addEventListener('click', kirimPesanDola);
-    dolaInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') kirimPesanDola();
+    // Jalankan pengiriman
+    kirimPesan.addEventListener('click', prosesKirimPesan);
+    inputPesan.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') prosesKirimPesan();
     });
 
-  });
-})();
-
-// script.js - Semua dalam satu file, tanpa HTML/CSS terpisah
-(function () {
-  // Tunggu sampai halaman selesai dimuat sepenuhnya
-  window.addEventListener('load', function () {
-    // Tambahkan gaya CSS
-    const style = document.createElement('style');
-    style.textContent = `
-      /* ======================================
-         FITUR TAMBAHAN
-      ====================================== */
-      .desktop-notifier {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.85);
-          backdrop-filter: blur(8px);
-          z-index: 99999; /* Naikkan agar tidak tertutup elemen lain */
-          display: flex; /* Langsung tampilkan sebagai default */
-          align-items: flex-start;
-          justify-content: center;
-          padding-top: 10vh;
-          margin: 0;
-          box-sizing: border-box;
-      }
-
-      .notifier-content {
-          background: #1c1c1e;
-          border: 1px solid #2c2c2e;
-          padding: 30px;
-          width: 90%;
-          max-width: 420px;
-          border-radius: 20px;
-          text-align: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-          animation: bounceDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-          box-sizing: border-box;
-      }
-
-      .notifier-content i {
-          color: #34c759;
-          margin-bottom: 15px;
-          font-size: 2.5rem;
-          display: inline-block;
-      }
-
-      .notifier-content h3 {
-          font-size: 1.4rem;
-          margin: 0 0 10px 0;
-          font-weight: 600;
-          color: #ffffff;
-          font-family: sans-serif;
-      }
-
-      .notifier-content p {
-          font-size: 0.9rem;
-          color: #aaa;
-          line-height: 1.5;
-          margin: 0 0 20px 0;
-          font-family: sans-serif;
-      }
-
-      .notifier-content button {
-          background: #fff;
-          color: #000;
-          border: none;
-          padding: 12px 30px;
-          font-size: 0.95rem;
-          font-weight: bold;
-          border-radius: 25px;
-          cursor: pointer;
-          transition: transform 0.2s;
-          width: 100%;
-          font-family: sans-serif;
-      }
-
-      .notifier-content button:active {
-          transform: scale(0.95);
-      }
-
-      @keyframes bounceDown {
-          0% { transform: translateY(-150%); opacity: 0; }
-          60% { transform: translateY(10%); opacity: 1; }
-          80% { transform: translateY(-5%); }
-          100% { transform: translateY(0); opacity: 1; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Buat elemen notifikasi
-    const notifierEl = document.createElement('div');
-    notifierEl.className = 'desktop-notifier';
-    notifierEl.innerHTML = `
-      <div class="notifier-content">
-        <i>📱</i>
-        <h3>Tampilan Lebih Asyik di HP!</h3>
-        <p>Situs ini didesain khusus untuk kenyamanan layar mobile. Rekomendasi terbaik gunakan smartphone kamu ya, bro!</p>
-        <button id="btnPaham">Siap, Paham!</button>
-      </div>
-    `;
-
-    // Masukkan ke dalam halaman
-    document.body.appendChild(notifierEl);
-
-    // Pastikan body tidak ada margin yang mengganggu
-    document.body.style.margin = document.body.style.margin || '0';
-
-    // Fungsi tutup notifikasi
-    document.getElementById('btnPaham').addEventListener('click', function () {
-      notifierEl.style.display = 'none';
-    });
   });
 })();
