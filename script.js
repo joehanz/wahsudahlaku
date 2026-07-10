@@ -9,7 +9,7 @@ const perPage = 10;
 
 // === PANAH GULIR DESKTOP ===
 const contentArea = document.getElementById('mainContent');
-if (window.innerWidth >= 768 && contentArea) {
+if (contentArea) {
     const scrollStep = 220;
     document.getElementById('scrollUp')?.addEventListener('click', () => {
         const currentTop = parseInt(contentArea.style.top) || 0;
@@ -40,7 +40,7 @@ function openDetail(id) {
     window.location.href = `iklan-saya.html?id=${id}`;
 }
 
-// === AMBIL DATA DARI API ===
+// === AMBIL DATA IKLAN ===
 async function loadAllAds() {
     const container = document.getElementById('adsContainer');
     if (!container) return;
@@ -128,12 +128,10 @@ document.querySelectorAll('.cat-item').forEach(item => {
 document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
     currentPage++;
     renderAds();
-    if (window.innerWidth < 768) {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 });
 
-// === JALANKAN SAAT HALAMAN BERANDA DIBUKA ===
+// === JALANKAN HALAMAN BERANDA ===
 if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
     window.addEventListener('load', loadAllAds);
 }
@@ -160,35 +158,24 @@ if (window.location.pathname.includes('iklan-saya.html')) {
             document.getElementById('detailViews').textContent = ad.views || 0;
             document.getElementById('detailDesc').textContent = ad.description;
             document.getElementById('btnWa').onclick = () => window.open(`https://wa.me/${ad.whatsapp}`, '_blank');
-            document.getElementById('btnManage').onclick = () => {
-                window.location.href = `pasang.html?mode=edit&id=${currentId}`;
-            };
+            document.getElementById('btnManage').onclick = () => window.location.href = `pasang.html?mode=edit&id=${currentId}`;
         } catch (err) {
             document.querySelector('.detail-content').innerHTML = `<p style='color:red; text-align:center; padding:2rem;'>${err.message}</p>`;
         }
     }
     window.addEventListener('load', loadDetail);
 
-    // Notifikasi di halaman detail
-    const notifStyle = document.createElement('style');
-    notifStyle.textContent = `
-        .notif-kelola {
-            background: #ecfccb; border-left: 5px solid #84cc16;
-            padding: 15px; margin: 15px 0; border-radius: 8px;
-            font-size: 15px; line-height: 1.6;
-        }
-    `;
-    document.head.appendChild(notifStyle);
-    const notifHTML = `
-        <div class="notif-kelola">
-            ✅ <b>Iklan Anda sudah tayang!</b><br>
-            Bisa diedit atau dihapus kapan saja dengan mudah, cukup masukkan <b>Kode Kelola</b> yang Anda dapatkan saat pertama kali memposting iklan.<br><br>
-            Semoga sukses dan laris manis dengan iklannya di <b>Rewang Iklan</b> 🤞<br>
-            Jangan lupa bagikan ke teman: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
-        </div>
+    // Notifikasi halaman detail
+    const notifKelola = document.createElement('div');
+    notifKelola.className = 'notif-kelola';
+    notifKelola.innerHTML = `
+        ✅ <b>Iklan Anda sudah tayang!</b><br>
+        Bisa diedit atau dihapus kapan saja dengan Kode Kelola yang didapat saat pasang iklan.<br><br>
+        Semoga laris manis di <b>Rewang Iklan</b> 🤞<br>
+        Bagikan: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
     `;
     const tempatDetail = document.querySelector('.detail-content');
-    if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
+    if (tempatDetail) tempatDetail.prepend(notifKelola);
 }
 
 // === HALAMAN PASANG / EDIT IKLAN ===
@@ -285,11 +272,9 @@ if (window.location.pathname.includes('pasang.html')) {
                 status.className = 'status-box status-success';
                 status.innerHTML = `
                     ✅ Iklan berhasil dipasang!<br><br>
-                    <b>ID Iklan:</b><br>
-                    <div class="secret-code">${result.id}</div><br>
-                    <b>Kode Kelola:</b><br>
-                    <div class="secret-code">${result.secret}</div><br>
-                    Simpan kode ini baik-baik untuk keperluan edit/hapus nanti.
+                    <b>ID Iklan:</b><br><div class="secret-code">${result.id}</div><br>
+                    <b>Kode Kelola:</b><br><div class="secret-code">${result.secret}</div><br>
+                    Simpan kode ini untuk edit/hapus nanti.
                 `;
                 document.getElementById('adForm').reset();
                 document.getElementById('previewImage').src = '';
@@ -317,8 +302,7 @@ if (window.location.pathname.includes('pasang.html')) {
             const res = await fetch(`${API_URL}?action=update`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    id: currentEditId,
-                    secret,
+                    id: currentEditId, secret,
                     title: document.getElementById('title').value.trim(),
                     category: document.getElementById('category').value,
                     location: document.getElementById('location').value.trim(),
@@ -342,7 +326,7 @@ if (window.location.pathname.includes('pasang.html')) {
 
     document.getElementById('btnHapus')?.addEventListener('click', async () => {
         const secret = document.getElementById('secretCode').value.trim();
-        if (!secret || !confirm('Yakin ingin menghapus iklan ini? Tindakan tidak bisa dibatalkan.')) return;
+        if (!secret || !confirm('Yakin hapus iklan? Tidak bisa dikembalikan.')) return;
         const status = document.getElementById('statusBox');
         status.innerHTML = 'Menghapus iklan...';
         status.className = 'status-box';
@@ -370,51 +354,19 @@ if (window.location.pathname.includes('pasang.html')) {
 
     window.addEventListener('load', initForm);
 
-    // === ASISTEN DOLA (MUNCUL DI SEMUA LAYAR) ===
+    // === ASISTEN DOLA - MUNCUL DI SEMUA LAYAR ===
     const dolaStyle = document.createElement('style');
     dolaStyle.textContent = `
-        .dola-chat-box {
-            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-            font-family: Arial, sans-serif;
-        }
-        .dola-btn-buka {
-            background: #2563eb; color: white; border: none;
-            width: 55px; height: 55px; border-radius: 50%;
-            font-size: 22px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .dola-konten {
-            display: none; position: absolute; bottom: 70px; right: 0;
-            width: 320px; height: 480px; background: #fff; border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.25); overflow: hidden;
-            border: 1px solid #e5e7eb;
-        }
-        .dola-header {
-            background: #2563eb; color: white; padding: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .dola-pesan {
-            height: 360px; overflow-y: auto; padding: 12px; background: #f9fafb;
-            font-size: 14px; line-height: 1.6;
-        }
-        .pesan-dola {
-            background: #e2e8f0; padding: 10px 14px; border-radius: 14px 14px 14px 4px;
-            margin: 8px 0; max-width: 90%; white-space: pre-wrap;
-        }
-        .pesan-user {
-            background: #dbeafe; padding: 10px 14px; border-radius: 14px 14px 4px 14px;
-            margin: 8px 0; max-width: 90%; margin-left: auto; text-align: right;
-        }
-        .dola-input {
-            display: flex; gap: 8px; padding: 10px; border-top: 1px solid #eee;
-        }
-        .dola-input input {
-            flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 20px;
-            font-size: 14px;
-        }
-        .dola-input button {
-            background: #2563eb; color: white; border: none;
-            padding: 10px 16px; border-radius: 20px; font-weight: 500;
-        }
+        .dola-chat-box {position:fixed; bottom:20px; right:20px; z-index:9999; font-family:Arial,sans-serif;}
+        .dola-btn-buka {background:#2563eb; color:white; border:none; width:55px; height:55px; border-radius:50%; font-size:22px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+        .dola-konten {display:none; position:absolute; bottom:70px; right:0; width:320px; height:480px; background:#fff; border-radius:16px; box-shadow:0 5px 20px rgba(0,0,0,0.25); overflow:hidden; border:1px solid #e5e7eb;}
+        .dola-header {background:#2563eb; color:white; padding:12px; display:flex; justify-content:space-between; align-items:center;}
+        .dola-pesan {height:360px; overflow-y:auto; padding:12px; background:#f9fafb; font-size:14px; line-height:1.6;}
+        .pesan-dola {background:#e2e8f0; padding:10px 14px; border-radius:14px 14px 14px 4px; margin:8px 0; max-width:90%; white-space:pre-wrap;}
+        .pesan-user {background:#dbeafe; padding:10px 14px; border-radius:14px 14px 4px 14px; margin:8px 0; max-width:90%; margin-left:auto; text-align:right;}
+        .dola-input {display:flex; gap:8px; padding:10px; border-top:1px solid #eee;}
+        .dola-input input {flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:20px; font-size:14px;}
+        .dola-input button {background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:20px; font-weight:500;}
     `;
     document.head.appendChild(dolaStyle);
 
@@ -428,13 +380,12 @@ if (window.location.pathname.includes('pasang.html')) {
                 </div>
                 <div class="dola-pesan" id="kotakPesanDola">
                     <div class="pesan-dola">
-                        Halo! Saya Dola 😊 Saya pakai AI Gemini asli, bisa buatkan teks iklan yang rapi, menarik, dan siap disalin.
-                        Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi.
-                        Contoh: "Buatkan iklan jual mobil Toyota Avanza 2018, kondisi mulus, harga Rp125 juta, WA 08123456789, Surabaya"
+                        Halo! Saya Dola 😊 Bisa buatkan teks iklan rapi dan menarik.
+                        Contoh: "Jual sepeda motor Honda Vario 2022, kondisi mulus, harga Rp18 juta, WA 08123456789, Surabaya"
                     </div>
                 </div>
                 <div class="dola-input">
-                    <input type="text" id="teksPesanDola" placeholder="Tulis permintaan iklanmu...">
+                    <input type="text" id="teksPesanDola" placeholder="Tulis permintaan...">
                     <button id="kirimDola">Kirim</button>
                 </div>
             </div>
@@ -443,57 +394,44 @@ if (window.location.pathname.includes('pasang.html')) {
     document.body.insertAdjacentHTML('beforeend', dolaHTML);
 
     const aturanDola = `
-Kamu adalah Dola, asisten pembuat iklan untuk situs Rewang Iklan.
-Tugasmu: Buatkan teks iklan yang menarik, meyakinkan, rapi, dan siap digunakan.
-Ikuti format ini selalu:
+Kamu adalah Dola, asisten pembuat iklan Rewang Iklan.
+Jawab sesuai format ini:
 
-📌 JUDUL IKLAN
-[Judul yang jelas dan menarik]
-
-📝 ISI & KETERANGAN
-[Penjelasan lengkap, sebutkan kelebihan/kondisi barang/jasa, gunakan bahasa yang enak dibaca]
-
-💰 KISARAN HARGA
-[Harga atau tulis "Hubungi penjual" jika belum ada]
-
+📌 JUDUL
+📝 ISI
+💰 HARGA
 📞 KONTAK & LOKASI
-[Nomor WA / Telepon]
-[Kota / Daerah]
 
-🔗 Situs: https://rewangiklan.my.id
-
-✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!
-
-Jangan tambahkan informasi lain di luar format ini.
+Jika ditanya "Nama kamu siapa?", jawab:
+"Nama saya Dola 😊 Saya asisten pembuat iklan untuk situs Rewang Iklan. Saya siap bantu buatkan teks iklan yang rapi dan siap pakai."
 `;
 
     const btnBuka = document.getElementById('bukaDola');
     const btnTutup = document.getElementById('tutupDola');
     const kotakPesan = document.getElementById('kotakPesanDola');
     const inputPesan = document.getElementById('teksPesanDola');
-    const btnKirim = document.getElementById('kirimDola');
 
     btnBuka.addEventListener('click', () => kontenDola.style.display = 'block');
     btnTutup.addEventListener('click', () => kontenDola.style.display = 'none');
 
-    async function tanyaGemini(pertanyaan) {
+    async function tanyaGemini(teks) {
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPermintaan pengguna: ${pertanyaan}` }] }],
-                    generationConfig: { temperature: 0.7, maxOutputTokens: 1500 }
+                    contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPertanyaan: ${teks}` }] }],
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
                 })
             });
             const data = await res.json();
             if (data.error) throw new Error(data.error.message);
-            return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan. Coba lagi ya.";
+            return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan.";
         } catch (err) {
             console.error(err);
-            if (err.message.includes("API key")) return "❌ Kunci API tidak valid atau belum diaktifkan. Cek kembali ya.";
-            if (err.message.includes("quota")) return "⏳ Batas pemakaian hari ini habis. Coba lagi besok.";
-            return "🚫 Sedang ada gangguan jaringan. Coba lagi sebentar.";
+            if (err.message.includes("API key")) return "❌ Kunci API belum aktif atau salah.";
+            if (err.message.includes("quota")) return "⏳ Batas pemakaian habis, coba besok.";
+            return "🚫 Gangguan jaringan, coba lagi sebentar.";
         }
     }
 
@@ -503,14 +441,14 @@ Jangan tambahkan informasi lain di luar format ini.
         kotakPesan.innerHTML += `<div class="pesan-user">${teks}</div>`;
         inputPesan.value = '';
         kotakPesan.scrollTop = kotakPesan.scrollHeight;
-        kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun oleh AI...</div>`;
+        kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang diproses...</div>`;
         kotakPesan.scrollTop = kotakPesan.scrollHeight;
         const hasil = await tanyaGemini(teks);
         kotakPesan.lastChild.innerHTML = hasil;
         kotakPesan.scrollTop = kotakPesan.scrollHeight;
     }
 
-    btnKirim.addEventListener('click', prosesDola);
+    document.getElementById('kirimDola').addEventListener('click', prosesDola);
     inputPesan.addEventListener('keydown', e => e.key === 'Enter' && prosesDola());
 }
 
@@ -535,35 +473,21 @@ window.addEventListener('appinstalled', () => {
 // === NOTIFIKASI DESKTOP ===
 window.addEventListener('load', () => {
     if (window.innerWidth >= 768) {
-        const style = document.createElement('style');
-        style.textContent = `
-            .notif-overlay {
-                position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
-                z-index: 99999; display: flex; align-items: center; justify-content: center;
-            }
-            .notif-box {
-                background: #ffffff; border-radius: 16px; width: 90%; max-width: 400px;
-                padding: 32px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            }
-            .notif-box h3 {
-                font-size: 1.3rem; margin-bottom: 12px; color: #222;
-            }
-            .notif-box p {
-                font-size: 1rem; color: #555; margin-bottom: 24px; line-height: 1.5;
-            }
-            .btn-paham {
-                background: #2563eb; color: white; border: none; padding: 10px 24px;
-                border-radius: 20px; font-size: 1rem; font-weight: 500; cursor: pointer;
-            }
-            .btn-paham:hover { background: #1d4ed8; }
+        const notifStyle = document.createElement('style');
+        notifStyle.textContent = `
+            .notif-overlay {position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:99999; display:flex; align-items:center; justify-content:center;}
+            .notif-box {background:#fff; border-radius:16px; width:90%; max-width:400px; padding:32px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+            .notif-box h3 {font-size:1.3rem; margin-bottom:12px; color:#222;}
+            .notif-box p {font-size:1rem; color:#555; margin-bottom:24px; line-height:1.5;}
+            .btn-paham {background:#2563eb; color:white; border:none; padding:10px 24px; border-radius:20px; font-size:1rem; cursor:pointer;}
+            .btn-paham:hover {background:#1d4ed8;}
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(notifStyle);
         const notif = document.createElement('div');
         notif.className = 'notif-overlay';
         notif.innerHTML = `
             <div class="notif-box">
-                <h3>Tampilan Lebih Nyaman di HP</h3>
+                <h3>Lebih Nyaman di HP</h3>
                 <p>Situs ini dioptimalkan untuk layar ponsel agar lebih mudah digunakan.</p>
                 <button class="btn-paham">Siap, Mengerti</button>
             </div>
