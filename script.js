@@ -429,6 +429,7 @@ window.addEventListener('load', function () {
 });
 
 // === ASISTEN DOLA - TANPA KUNCI API, TETAP JADI OTOMATIS ===
+// === ASISTEN DOLA - PAKAI GEMINI ASLI ===
 window.addEventListener('load', function () {
     if (window.innerWidth < 768) {
 
@@ -492,9 +493,9 @@ window.addEventListener('load', function () {
                         </div>
                         <div class="dola-pesan" id="kotakPesanDola">
                             <div class="pesan-dola">
-                                Halo! Saya Dola 😊 Saya akan buatkan teks iklan yang sudah matang, rapi, dan siap disalin.
+                                Halo! Saya Dola 😊 Saya pakai AI Gemini asli, bisa buatkan teks iklan yang rapi, menarik, dan siap disalin.
                                 Cukup tulis: jenis barang/jasa, kelebihan, harga, kontak, lokasi.
-                                Contoh: "Buatkan iklan jual telor asin masir premium, rasa gurih, awet, harga mulai Rp8.000, WA 08123456789, lokasi Surabaya"
+                                Contoh: "Buatkan iklan jual mobil Toyota Avanza 2018, kondisi mulus, harga Rp125 juta, WA 08123456789, Surabaya"
                             </div>
                         </div>
                         <div class="dola-input">
@@ -505,6 +506,31 @@ window.addEventListener('load', function () {
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', dolaHTML);
+
+            const aturanDola = `
+Kamu adalah Dola, asisten pembuat iklan untuk situs Rewang Iklan.
+Tugasmu: Buatkan teks iklan yang menarik, meyakinkan, rapi, dan siap digunakan.
+Ikuti format ini selalu:
+
+📌 JUDUL IKLAN
+[Judul yang jelas dan menarik]
+
+📝 ISI & KETERANGAN
+[Penjelasan lengkap, sebutkan kelebihan/kondisi barang/jasa, gunakan bahasa yang enak dibaca]
+
+💰 KISARAN HARGA
+[Harga atau tulis "Hubungi penjual" jika belum ada]
+
+📞 KONTAK & LOKASI
+[Nomor WA / Telepon]
+[Kota / Daerah]
+
+🔗 Situs: https://rewangiklan.my.id
+
+✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!
+
+Jangan tambahkan informasi lain di luar format ini.
+`;
 
             const btnBuka = document.getElementById('bukaDola');
             const btnTutup = document.getElementById('tutupDola');
@@ -519,39 +545,28 @@ window.addEventListener('load', function () {
                 document.getElementById('kontenDola').style.display = 'none';
             });
 
-            // ✅ Fungsi baru: buatkan iklan otomatis tanpa kunci API
-            function buatIklanOtomatis(teks) {
-                const kata = teks.toLowerCase();
-                let judul = '', isi = '', harga = '', kontak = '', lokasi = '';
-
-                // Deteksi informasi dari tulisan pengguna
-                if (kata.includes('jual')) judul = 'Jual ' + teks.replace(/buatkan iklan|jual/i, '').trim();
-                else if (kata.includes('jasa')) judul = 'Jasa ' + teks.replace(/buatkan iklan|jasa/i, '').trim();
-                else judul = teks;
-
-                if (kata.includes('harga')) harga = teks.match(/harga.*?([0-9.,]+.*?)/i)?.[0] || 'Hubungi penjual';
-                if (kata.includes('wa') || kata.includes('hp') || kata.includes('telp')) kontak = teks.match(/(wa|hp|telp).*?([0-9 -]+)/i)?.[0] || 'Hubungi penjual';
-                if (kata.includes('lokasi') || kata.includes('alamat')) lokasi = teks.match(/(lokasi|alamat).*$/i)?.[0] || 'Hubungi penjual';
-
-                isi = `Kami menawarkan produk/jasa terbaik dengan kualitas terjamin. Cocok untuk kebutuhan Anda. Proses cepat dan aman.`;
-
-                // Susun format akhir
-                return `📌 JUDUL IKLAN
-${judul.toUpperCase()}
-
-📝 ISI & KETERANGAN
-${isi}
-
-💰 KISARAN HARGA
-${harga}
-
-📞 KONTAK & LOKASI
-${kontak}
-${lokasi}
-
-🔗 Situs: https://rewangiklan.my.id
-
-✅ Silakan salin seluruh teks ini dan tempel ke kolom formulir iklan ya!`;
+            async function tanyaGemini(pertanyaan) {
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ role: "user", parts: [{ text: `${aturanDola}\n\nPermintaan pengguna: ${pertanyaan}` }] }],
+                            generationConfig: { temperature: 0.7, maxOutputTokens: 1500 }
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.error) throw new Error(data.error.message);
+                    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Mohon maaf, sedang ada gangguan. Coba lagi ya.";
+                } catch (err) {
+                    console.error(err);
+                    if (err.message.includes("API key")) {
+                        return "❌ Kunci API tidak valid atau belum diaktifkan. Cek kembali ya.";
+                    } else if (err.message.includes("quota")) {
+                        return "⏳ Batas pemakaian hari ini habis. Coba lagi besok.";
+                    }
+                    return "🚫 Sedang ada gangguan jaringan. Coba lagi sebentar.";
+                }
             }
 
             async function prosesDola() {
@@ -562,11 +577,10 @@ ${lokasi}
                 inputPesan.value = '';
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun iklannya...</div>`;
+                kotakPesan.innerHTML += `<div class="pesan-dola">⏳ Sedang disusun oleh AI...</div>`;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
 
-                // Panggil fungsi buatan sendiri
-                const hasil = buatIklanOtomatis(teks);
+                const hasil = await tanyaGemini(teks);
                 kotakPesan.lastChild.innerHTML = hasil;
                 kotakPesan.scrollTop = kotakPesan.scrollHeight;
             }
