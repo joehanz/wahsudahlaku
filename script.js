@@ -397,9 +397,7 @@ window.addEventListener('appinstalled', () => {
 // NOTIFIKASI KHUSUS HANYA UNTUK DESKTOP
 // ==================================================
 window.addEventListener('load', function () {
-    // Cek lebar layar ≥ 768px = tampilan desktop saja
     if (window.innerWidth >= 768) {
-        // Buat gaya notif
         const style = document.createElement('style');
         style.textContent = `
             .notif-overlay {
@@ -425,7 +423,6 @@ window.addEventListener('load', function () {
         `;
         document.head.appendChild(style);
 
-        // Tampilkan notif
         const notif = document.createElement('div');
         notif.className = 'notif-overlay';
         notif.innerHTML = `
@@ -436,9 +433,187 @@ window.addEventListener('load', function () {
             </div>
         `;
         document.body.appendChild(notif);
-
-        // Tombol tutup
         notif.querySelector('.btn-paham').addEventListener('click', () => notif.remove());
         notif.addEventListener('click', (e) => e.target === notif && notif.remove());
+    }
+});
+
+// ==================================================
+// FITUR ASISTEN DOLA & NOTIF KHUSUS MOBILE
+// ==================================================
+window.addEventListener('load', function () {
+    // Hanya berjalan di tampilan HP
+    if (window.innerWidth < 768) {
+
+        // --- HALAMAN PASANG.HTML ---
+        if (window.location.pathname.includes('pasang.html')) {
+            const dolaStyle = document.createElement('style');
+            dolaStyle.textContent = `
+                .dola-chat-box {
+                    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+                    font-family: Arial, sans-serif;
+                }
+                .dola-btn-buka {
+                    background: #2563eb; color: white; border: none;
+                    width: 55px; height: 55px; border-radius: 50%;
+                    font-size: 24px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                }
+                .dola-konten {
+                    display: none; position: absolute; bottom: 70px; right: 0;
+                    width: 320px; height: 450px; background: #fff; border-radius: 16px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.25); overflow: hidden;
+                    border: 1px solid #e5e7eb;
+                }
+                .dola-header {
+                    background: #2563eb; color: white; padding: 12px;
+                    display: flex; justify-content: space-between; align-items: center;
+                }
+                .dola-pesan {
+                    height: 330px; overflow-y: auto; padding: 10px; background: #f9fafb;
+                }
+                .pesan-dola {
+                    background: #e2e8f0; padding: 8px 12px; border-radius: 12px 12px 12px 4px;
+                    margin: 6px 0; max-width: 85%; font-size: 14px;
+                }
+                .pesan-user {
+                    background: #dbeafe; padding: 8px 12px; border-radius: 12px 12px 4px 12px;
+                    margin: 6px 0; max-width: 85%; margin-left: auto; font-size: 14px;
+                    text-align: right;
+                }
+                .dola-input {
+                    display: flex; gap: 6px; padding: 8px; border-top: 1px solid #eee;
+                }
+                .dola-input input {
+                    flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px;
+                    font-size: 14px;
+                }
+                .dola-input button {
+                    background: #2563eb; color: white; border: none;
+                    padding: 8px 14px; border-radius: 20px;
+                }
+            `;
+            document.head.appendChild(dolaStyle);
+
+            const dolaHTML = `
+                <div class="dola-chat-box">
+                    <button class="dola-btn-buka" id="bukaDola">💬</button>
+                    <div class="dola-konten" id="kontenDola">
+                        <div class="dola-header">
+                            <span>🤝 Dola - Bantu Buat Iklan</span>
+                            <button style="background:none; color:white; border:none; font-size:18px;" id="tutupDola">&times;</button>
+                        </div>
+                        <div class="dola-pesan" id="kotakPesanDola">
+                            <div class="pesan-dola">
+                                Halo! Saya Dola 😊 Bingung bikin tulisan iklan? Saya bisa buatkan konten iklan yang menarik, ramah pencarian (SEO), hingga maksimal 1500 karakter. Siap membantu!
+                            </div>
+                            <div class="pesan-dola">
+                                Cukup tulis: Jenis barang/jasa, kelebihannya, kisaran harga, dan lokasi. Nanti saya buatkan judul, isi, dan cantumkan link situs ini ya.
+                            </div>
+                        </div>
+                        <div class="dola-input">
+                            <input type="text" id="teksPesanDola" placeholder="Tulis kebutuhan iklanmu...">
+                            <button id="kirimDola">Kirim</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', dolaHTML);
+
+            const aturanDola = `
+Anda adalah Dola, asisten pembuat konten iklan di situs Rewang Iklan (rewangiklan.my.id).
+
+✅ Aturan jawab:
+1. Buatkan konten maksimal 1500 karakter, rapi, menarik, dan ramah SEO.
+2. Struktur harus ada: Judul Iklan, Isi Iklan, Kisaran Harga, dan cantumkan link situs: https://rewangiklan.my.id
+3. Jika tanya cara upload gambar, nomor HP, atau lokasi: Jawab "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya."
+4. Jika tanya hal lain di luar pembuatan konten iklan: Jawab "Maaf, saya hanya bisa membantu membuatkan teks konten iklan saja 😊"
+5. Jika jawaban sudah jadi, tambahkan: "Silakan salin dan tempel ke kolom formulir ya!"
+6. Nada bicara ramah, santai, dan membantu.
+            `;
+
+            const btnBuka = document.getElementById('bukaDola');
+            const btnTutup = document.getElementById('tutupDola');
+            const kotakPesan = document.getElementById('kotakPesanDola');
+            const inputPesan = document.getElementById('teksPesanDola');
+            const btnKirim = document.getElementById('kirimDola');
+
+            btnBuka.addEventListener('click', () => {
+                document.getElementById('kontenDola').style.display = 'block';
+            });
+            btnTutup.addEventListener('click', () => {
+                document.getElementById('kontenDola').style.display = 'none';
+            });
+
+            async function prosesDola() {
+                const teks = inputPesan.value.trim();
+                if (!teks) return;
+                kotakPesan.innerHTML += `<div class="pesan-user">${teks}</div>`;
+                inputPesan.value = '';
+                kotakPesan.scrollTop = kotakPesan.scrollHeight;
+
+                kotakPesan.innerHTML += `<div class="pesan-dola">Sebentar ya, sedang disusun...</div>`;
+                kotakPesan.scrollTop = kotakPesan.scrollHeight;
+
+                let balasan = "";
+                const teksLower = teks.toLowerCase();
+
+                if (teksLower.includes("gambar") || teksLower.includes("foto") || teksLower.includes("upload")) {
+                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
+                } else if (teksLower.includes("nomor") || teksLower.includes("hp") || teksLower.includes("wa") || teksLower.includes("telepon")) {
+                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
+                } else if (teksLower.includes("lokasi") || teksLower.includes("alamat")) {
+                    balasan = "Bagian foto, nomor WhatsApp, dan lokasi bisa kamu isi sendiri langsung di kolom formulir yang tersedia ya.";
+                } else if (teksLower.includes("harga") || teksLower.includes("bikin iklan") || teksLower.includes("jual") || teksLower.includes("jasa")) {
+                    balasan = `✅ Berikut konten iklan yang sudah saya buatkan untukmu:
+
+📌 JUDUL IKLAN
+[Judul menarik sesuai barang/jasa]
+
+📝 ISI IKLAN
+[Penjelasan lengkap, kelebihan, spesifikasi, dan manfaatnya]
+
+💰 KISARAN HARGA
+Rp. ... - Rp. ... / Sesuai kesepakatan
+
+🔗 Info lebih lanjut dan pasang iklan gratis di:
+https://rewangiklan.my.id
+
+---
+Silakan salin dan tempel ke kolom formulir ya!`;
+                } else {
+                    balasan = "Maaf, saya hanya bisa membantu membuatkan teks konten iklan saja 😊";
+                }
+
+                kotakPesan.lastChild.innerHTML = balasan;
+                kotakPesan.scrollTop = kotakPesan.scrollHeight;
+            }
+
+            btnKirim.addEventListener('click', prosesDola);
+            inputPesan.addEventListener('keydown', e => e.key === 'Enter' && prosesDola());
+        }
+
+        // --- HALAMAN IKLAN-SAYA.HTML ---
+        if (window.location.pathname.includes('iklan-saya.html')) {
+            const notifStyle = document.createElement('style');
+            notifStyle.textContent = `
+                .notif-kelola {
+                    background: #ecfccb; border-left: 5px solid #84cc16;
+                    padding: 15px; margin: 15px 0; border-radius: 8px;
+                    font-size: 15px; line-height: 1.6;
+                }
+            `;
+            document.head.appendChild(notifStyle);
+
+            const notifHTML = `
+                <div class="notif-kelola">
+                    ✅ <b>Iklan Anda sudah tayang!</b><br>
+                    Bisa diedit atau dihapus kapan saja dengan mudah, cukup masukkan <b>Kode Kelola</b> yang Anda dapatkan saat pertama kali memposting iklan.<br><br>
+                    Semoga sukses dan laris manis dengan iklannya di <b>Rewang Iklan</b> 🤞<br>
+                    Jangan lupa bagikan ke teman: <a href="https://rewangiklan.my.id" target="_blank">rewangiklan.my.id</a>
+                </div>
+            `;
+            const tempatDetail = document.querySelector('.detail-content');
+            if (tempatDetail) tempatDetail.insertAdjacentHTML('afterbegin', notifHTML);
+        }
     }
 });
