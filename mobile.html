@@ -1,11 +1,75 @@
 <!DOCTYPE html>
 <html lang="id-ID">
 <head>
+    <script>
+    // Alihkan ke Desktop jika dibuka di layar besar
+    (function() {
+        const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                        && window.innerWidth >= 768;
+        if (isDesktop && !window.location.pathname.includes('/index.html')) {
+            window.location.href = 'https://rewangiklan.my.id/index.html';
+        }
+    })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rewang Iklan - Tampilan Mobile</title>
+    <meta name="description" content="Rewang Iklan - Tampilan khusus HP. Pasang dan cari iklan baris gratis lebih mudah di ponsel.">
+    <meta name="robots" content="index,follow">
+    <meta name="author" content="Rewang Iklan">
     <meta name="theme-color" content="#0F172A">
+    <link rel="canonical" href="https://rewangiklan.my.id/mobile.html">
+    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
+    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Rewang Iklan">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
+    <meta property="og:description" content="Pasang iklan dan cari barang, properti, jasa lewat HP lebih cepat dan nyaman.">
+    <meta property="og:url" content="https://rewangiklan.my.id/mobile.html">
+    <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Rewang Iklan - Tampilan Mobile">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
+    <meta name="twitter:description" content="Pasang dan cari iklan baris gratis lewat HP.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+
+    <!-- Ikon -->
     <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Meta Aplikasi -->
+    <meta name="application-name" content="Rewang Iklan">
+    <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+     "@context":"https://schema.org",
+     "@type":"WebSite",
+     "name":"Rewang Iklan",
+     "url":"https://rewangiklan.my.id/mobile.html",
+     "description":"Tampilan khusus ponsel untuk pasang dan cari iklan baris gratis.",
+     "inLanguage":"id-ID"
+    }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
     <style>
         * {
@@ -375,6 +439,19 @@
             z-index: 8;
         }
         .play-mode .play-hint { opacity: 1; }
+
+        .ad-image, .detail-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    /* Pengaturan agar gambar tetap tajam di layar HP */
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
+    -ms-interpolation-mode: bicubic;
+}
     </style>
 </head>
 <body>
