@@ -675,13 +675,24 @@ function tambahIklan(dari, sampai) {
         const iklan = displayAds[i];
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
-        kartu.innerHTML = '<h3 class="ad-title-top" style="text-align:center; font-weight:normal;">${iklan.title || 'Tanpa Judul'}</h3>' +
-            '<img src="' + (iklan.image || 'https://picsum.photos/id/1040/800/1400') + '" alt="' + (iklan.title || 'Iklan') + '" class="ad-image" loading="lazy">' +
-            '<div class="side-actions">' +
-                '<div class="side-btn" onclick="bukaFormIklan()"><i data-lucide="plus-circle"></i><span>Pasang Iklan</span></div>' +
-                '<div class="side-btn" onclick="bagikanIklan(\'' + (iklan.id || '') + '\')"><i data-lucide="share-2"></i><span>Bagikan</span></div>' +
-                '<div class="side-btn" onclick="bukaDetailIklanSaya()"><i data-lucide="image"></i><span>Iklan Saya</span></div>' +
-            '</div>';
+        kartu.innerHTML = `
+            <h3 class="ad-title-top" style="text-align:center; font-weight:normal;">${iklan.title || 'Tanpa Judul'}</h3>
+            <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title || 'Iklan'}" class="ad-image" loading="lazy">
+            <div class="side-actions">
+                <div class="side-btn" onclick="bukaFormIklan()">
+                    <i data-lucide="plus-circle"></i>
+                    <span>Pasang Iklan</span>
+                </div>
+                <div class="side-btn" onclick="bagikanIklan('${iklan.id || ''}')">
+                    <i data-lucide="share-2"></i>
+                    <span>Bagikan</span>
+                </div>
+                <div class="side-btn" onclick="bukaDetailIklanSaya()">
+                    <i data-lucide="image"></i>
+                    <span>Iklan Saya</span>
+                </div>
+            </div>
+        `;
         feedContainer.appendChild(kartu);
     }
     currentDisplayCount = batas;
