@@ -101,27 +101,21 @@
         .feed-container { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* === KARTU IKLAN (FOTO BERSIH, JUDUL DI ATAS) === */
-              
-        .ad-image {
+.ad-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
+    object-position: center;
     transition: transform 0.3s ease;
 
-    /* Pengaturan agar gambar TAJAM & TIDAK PECAH */
+    /* Yang ini saja, paling pas buat foto */
     image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+    image-rendering: smooth;
     image-rendering: high-quality;
-    image-rendering: pixelated; /* Tambahan: hindari buram saat diperbesar */
-    -ms-interpolation-mode: nearest-neighbor; /* Agar tajam di IE/Edge lama */
+    -ms-interpolation-mode: bicubic;
 
-    /* Cegah anti-aliasing yang bikin buram */
-    shape-rendering: crispEdges;
-    text-rendering: geometricPrecision;
-
-    /* Opsional: pastikan gambar tidak terdistorsi */
-    transform: translateZ(0); /* Percepatan GPU agar lebih tajam */
+    /* Bantu tajamkan tanpa kotak */
+    transform: translateZ(0);
     backface-visibility: hidden;
 }
 
