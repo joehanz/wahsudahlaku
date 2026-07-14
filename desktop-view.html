@@ -642,28 +642,25 @@
             el.scrollBy({ left: amount, behavior: 'smooth' });
         }
 
-        // Buka/tutup modal
+        // === TUTUP MODAL HANYA DENGAN TOMBOL X ===
         function openModal() {
-            document.getElementById('modal-all').classList.add('active');
+            const modal = document.getElementById('modal-all');
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
             currentDisplayCount = 0;
             renderModalGrid();
-            setupScrollArrow(); // Siapkan panah saat modal terbuka
         }
         function closeModal() {
             document.getElementById('modal-all').classList.remove('active');
             document.body.style.overflow = 'auto';
-            // Hapus panah saat modal ditutup
-            const arrow = document.getElementById('scroll-top-arrow');
-            if (arrow) arrow.remove();
         }
+        // FUNGSI DILARANG TUTUP OTOMATIS: klik luar, klik lain TIDAK AKAN MENUTUP
         function closeModalOutside(e) {
-            // HANYA tutup jika klik di luar modal & bukan tombol lain
-            if (!document.querySelector('.modal-content')?.contains(e.target)) {
-                // Pastikan bukan klik tombol panah atau muat lebih
-                if (!e.target.closest('#scroll-top-arrow') && !e.target.closest('#load-more-button')) {
-                    closeModal();
-                }
+            // HANYA tutup jika yang diklik BENAR-BENAR tombol X
+            if (!e.target.closest('.modal-close')) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
         }
 
@@ -733,7 +730,8 @@
             }
             currentDisplayCount = ITEM_PER_PAGE;
             appendAdsToGrid(0, currentDisplayCount);
-            addLoadMoreButton();
+            addLoadMoreAndArrow();
+            setupScrollArrow(); // Siapkan panah saat modal terbuka
         }
 
         // Tambah iklan ke bawah + sisipkan Adsense tiap 5
@@ -747,44 +745,43 @@
             }
         }
 
-        // Tombol muat lebih banyak + panah sejajar di kanan
-        function addLoadMoreButton() {
+        // === TOMBOL MUAT + PANAH PASTI MUNCUL ===
+        function addLoadMoreAndArrow() {
             const grid = document.getElementById('modal-grid');
-            const oldBtn = document.getElementById('load-more-button');
-            const oldArrow = document.getElementById('scroll-top-arrow');
-            if (oldBtn) oldBtn.remove();
-            if (oldArrow) oldArrow.remove();
+            // Hapus elemen lama
+            const oldWrap = document.getElementById('btn-arrow-wrapper');
+            if (oldWrap) oldWrap.remove();
 
-            // Baris wadah tombol + panah
-            const btnRow = document.createElement('div');
-            btnRow.className = 'col-span-full flex items-center justify-center gap-4 mt-8 mb-4 relative';
+            // Wadah tetap di bawah grid
+            const wrapper = document.createElement('div');
+            wrapper.id = 'btn-arrow-wrapper';
+            wrapper.className = 'col-span-full flex items-center justify-center gap-6 mt-10 mb-6';
 
             // Tombol Muat Lebih
             if (currentDisplayCount < allAds.length) {
                 const loadBtn = document.createElement('button');
-                loadBtn.id = 'load-more-button';
-                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2';
+                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md';
                 loadBtn.innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> Muat Lebih Banyak Iklan`;
                 loadBtn.onclick = tambahIklanLagi;
-                btnRow.appendChild(loadBtn);
+                wrapper.appendChild(loadBtn);
             }
 
-            // Panah ke Atas (sejajar di sebelah kanan)
+            // PANAH KE ATAS: posisi kanan sejajar, SELALU ADA (cuma pudar saat di atas)
             const upArrow = document.createElement('button');
             upArrow.id = 'scroll-top-arrow';
-            upArrow.className = 'p-3 rounded-full bg-white border border-gray-200 shadow-md hover:bg-blue-50 hover:border-blue-500 transition-all opacity-0 invisible absolute left-full ml-4';
+            upArrow.className = 'p-3 rounded-full bg-white border-2 border-blue-500 shadow-lg hover:bg-blue-50 hover:scale-110 transition-all z-10';
             upArrow.innerHTML = `<i data-lucide="arrow-up" class="w-5 h-5 text-blue-600"></i>`;
             upArrow.onclick = () => {
                 const modalContent = document.querySelector('.modal-content');
                 modalContent.scrollTo({ top: 0, behavior: 'smooth' });
             };
-            btnRow.appendChild(upArrow);
-            lucide.createIcons({context: btnRow});
+            wrapper.appendChild(upArrow);
+            lucide.createIcons({context: wrapper});
 
-            grid.appendChild(btnRow);
+            grid.appendChild(wrapper);
         }
 
-        // Tampilkan/sembunyikan panah saat scroll modal
+        // Atur tampilan panah saat di-scroll
         function setupScrollArrow() {
             const modalContent = document.querySelector('.modal-content');
             if (!modalContent) return;
@@ -795,15 +792,17 @@
 
                 clearTimeout(scrollTimeout);
                 
-                // Tampilkan panah jika sudah ke bawah, sembunyi jika perlahan ke atas
-                if (modalContent.scrollTop > 300) {
-                    arrow.classList.remove('opacity-0', 'invisible');
-                    arrow.classList.add('opacity-100', 'visible');
-                } else {
+                // Saat di bawah → panah jelas terlihat
+                if (modalContent.scrollTop > 200) {
+                    arrow.style.opacity = '1';
+                    arrow.style.pointerEvents = 'auto';
+                } 
+                // Saat perlahan ke atas → pudar pelan, TIDAK hilang total
+                else {
                     scrollTimeout = setTimeout(() => {
-                        arrow.classList.add('opacity-0', 'invisible');
-                        arrow.classList.remove('opacity-100', 'visible');
-                    }, 400);
+                        arrow.style.opacity = '0.4';
+                        arrow.style.pointerEvents = 'auto'; // Tetap bisa diklik!
+                    }, 300);
                 }
             };
         }
@@ -813,8 +812,7 @@
             const posisiAwal = currentDisplayCount;
             currentDisplayCount += ITEM_PER_PAGE;
             appendAdsToGrid(posisiAwal, currentDisplayCount);
-            addLoadMoreButton();
-            setupScrollArrow(); // Perbarui pengaturan panah
+            addLoadMoreAndArrow(); // Perbarui posisi tombol & panah
         }
 
         // Rotasi banner
