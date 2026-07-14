@@ -618,12 +618,19 @@
         // API Endpoint
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let allAds = [];
+        let currentBannerIndex = 0;
+        const ITEM_PER_PAGE = 26; // Tampil 26 per halaman
+        let currentDisplayCount = 0;
 
         // Ambil data iklan dari API
         async function fetchAds() {
             try {
                 const response = await fetch(API_URL);
                 allAds = await response.json();
+                
+                // ✅ BALIK URUTAN: Iklan TERBARU di ATAS
+                allAds = allAds.reverse();
+
                 renderAllSections();
                 startBannerRotation();
             } catch (error) {
@@ -645,6 +652,7 @@
         function openModal() {
             const modal = document.getElementById('modal-all');
             modal.classList.add('active');
+            currentDisplayCount = 0; // Reset hitungan saat buka modal baru
             renderModalGrid();
             document.body.style.overflow = 'hidden';
         }
@@ -660,8 +668,26 @@
             }
         }
 
+        // ✅ Buat Kotak Iklan Google Adsense
+        function createAdsenseBox() {
+            const adBox = document.createElement('div');
+            adBox.className = 'card flex items-center justify-center bg-gray-50 p-3 rounded-xl';
+            adBox.innerHTML = `
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
+                     crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:250px;height:250px"
+                     data-ad-client="ca-pub-6458870303612779"
+                     data-ad-slot="9441731668"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            `;
+            return adBox;
+        }
+
         // Tampilkan kartu iklan
-                function createAdCard(ad) {
+        function createAdCard(ad) {
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => window.open(`https://rewangiklan.my.id/iklan-saya.html?id=${ad.id}`, '_blank');
@@ -739,22 +765,75 @@
             }
         }
 
-        // Render isi modal semua iklan
+        // ✅ Render isi modal dengan PAGINASI & IKLAN ADSENSE
         function renderModalGrid() {
             const modalGrid = document.getElementById('modal-grid');
             modalGrid.innerHTML = '';
-            if (allAds.length > 0) {
-                allAds.forEach(ad => {
-                    modalGrid.appendChild(createAdCard(ad));
-                });
-            } else {
+
+            if (allAds.length === 0) {
                 modalGrid.innerHTML = `
                     <div class="col-span-full text-center py-16">
                         <i data-lucide="inbox" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
                         <p class="text-gray-500 text-base">Belum ada iklan yang tersedia saat ini.</p>
                     </div>
                 `;
+                return;
             }
+
+            // Tampilkan 26 iklan pertama
+            currentDisplayCount = ITEM_PER_PAGE;
+            appendAdsToGrid(0, currentDisplayCount);
+
+            // Tambah tombol Muat Lebih
+            addLoadMoreButton();
+        }
+
+        // ✅ Fungsi Tambah Iklan ke Grid + Sisipkan Adsense
+        function appendAdsToGrid(startIndex, endIndex) {
+            const modalGrid = document.getElementById('modal-grid');
+            let adCounter = 0; // Hitung untuk menyisipkan iklan
+
+            for (let i = startIndex; i < endIndex && i < allAds.length; i++) {
+                modalGrid.appendChild(createAdCard(allAds[i]));
+                adCounter++;
+
+                // ✅ Setiap 5 iklan, sisipkan 1 kotak Adsense
+                if (adCounter % 5 === 0) {
+                    modalGrid.appendChild(createAdsenseBox());
+                }
+            }
+        }
+
+        // ✅ Tombol Muat Lebih Banyak
+        function addLoadMoreButton() {
+            const modalGrid = document.getElementById('modal-grid');
+            
+            // Hapus tombol lama kalau ada
+            const oldBtn = document.getElementById('load-more-btn');
+            if (oldBtn) oldBtn.remove();
+
+            // Kalau masih ada iklan tersisa, tampilkan tombol
+            if (currentDisplayCount < allAds.length) {
+                const loadBtn = document.createElement('div');
+                loadBtn.id = 'load-more-btn';
+                loadBtn.className = 'col-span-full text-center mt-6 mb-2';
+                loadBtn.innerHTML = `
+                    <button onclick="loadMoreAds()" class="bg-accent text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Muat Lebih Banyak Iklan
+                    </button>
+                `;
+                modalGrid.appendChild(loadBtn);
+                lucide.createIcons({ context: loadBtn });
+            }
+        }
+
+        // ✅ Fungsi Muat Tambah 26 Iklan Lagi
+        function loadMoreAds() {
+            const nextStart = currentDisplayCount;
+            currentDisplayCount += ITEM_PER_PAGE;
+
+            appendAdsToGrid(nextStart, currentDisplayCount);
+            addLoadMoreButton(); // Perbarui tombol (hilang kalau habis)
         }
 
         // Rotasi banner iklan acak setiap 10 detik
