@@ -576,7 +576,7 @@
     <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
 <script>
-lucide.createIcons();
+    lucide.createIcons();
 
 // === KONFIGURASI ===
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
@@ -586,6 +586,7 @@ let displayAds = [];
 let currentDisplayCount = 0;
 let activeAd = null;
 let editMode = false;
+let deferredPrompt;
 
 // === ELEMEN ===
 const body = document.body;
@@ -603,33 +604,41 @@ const btnKirim = document.getElementById('btnKirim');
 const btnEdit = document.getElementById('btnEdit');
 const btnHapus = document.getElementById('btnHapus');
 
-// === FITUR INSTAL PWA ===
-let deferredPrompt;
-
+// === FITUR INSTAL PWA (BEBAS ERROR) ===
 window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     deferredPrompt = e;
-    navInstall.querySelector('i').setAttribute('data-lucide', 'download');
-    navInstall.querySelector('span').textContent = 'Instal Aplikasi';
-    lucide.createIcons({ context: navInstall });
+    if (navInstall) {
+        const ikon = navInstall.querySelector('i');
+        const teks = navInstall.querySelector('span');
+        if (ikon) ikon.setAttribute('data-lucide', 'download');
+        if (teks) teks.textContent = 'Instal Aplikasi';
+        lucide.createIcons({ context: navInstall });
+    }
 });
 
-navInstall.addEventListener('click', async function() {
-    if (!deferredPrompt) {
-        window.location.href = 'https://rewangiklan.my.id/';
-        return;
-    }
-    deferredPrompt.prompt();
-    const hasil = await deferredPrompt.userChoice;
-    console.log('Hasil instalasi:', hasil.outcome);
-    deferredPrompt = null;
-});
+if (navInstall) {
+    navInstall.addEventListener('click', async function() {
+        if (!deferredPrompt) {
+            window.location.href = 'https://rewangiklan.my.id/';
+            return;
+        }
+        deferredPrompt.prompt();
+        const hasil = await deferredPrompt.userChoice;
+        console.log('Hasil instalasi:', hasil.outcome);
+        deferredPrompt = null;
+    });
+}
 
 window.addEventListener('appinstalled', function() {
     deferredPrompt = null;
-    navInstall.querySelector('i').setAttribute('data-lucide', 'home');
-    navInstall.querySelector('span').textContent = 'Beranda';
-    lucide.createIcons({ context: navInstall });
+    if (navInstall) {
+        const ikon = navInstall.querySelector('i');
+        const teks = navInstall.querySelector('span');
+        if (ikon) ikon.setAttribute('data-lucide', 'home');
+        if (teks) teks.textContent = 'Beranda';
+        lucide.createIcons({ context: navInstall });
+    }
 });
 
 // === AMBIL DATA IKLAN ===
@@ -668,7 +677,7 @@ function tampilkanAwal() {
     tambahTombolMuat();
 }
 
-// === TAMBAH IKLAN KE HALAMAN ===
+// === TAMBAH IKLAN KE HALAMAN (JUDUL SESUAI PERMINTAAN) ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -680,7 +689,7 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
-            <h3 class="ad-title-top" style="text-align: center; font-weight: normal; background: transparent; margin: 16px auto 0 auto; color: #222;">${judul}</h3>
+            <h3 class="ad-title-top" style="text-align: center; font-weight: normal; background: transparent !important; margin: 20px auto 0 auto; color: #fff; padding: 0;">${judul}</h3>
             <img src="${gambar}" alt="${judul}" class="ad-image" loading="lazy">
             <div class="side-actions">
                 <div class="side-btn" onclick="bukaFormIklan()">
@@ -706,7 +715,6 @@ function tambahIklan(dari, sampai) {
     }
 }
 
-    
 // === TOMBOL MUAT LEBIH BANYAK ===
 function tambahTombolMuat() {
     const tombolLama = document.getElementById('load-more-wrap');
@@ -837,16 +845,6 @@ searchClear.addEventListener('click', function() {
 navTop.addEventListener('click', function() {
     feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-// === MODE LAYAR PENUH ===
-function bukaDetail() {
-    body.classList.add('play-mode');
-    setTimeout(function() {
-        document.addEventListener('click', function() {
-            body.classList.remove('play-mode');
-        }, { once: true });
-    }, 100);
-}
 
 // === FITUR BAGIKAN ===
 async function bagikanIklan(id) {
