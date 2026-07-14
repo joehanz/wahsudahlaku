@@ -620,7 +620,6 @@
         let allAds = [];
         const ITEM_PER_PAGE = 26;
         let currentDisplayCount = 0;
-        let scrollTimeout;
 
         // Ambil & balik urutan iklan (terbaru di atas)
         async function fetchAds() {
@@ -732,7 +731,6 @@
             currentDisplayCount = ITEM_PER_PAGE;
             appendAdsToGrid(0, currentDisplayCount);
             addLoadMoreAndArrow();
-            setupScrollArrow();
         }
 
         // Tambah iklan ke bawah + sisipkan Adsense tiap 5
@@ -766,35 +764,24 @@
                 wrapper.appendChild(loadBtn);
             }
 
-            // === PANAH DI TEPI KANAN, SEJAJAR TENGAH ===
+            // === PANAH DI TEPI KANAN, SEJAJAR TENGAH & PASTI BISA DIKLIK ===
             const upArrow = document.createElement('button');
             upArrow.id = 'scroll-top-arrow';
-            upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all z-20';
-            // Pakai ikon panah ke atas yang pasti muncul
+            upArrow.type = 'button';
+            upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all z-50 cursor-pointer';
+            // Ikon panah jelas
             upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
-            upArrow.onclick = () => {
-                const modalContent = document.querySelector('.modal-content');
-                modalContent.scrollTo({ top: 0, behavior: 'smooth' });
+            // Fungsi gulir ke atas DIPASTIKAN BENAR
+            upArrow.onclick = function() {
+                const modalOverlay = document.getElementById('modal-all');
+                modalOverlay.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             };
             wrapper.appendChild(upArrow);
 
             grid.appendChild(wrapper);
-        }
-
-        // Atur tampilan panah saat di-scroll
-        function setupScrollArrow() {
-            const modalContent = document.querySelector('.modal-content');
-            if (!modalContent) return;
-
-            modalContent.onscroll = () => {
-                const arrow = document.getElementById('scroll-top-arrow');
-                if (!arrow) return;
-
-                clearTimeout(scrollTimeout);
-                // Selalu terlihat jelas, hanya sedikit berubah
-                arrow.style.opacity = modalContent.scrollTop > 200 ? '1' : '0.7';
-                arrow.style.pointerEvents = 'auto';
-            };
         }
 
         // Tambah iklan lagi (tidak tutup modal)
