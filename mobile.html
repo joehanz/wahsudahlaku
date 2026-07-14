@@ -669,11 +669,9 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
-            <h3 class="ad-title-top">${iklan.title || 'Tanpa Judul'}</h3>
+            <h3 class="ad-title-top">${iklan.title || 'Tanpa Judul'} nnnn</h3>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
-            <div class="center-action" onclick="bukaDetail()">
-                <i data-lucide="play"></i>
-            </div>
+            
             <div class="side-actions">
                 <div class="side-btn" onclick="bukaFormIklan()">
                     <i data-lucide="plus-circle"></i>
