@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Rewang Iklan - Beranda Iklan Baris Gratis</title>
@@ -12,33 +12,33 @@
     <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
     <meta name="google-adsense-account" content="ca-pub-6458870303612779">
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Tampilan Saat Berbagi Link -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Rewang Iklan">
     <meta property="og:locale" content="id_ID">
     <meta property="og:title" content="Rewang Iklan - Iklan Baris Gratis Indonesia">
     <meta property="og:description" content="Pasang iklan baris gratis tanpa daftar. Temukan barang, jasa, dan properti terbaik dari seluruh Indonesia.">
     <meta property="og:url" content="https://rewangiklan.my.id/">
-    <meta property="og:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
-    <meta property="og:image:secure_url" content="https://rewangiklan.my.id/image/iklanbaris3.png">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta property="og:image:type" content="image/webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Rewang Iklan - Iklan Baris Gratis">
+    <meta property="og:image:alt" content="Rewang Iklan - Jual Beli & Pasang Iklan Mudah Lewat HP & Laptop">
 
-    <!-- Twitter -->
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Rewang Iklan - Iklan Baris Gratis Indonesia">
     <meta name="twitter:description" content="Tempat pasang dan cari iklan baris gratis di seluruh Indonesia.">
-    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
-    <meta name="twitter:image:alt" content="Rewang Iklan">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta name="twitter:image:alt" content="Rewang Iklan - Jual Beli & Pasang Iklan Mudah Lewat HP & Laptop">
 
-    <!-- Icon -->
-    <link rel="icon" type="image/webp" href="https://rewangiklan.my.id/image/iklanbaris.webp">  
+    <!-- Ikon / Favicon Situs -->
+    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">  
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Bonus Meta -->
+    <!-- Bonus Meta Aplikasi -->
     <meta name="application-name" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -73,7 +73,7 @@
      "@type":"Organization",
      "name":"Rewang Iklan",
      "url":"https://rewangiklan.my.id/",
-     "logo":"https://rewangiklan.my.id/image/iklanbaris3.png"
+     "logo":"https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp"
     }
     </script>
 
@@ -91,61 +91,531 @@
       }
     }
     </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F172A',
+                        secondary: '#1E293B',
+                        accent: '#2563EB',
+                        light: '#F8FAFC',
+                        muted: '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    fontSize: {
+                        'base': '1rem',
+                        'sm': '0.9rem',
+                        'lg': '1.1rem',
+                        'xl': '1.35rem',
+                        '2xl': '1.8rem',
+                        '3xl': '2.4rem',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="phone-shell">
-        <!-- Panah hanya tampil di desktop -->
-        <button class="scroll-btn scroll-up" id="scrollUp">↑</button>
-        <button class="scroll-btn scroll-down" id="scrollDown">↓</button>
 
-        <div class="phone-screen">
-            <div class="content-area" id="mainContent">
-                <div class="page active">
-                    <div class="top-bar">
-                        <input type="text" class="search-box" id="searchInput" placeholder="Cari iklan...">
-                        <button class="btn-post-main" onclick="window.location.href='pasang.html'">Pasang Iklan</button>
-                    </div>
+<body class="bg-white text-primary font-sans">
 
-                    <div class="banner">
-                        <h3>Jual & Beli Mudah & Cepat!</h3>
-                    </div>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-2.5">
+                <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
+                <span class="text-2xl font-semibold">Rewang Iklan</span>
+            </div>
 
-                    <div class="category-wrapper">
-                        <div class="category-grid" id="categoryScroll">
-                            <div class="cat-item active" data-cat="Semua"><div class="cat-icon">📋</div><span>Semua</span></div>
-                            <div class="cat-item" data-cat="Mobil"><div class="cat-icon">🚗</div><span>Mobil</span></div>
-                            <div class="cat-item" data-cat="Motor"><div class="cat-icon">🏍️</div><span>Motor</span></div>
-                            <div class="cat-item" data-cat="Properti"><div class="cat-icon">🏠</div><span>Properti</span></div>
-                            <div class="cat-item" data-cat="Elektronik"><div class="cat-icon">📱</div><span>Elektronik</span></div>
-                            <div class="cat-item" data-cat="Lowongan"><div class="cat-icon">💼</div><span>Lowongan</span></div>
-                            <div class="cat-item" data-cat="Jasa"><div class="cat-icon">🔧</div><span>Jasa</span></div>
-                            <div class="cat-item" data-cat="Hobi"><div class="cat-icon">🎮</div><span>Hobi</span></div>
-                            <div class="cat-item" data-cat="Fashion"><div class="cat-icon">👕</div><span>Fashion</span></div>
+            <!-- Navigasi Dropdown -->
+                        <nav class="hidden lg:flex items-center gap-6">
+                <div class="relative dropdown-parent">
+                    <button class="flex items-center gap-1.5 py-2 text-sm font-medium hover:text-accent transition-colors">
+                        Kategori Utama
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+
+                    <div class="dropdown-main">
+                        <!-- Properti -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="building-2" class="w-4 h-4"></i> Properti
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Rumah & Vila Dijual</a>
+                                <a href="#">Rumah & Vila Disewa</a>
+                                <a href="#">Apartemen Dijual</a>
+                                <a href="#">Apartemen Disewa</a>
+                                <a href="#">Tanah & Kavling</a>
+                                <a href="#">Ruko, Kantor & Gudang</a>
+                                <a href="#">Kost & Penginapan</a>
+                                <a href="#">Properti Lainnya</a>
+                            </div>
+                        </div>
+
+                        <!-- Kendaraan -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="car" class="w-4 h-4"></i> Kendaraan
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Mobil Baru</a>
+                                <a href="#">Mobil Bekas</a>
+                                <a href="#">Motor Baru</a>
+                                <a href="#">Motor Bekas</a>
+                                <a href="#">Sepeda & Aksesoris</a>
+                                <a href="#">Kendaraan Komersial</a>
+                                <a href="#">Alat Berat & Mesin</a>
+                                <a href="#">Suku Cadang</a>
+                                <a href="#">Kapal & Perahu</a>
+                            </div>
+                        </div>
+
+                        <!-- Barang & Perlengkapan -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="package" class="w-4 h-4"></i> Barang & Perlengkapan
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Elektronik & Gadget</a>
+                                <a href="#">Rumah Tangga & Furnitur</a>
+                                <a href="#">Pakaian & Aksesoris</a>
+                                <a href="#">Mainan & Perlengkapan Anak</a>
+                                <a href="#">Olahraga & Hobi</a>
+                                <a href="#">Buku & Alat Tulis</a>
+                                <a href="#">Barang Antik & Koleksi</a>
+                                <a href="#">Hewan Peliharaan</a>
+                                <a href="#">Barang Bekas Layak Pakai</a>
+                            </div>
+                        </div>
+
+                        <!-- Lowongan & Jasa -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="briefcase" class="w-4 h-4"></i> Lowongan & Jasa
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Lowongan Kerja</a>
+                                <a href="#">Jasa Bangunan & Renovasi</a>
+                                <a href="#">Jasa Pendidikan & Kursus</a>
+                                <a href="#">Jasa Teknis & Perbaikan</a>
+                                <a href="#">Jasa Kreatif & Desain</a>
+                                <a href="#">Jasa Penerjemahan & Penulisan</a>
+                                <a href="#">Jasa Kesehatan & Kecantikan</a>
+                                <a href="#">Jasa Pindahan & Transportasi</a>
+                                <a href="#">Jasa Lainnya</a>
+                            </div>
+                        </div>
+
+                        <!-- Bisnis & Usaha -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="handshake" class="w-4 h-4"></i> Bisnis & Usaha
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Usaha & Bisnis Dijual</a>
+                                <a href="#">Peluang Usaha & Waralaba</a>
+                                <a href="#">Mitra Kerjasama</a>
+                                <a href="#">Peralatan Usaha</a>
+                                <a href="#">Bahan Baku & Dagang</a>
+                            </div>
+                        </div>
+
+                        <!-- Lainnya -->
+                        <div class="relative dropdown-item">
+                            <button class="dropdown-item-btn">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="more-horizontal" class="w-4 h-4"></i> Lainnya
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="dropdown-sub">
+                                <a href="#">Kehilangan & Penemuan</a>
+                                <a href="#">Undangan & Pengumuman</a>
+                                <a href="#">Permintaan Barang/Jasa</a>
+                                <a href="#">Iklan Lainnya</a>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="section-title">
-                        <span>Iklan Terbaru</span>
-                        <span>Total: <span id="totalAds">0</span></span>
+                <a href="#" class="text-sm font-medium hover:text-accent transition-colors">Terbaru</a>
+                <a href="#" class="text-sm font-medium hover:text-accent transition-colors">Populer</a>
+                <button onclick="openModal()" class="text-sm font-medium text-accent hover:text-blue-700 transition-colors flex items-center gap-1.5">
+                    Lihat Semua Iklan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </nav>
+            
+            <!-- Tombol Aksi -->
+            <div class="flex items-center gap-4">
+                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button class="hidden md:flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-base font-medium hover:bg-secondary transition-colors">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Pasang Iklan
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+
+        <!-- Banner Iklan Acak Berganti -->
+        <section class="banner-section" id="banner-section">
+            <img id="banner-image" class="banner-bg" alt="Banner Iklan Utama">
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+                <h2 id="banner-title" class="banner-title">Memuat Iklan Terbaik...</h2>
+                <p id="banner-desc" class="banner-desc">Sedang mengambil penawaran terbaru untuk Anda...</p>
+                <button onclick="openModal()" class="bg-white text-primary px-7 py-3.5 rounded-full text-base font-semibold hover:bg-gray-100 transition-colors flex items-center gap-2 w-fit">
+                    Lihat Semua Iklan <i data-lucide="external-link" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </section>
+                <!-- Kategori Properti -->
+        <section id="properti" class="mb-18">
+            <div class="mb-7">
+                <h2 class="text-2xl font-semibold flex items-center gap-2.5">
+                    <i data-lucide="building-2" class="w-6 h-6 text-accent"></i>
+                    Properti
+                </h2>
+            </div>
+            <div class="scroll-wrapper">
+                <button onclick="scrollSection('properti-container', -340)" class="scroll-arrow left">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div id="properti-container" class="scroll-container">
+                    <div class="card-empty">
+                        <i data-lucide="loader-2" class="w-10 h-10 text-gray-400 mb-3 animate-spin"></i>
+                        <p class="text-base text-gray-500">Memuat iklan kategori Properti...</p>
                     </div>
+                </div>
+                <button onclick="scrollSection('properti-container', 340)" class="scroll-arrow right">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
 
-                    <div id="adsContainer"></div>
-                    <div id="loadMoreBox" class="load-more-box" style="display:none;">
-                        <button id="loadMoreBtn" class="btn-load-more">Muat Lebih Banyak</button>
+        <!-- Kategori Jasa -->
+        <section id="jasa" class="mb-18">
+            <div class="mb-7">
+                <h2 class="text-2xl font-semibold flex items-center gap-2.5">
+                    <i data-lucide="briefcase" class="w-6 h-6 text-accent"></i>
+                    Jasa & Layanan
+                </h2>
+            </div>
+            <div class="scroll-wrapper">
+                <button onclick="scrollSection('jasa-container', -340)" class="scroll-arrow left">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div id="jasa-container" class="scroll-container">
+                    <div class="card-empty">
+                        <i data-lucide="loader-2" class="w-10 h-10 text-gray-400 mb-3 animate-spin"></i>
+                        <p class="text-base text-gray-500">Memuat iklan kategori Jasa...</p>
                     </div>
+                </div>
+                <button onclick="scrollSection('jasa-container', 340)" class="scroll-arrow right">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
 
-                    <div class="bottom-nav">
-    <div class="nav-item" id="pwaInstallBtn">Install Aplikasi</div>
-    <button class="btn-add-center" onclick="window.location.href='pasang.html'">+</button>
-                        <div class="nav-item" id="">REWANG IKLAN</div>
-                        
-    
-</div>
+        <!-- Kategori Lainnya -->
+        <section id="lainnya" class="mb-18">
+            <div class="mb-7">
+                <h2 class="text-2xl font-semibold flex items-center gap-2.5">
+                    <i data-lucide="more-horizontal" class="w-6 h-6 text-accent"></i>
+                    Kategori Lainnya
+                </h2>
+            </div>
+            <div class="scroll-wrapper">
+                <button onclick="scrollSection('lainnya-container', -340)" class="scroll-arrow left">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div id="lainnya-container" class="scroll-container">
+                    <div class="card-empty">
+                        <i data-lucide="loader-2" class="w-10 h-10 text-gray-400 mb-3 animate-spin"></i>
+                        <p class="text-base text-gray-500">Memuat iklan lainnya...</p>
+                    </div>
+                </div>
+                <button onclick="scrollSection('lainnya-container', 340)" class="scroll-arrow right">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal / Layer Semua Iklan -->
+    <div id="modal-all" class="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <button onclick="closeModal()" class="modal-close">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-center">Semua Iklan Terbaru</h2>
+            <div id="modal-grid" class="modal-grid">
+                <div class="col-span-full text-center py-16">
+                    <i data-lucide="loader-2" class="w-12 h-12 text-accent mx-auto mb-4 animate-spin"></i>
+                    <p class="text-gray-500 text-base">Sedang memuat semua iklan...</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer 3 Kolom -->
+    <footer class="bg-primary text-white mt-12">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Kolom 1 -->
+                <div>
+                    <div class="flex items-center gap-2.5 mb-5">
+                        <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
+                        <span class="text-2xl font-bold">Rewang Iklan</span>
+                    </div>
+                    <p class="text-gray-300 text-base leading-relaxed">Portal iklan baris terpercaya. Tempat mudah menjual, mencari, dan menawarkan barang serta jasa dengan aman dan cepat.</p>
+                </div>
+                <!-- Kolom 2 -->
+                <div>
+                    <h4 class="font-semibold text-xl mb-5">Tautan Cepat</h4>
+                    <ul class="space-y-3 text-gray-300 text-base">
+                        <li><a href="#" class="hover:text-accent transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Cara Pasang Iklan</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                <!-- Kolom 3 -->
+                <div>
+                    <h4 class="font-semibold text-xl mb-5">Hubungi Kami</h4>
+                    <ul class="space-y-3.5 text-gray-300 text-base">
+                        <li class="flex items-center gap-2.5"><i data-lucide="map-pin" class="w-4 h-4"></i> Surabaya, Jawa Timur</li>
+                        <li class="flex items-center gap-2.5"><i data-lucide="mail" class="w-4 h-4"></i> info@rewangiklan.my.id</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-7 text-center text-gray-400 text-base">
+                © 2026 Rewang Iklan. Semua Hak Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+        <script>
+        lucide.createIcons();
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+        let allAds = [];
+        const ITEM_PER_PAGE = 26;
+        let currentDisplayCount = 0;
+
+        async function fetchAds() {
+            try {
+                const res = await fetch(API_URL);
+                allAds = await res.json();
+                allAds = allAds.reverse();
+                renderAllSections();
+                startBannerRotation();
+            } catch (err) {
+                console.error("Gagal ambil data:", err);
+                showEmptyState();
+            }
+        }
+
+        function scrollSection(wrapperId, amount) {
+            const el = document.getElementById(wrapperId);
+            el.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        function openModal() {
+            const modal = document.getElementById('modal-all');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            currentDisplayCount = 0;
+            renderModalGrid();
+        }
+        function closeModal() {
+            document.getElementById('modal-all').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function createAdsenseBox() {
+            const box = document.createElement('div');
+            box.className = 'card flex items-center justify-center bg-gray-50 p-3 rounded-xl';
+            box.innerHTML = `
+                <div class="adsense-wrapper">
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:250px;height:250px"
+                         data-ad-client="ca-pub-6458870303612779"
+                         data-ad-slot="9441731668"></ins>
+                </div>
+            `;
+            setTimeout(() => { if (window.adsbygoogle) adsbygoogle.push({}); }, 150);
+            return box;
+        }
+
+        function createAdCard(ad) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => window.open(`https://rewangiklan.my.id/iklan-saya.html?id=${ad.id}`, '_blank');
+            card.innerHTML = `
+                <img src="${ad.image || 'https://picsum.photos/id/1040/400/250'}" alt="${ad.title || 'Iklan'}" class="card-image" loading="lazy">
+                <div class="p-5">
+                    <h3 class="text-lg font-semibold line-clamp-2 mb-2.5">${ad.title || 'Tanpa Judul'}</h3>
+                    <p class="text-base text-gray-600 line-clamp-2 mb-4">${ad.description?.substring(0,70) || 'Klik untuk lihat detail lengkap'}...</p>
+                    <div class="flex items-center justify-between text-base">
+                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> ${ad.location || 'Lokasi tidak diketahui'}</span>
+                        <span class="text-blue-600 font-semibold">${ad.category || 'Lainnya'}</span>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons({context: card});
+            return card;
+        }
+
+        function renderAllSections() {
+            const properti = allAds.filter(a => a.category === 'Properti');
+            const jasa = allAds.filter(a => a.category === 'Jasa');
+            const lainnya = allAds.filter(a => !['Properti','Jasa'].includes(a.category));
+
+            const renderList = (id, data, label) => {
+                const cont = document.getElementById(id);
+                cont.innerHTML = '';
+                if (data.length) data.forEach(a => cont.appendChild(createAdCard(a)));
+                else cont.innerHTML = `<div class="card-empty"><i data-lucide="inbox" class="w-10 h-10 text-gray-400 mb-3"></i><p class="text-base text-gray-500">Belum ada iklan ${label}</p></div>`;
+            };
+
+            renderList('properti-container', properti, 'Properti');
+            renderList('jasa-container', jasa, 'Jasa & Layanan');
+            renderList('lainnya-container', lainnya, 'Lainnya');
+        }
+
+        function renderModalGrid() {
+            const grid = document.getElementById('modal-grid');
+            grid.innerHTML = '';
+            if (!allAds.length) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16"><i data-lucide="inbox" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i><p class="text-gray-500 text-base">Belum ada iklan tersedia</p></div>`;
+                return;
+            }
+            currentDisplayCount = ITEM_PER_PAGE;
+            appendAdsToGrid(0, currentDisplayCount);
+            addLoadMoreAndArrow();
+        }
+
+        function appendAdsToGrid(start, end) {
+            const grid = document.getElementById('modal-grid');
+            let hitung = 0;
+            for (let i = start; i < end && i < allAds.length; i++) {
+                grid.appendChild(createAdCard(allAds[i]));
+                hitung++;
+                if (hitung % 5 === 0) grid.appendChild(createAdsenseBox());
+            }
+        }
+
+        function addLoadMoreAndArrow() {
+            const grid = document.getElementById('modal-grid');
+            const oldWrap = document.getElementById('btn-arrow-wrapper');
+            if (oldWrap) oldWrap.remove();
+
+            const wrapper = document.createElement('div');
+            wrapper.id = 'btn-arrow-wrapper';
+            wrapper.className = 'col-span-full flex items-center justify-center mt-10 mb-6 relative';
+
+            if (currentDisplayCount < allAds.length) {
+                const loadBtn = document.createElement('button');
+                loadBtn.type = 'button';
+                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md cursor-pointer z-30';
+                loadBtn.innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> Muat Lebih Banyak Iklan`;
+                loadBtn.setAttribute('onclick', 'tambahIklanLagi()');
+                wrapper.appendChild(loadBtn);
+            }
+
+            const upArrow = document.createElement('button');
+            upArrow.type = 'button';
+            upArrow.id = 'scroll-top-arrow';
+            upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all cursor-pointer z-40';
+            upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
+            
+            upArrow.onclick = () => {
+                const modal = document.getElementById('modal-all');
+                const calonWadah = [
+                    modal.querySelector('.modal-content'),
+                    modal.querySelector('.modal-body'),
+                    modal.querySelector('.modal-inner'),
+                    modal.querySelector('.scroll-area'),
+                    modal.querySelector('.scrollable'),
+                    modal.querySelector('main'),
+                    modal.querySelector('section'),
+                    modal
+                ];
+
+                for (const wadah of calonWadah) {
+                    if (wadah && wadah.scrollHeight > wadah.clientHeight) {
+                        // Efek meluncur mulus
+                        wadah.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        break;
+                    }
+                }
+            };
+
+            wrapper.appendChild(upArrow);
+            grid.appendChild(wrapper);
+            lucide.createIcons({context: wrapper});
+        }
+
+        window.tambahIklanLagi = function() {
+            const posisiAwal = currentDisplayCount;
+            currentDisplayCount += ITEM_PER_PAGE;
+            appendAdsToGrid(posisiAwal, currentDisplayCount);
+            addLoadMoreAndArrow();
+        }
+
+        function startBannerRotation() {
+            if (!allAds.length) return;
+            const updateBanner = () => {
+                const ad = allAds[Math.floor(Math.random() * allAds.length)];
+                document.getElementById('banner-image').src = ad.image || 'https://picsum.photos/id/1040/1200/600';
+                document.getElementById('banner-title').textContent = ad.title || 'Iklan Terbaru';
+                document.getElementById('banner-desc').textContent = ad.description?.substring(0,130) + '...' || 'Klik untuk lihat detail lengkap';
+            };
+            updateBanner();
+            setInterval(updateBanner, 10000);
+        }
+
+        function showEmptyState() {
+            ['properti-container','jasa-container','lainnya-container'].forEach(id => {
+                document.getElementById(id).innerHTML = `<div class="card-empty"><i data-lucide="alert-triangle" class="w-10 h-10 text-gray-400 mb-3"></i><p class="text-base text-gray-500">Gagal memuat iklan</p></div>`;
+            });
+            lucide.createIcons();
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchAds);
+    </script>
+
     
-    <script src="script.js"></script>
 </body>
 </html>
