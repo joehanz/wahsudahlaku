@@ -102,14 +102,14 @@
 
         /* === KARTU IKLAN (FOTO BERSIH, JUDUL DI ATAS) === */
 .ad-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ganti dari cover → contain: gambar UTUH, tidak terpotong, tidak ditarik berlebihan */
-    object-position: center;
-    background: transparent; /* Tidak ada latar hitam di sisa ruang */
+    width: 100%;       /* Lebar penuh layar */
+    height: auto;      /* Tinggi otomatis menyesuaikan rasio asli gambar */
+    min-height: 100vh; /* Minimal setinggi layar, jadi tarik sedikit ke atas bawah biar penuh */
+    object-fit: cover; /* Hanya sesuaikan agar tutup lebar, tidak distorsi kiri kanan */
+    object-position: center center; /* Tengahin gambar */
     transition: transform 0.3s ease;
 
-    /* Pengaturan tajam aman */
+    /* Kualitas tetap tajam */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: smooth;
     image-rendering: high-quality;
