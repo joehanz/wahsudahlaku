@@ -611,7 +611,7 @@
     </footer>
 
     <!-- JavaScript -->
-            <script>
+        <script>
         lucide.createIcons();
 
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
@@ -746,7 +746,6 @@
             upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all cursor-pointer z-40';
             upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
             
-            // LOGIKA CARI WADAH DI DALAM LAYER SAMPAI KETEMU
             upArrow.onclick = () => {
                 const modal = document.getElementById('modal-all');
                 const calonWadah = [
@@ -762,7 +761,11 @@
 
                 for (const wadah of calonWadah) {
                     if (wadah && wadah.scrollHeight > wadah.clientHeight) {
-                        wadah.scrollTop = 0;
+                        // Efek meluncur mulus
+                        wadah.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
                         break;
                     }
                 }
@@ -802,5 +805,6 @@
         document.addEventListener('DOMContentLoaded', fetchAds);
     </script>
 
+    
 </body>
 </html>
