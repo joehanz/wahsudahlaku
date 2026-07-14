@@ -116,17 +116,65 @@
             text-align: center;
             min-width: 280px;
         }
+
+        /* ==================== PERBAIKAN DROPDOWN BERTINGKAT ==================== */
+        .group {
+            position: relative;
+        }
         .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            min-width: 220px;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+            padding: 0.5rem;
             opacity: 0;
             visibility: hidden;
             transform: translateY(8px);
             transition: all 0.2s ease;
+            pointer-events: none;
+            z-index: 999;
         }
-        .dropdown-group:hover .dropdown-menu {
+        .group:hover > .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
+            pointer-events: auto;
         }
+
+        .sub-group {
+            position: relative;
+        }
+        .sub-menu {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            margin-left: 0.5rem;
+            min-width: 240px;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(8px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .sub-group:hover > .sub-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        /* ======================================================================== */
+
         /* Modal / Layer */
         .modal-overlay {
             position: fixed;
@@ -235,10 +283,8 @@
             margin-bottom: 2rem;
             line-height: 1.7;
         }
-         .sub-group:hover .group-hover\/sub\:block {
-            display: block;
-        }
     </style>
+
 </head>
 <body class="bg-white text-primary font-sans">
 
