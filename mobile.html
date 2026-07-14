@@ -579,47 +579,6 @@
     <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
 <script
-    // === FITUR INSTAL PWA & PERUBAH TOMBOL ===
-let deferredPrompt;
-const navInstall = document.getElementById('navInstall');
-const installIcon = navInstall.querySelector('i');
-const installText = navInstall.querySelector('span');
-
-// Simpan perintah instal saat browser siap
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // Pastikan tampilan tombol instal normal
-    installIcon.setAttribute('data-lucide', 'download');
-    installText.textContent = 'Instal Aplikasi';
-    lucide.createIcons({context: navInstall});
-});
-
-// Saat tombol diklik
-navInstall.addEventListener('click', async () => {
-    // Jika sudah terinstal, buka halaman utama
-    if (!deferredPrompt) {
-        window.location.href = 'https://rewangiklan.my.id/';
-        return;
-    }
-
-    // Tampilkan jendela instal
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`Pengguna ${outcome === 'accepted' ? 'setuju' : 'menolak'} instalasi`);
-    deferredPrompt = null;
-});
-
-// Setelah aplikasi berhasil terinstal
-window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    // Ubah ikon dan tulisan
-    installIcon.setAttribute('data-lucide', 'home');
-    installText.textContent = 'Beranda';
-    lucide.createIcons({context: navInstall});
-});
-
-    
 lucide.createIcons();
 
 // === KONFIGURASI ===
@@ -628,8 +587,8 @@ const ITEM_PER_PAGE = 10;
 let allAds = [];
 let displayAds = [];
 let currentDisplayCount = 0;
-let activeAd = null; // Iklan yang sedang terlihat di layar
-let editMode = false; // Mode edit/hapus
+let activeAd = null;
+let editMode = false;
 
 // === ELEMEN ===
 const body = document.body;
@@ -639,12 +598,44 @@ const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
 const navSearch = document.getElementById('navSearch');
 const navTop = document.getElementById('navTop');
+const navInstall = document.getElementById('navInstall');
 const detailOverlay = document.getElementById('detailOverlay');
 const adFormOverlay = document.getElementById('adFormOverlay');
 const formTitle = document.getElementById('formTitle');
 const btnKirim = document.getElementById('btnKirim');
 const btnEdit = document.getElementById('btnEdit');
 const btnHapus = document.getElementById('btnHapus');
+
+// === FITUR INSTAL PWA ===
+let deferredPrompt;
+const installIcon = navInstall.querySelector('i');
+const installText = navInstall.querySelector('span');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installIcon.setAttribute('data-lucide', 'download');
+    installText.textContent = 'Instal Aplikasi';
+    lucide.createIcons({ context: navInstall });
+});
+
+navInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+        window.location.href = 'https://rewangiklan.my.id/';
+        return;
+    }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Pengguna ${outcome === 'accepted' ? 'setuju' : 'menolak'} instalasi`);
+    deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    installIcon.setAttribute('data-lucide', 'home');
+    installText.textContent = 'Beranda';
+    lucide.createIcons({ context: navInstall });
+});
 
 // === AMBIL DATA ===
 async function ambilDataIklan() {
@@ -654,15 +645,14 @@ async function ambilDataIklan() {
         allAds = data.filter(i => i.status === 'aktif').reverse();
         displayAds = [...allAds];
         tampilkanAwal();
-        // Deteksi iklan yang sedang terlihat saat digulir
         feedContainer.addEventListener('scroll', deteksiIklanAktif);
     } catch (err) {
         feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat iklan</p></div>`;
-        lucide.createIcons({context: feedContainer});
+        lucide.createIcons({ context: feedContainer });
     }
 }
 
-// === DETEKSI IKLAN YANG SEDANG TERLIHAT DI LAYAR ===
+// === DETEKSI IKLAN AKTIF ===
 function deteksiIklanAktif() {
     const kartuList = document.querySelectorAll('.ad-card');
     kartuList.forEach((kartu, index) => {
@@ -680,6 +670,7 @@ function tampilkanAwal() {
     tambahIklan(0, ITEM_PER_PAGE);
     tambahTombolMuat();
 }
+
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -710,10 +701,10 @@ function tambahIklan(dari, sampai) {
         feedContainer.appendChild(kartu);
     }
     currentDisplayCount = batas;
-    lucide.createIcons({context: feedContainer});
-    // Set iklan pertama sebagai aktif
+    lucide.createIcons({ context: feedContainer });
     if (displayAds.length > 0) activeAd = displayAds[0];
 }
+
 function tambahTombolMuat() {
     const lama = document.getElementById('load-more-wrap');
     if (lama) lama.remove();
@@ -723,8 +714,9 @@ function tambahTombolMuat() {
     wrap.className = 'load-more-wrapper';
     wrap.innerHTML = `<button class="load-more-btn" onclick="muatLagi()"><i data-lucide="plus-circle"></i> Muat Lebih Banyak</button>`;
     feedContainer.appendChild(wrap);
-    lucide.createIcons({context: wrap});
+    lucide.createIcons({ context: wrap });
 }
+
 function muatLagi() {
     const tombol = document.querySelector('.load-more-btn');
     tombol.disabled = true;
@@ -735,57 +727,47 @@ function muatLagi() {
     }, 500);
 }
 
-// === FUNGSI IKLAN SAYA ===
+// === IKLAN SAYA ===
 function bukaDetailIklanSaya() {
     if (!activeAd) return alert('Iklan tidak ditemukan');
-    
-    // Isi data iklan yang sedang terlihat
     document.getElementById('detailImg').style.backgroundImage = `url(${activeAd.image || 'https://picsum.photos/id/1040/800/1400'})`;
     document.getElementById('detailTitle').textContent = activeAd.title || 'Tanpa Judul';
     document.getElementById('detailCat').textContent = activeAd.category || 'Lainnya';
     document.getElementById('detailLoc').textContent = activeAd.location || 'Tidak diketahui';
     document.getElementById('detailViews').textContent = activeAd.views || '0';
     document.getElementById('detailDesc').textContent = activeAd.description || 'Tidak ada deskripsi';
-    
-    // Tombol WA
     document.getElementById('btnWa').onclick = () => {
         const nomor = activeAd.whatsapp.toString().replace(/\D/g, '');
         const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" di Rewang Iklan.`);
         window.open(`https://wa.me/${nomor}?text=${pesan}`, '_blank');
     };
-
     detailOverlay.classList.add('show');
 }
+
 function tutupDetailIklan() {
     detailOverlay.classList.remove('show');
 }
 
-// === FUNGSI BUKA FORM EDIT DARI IKLAN SAYA ===
+// === EDIT IKLAN ===
 function bukaEditIklan() {
     tutupDetailIklan();
     if (!activeAd) return;
-
-    // Ubah ke mode edit
     editMode = true;
     formTitle.textContent = 'Edit Iklan';
     btnKirim.style.display = 'none';
     btnEdit.classList.add('show');
     btnHapus.classList.add('show');
-
-    // Isi form dengan data iklan
     document.getElementById('title').value = activeAd.title || '';
     document.getElementById('category').value = activeAd.category || '';
     document.getElementById('location').value = activeAd.location || '';
     document.getElementById('whatsapp').value = activeAd.whatsapp || '';
     document.getElementById('description').value = activeAd.description || '';
     document.getElementById('charCount').textContent = `${activeAd.description?.length || 0} / 500`;
-
     adFormOverlay.classList.add('show');
 }
 
-// === FUNGSI FORM PASANG IKLAN ===
+// === FORM IKLAN ===
 function bukaFormIklan() {
-    // Reset ke mode pasang baru
     editMode = false;
     formTitle.textContent = 'Pasang Iklan Baru';
     btnKirim.style.display = 'block';
@@ -793,9 +775,9 @@ function bukaFormIklan() {
     btnHapus.classList.remove('show');
     document.getElementById('adForm').reset();
     document.getElementById('charCount').textContent = '0 / 500';
-    
     adFormOverlay.classList.add('show');
 }
+
 function tutupFormIklan() {
     adFormOverlay.classList.remove('show');
 }
@@ -806,6 +788,7 @@ navSearch.addEventListener('click', () => {
     if (searchBar.classList.contains('show')) setTimeout(() => searchInput.focus(), 100);
     else { searchInput.value = ''; tampilkanAwal(); }
 });
+
 searchInput.addEventListener('input', () => {
     const k = searchInput.value.trim().toLowerCase();
     searchClear.classList.toggle('show', k !== '');
@@ -817,55 +800,51 @@ searchInput.addEventListener('input', () => {
     tampilkanAwal();
     if (displayAds.length === 0) {
         feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="search-x"></i><p>Tidak ditemukan iklan untuk "${k}"</p></div>`;
-        lucide.createIcons({context: feedContainer});
+        lucide.createIcons({ context: feedContainer });
     }
 });
+
 searchClear.addEventListener('click', () => { searchInput.value = ''; tampilkanAwal(); });
 
-// === TOMBOL KEMBALI KE ATAS ===
+// === TOMBOL KE ATAS ===
 navTop.addEventListener('click', () => {
-    feedContainer.scrollTo({top: 0, behavior: 'smooth'});
+    feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// === FUNGSI LAINNYA ===
+// === DETAIL ===
 function bukaDetail() {
     body.classList.add('play-mode');
-    setTimeout(() => document.addEventListener('click', () => body.classList.remove('play-mode'), {once:true}), 100);
+    setTimeout(() => document.addEventListener('click', () => body.classList.remove('play-mode'), { once: true }), 100);
 }
 
-// === FUNGSI BAGIKAN DENGAN FITUR BAWAAN PERANGKAT ===
+// === BAGIKAN ===
 async function bagikanIklan(id) {
     if (!activeAd) return;
-    
     const tautan = `https://rewangiklan.my.id/iklan-saya.html?id=${id}`;
     const dataBerbagi = {
         title: activeAd.title || 'Iklan dari Rewang Iklan',
         text: `Lihat iklan menarik ini: ${activeAd.title}`,
         url: tautan
     };
-
     try {
-        // Panggil fitur berbagi asli HP/Perangkat
         if (navigator.share) {
             await navigator.share(dataBerbagi);
         } else {
-            // Jika perangkat lama tidak mendukung, langsung salin tautan
             await navigator.clipboard.writeText(tautan);
             alert('Tautan iklan sudah disalin ke papan klip!');
         }
     } catch (err) {
-        // Jika pengguna membatalkan atau ada kesalahan, salin tautan sebagai cadangan
         try {
             await navigator.clipboard.writeText(tautan);
             alert('Tautan iklan sudah disalin ke papan klip!');
         } catch {
-            alert('Maaf, perangkat Anda tidak mendukung berbagi. Silakan salin tautan secara manual.');
+            alert('Maaf, perangkat Anda tidak mendukung berbagi.');
         }
     }
 }
 
 // === MULAI ===
-document.addEventListener('DOMContentLoaded', ambilDataIklan
+document.addEventListener('DOMContentLoaded', ambilDataIklan);
 </script>
 </body>
 </html>
