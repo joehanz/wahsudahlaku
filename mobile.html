@@ -670,7 +670,7 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
-            <h3 style="text-align: center; font-weight: normal; background: transparent !important; margin: 24px auto 0 auto; font-size: 1.25rem; color: #ffffff;">${iklan.title || 'Tanpa Judul'}</h3>
+            <h3 style="position: absolute; top: 24px; left: 50%; transform: translateX(-50%); text-align: center; font-weight: normal; background: transparent; font-size: 1.3rem; color: #ffffff; padding: 0; margin: 0; z-index: 2;">${iklan.title || 'Tanpa Judul'}</h3>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
             
             <div class="side-actions">
