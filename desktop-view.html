@@ -611,7 +611,7 @@
     </footer>
 
     <!-- JavaScript -->
-    <script>
+        <script>
         // Inisialisasi ikon Lucide
         lucide.createIcons();
 
@@ -653,8 +653,6 @@
             document.getElementById('modal-all').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        // Hapus semua aturan yang menghalangi klik tombol lain
-        // Klik di luar tidak tutup, tapi tidak menghalangi fungsi tombol
 
         // Kotak Iklan Adsense
         function createAdsenseBox() {
@@ -736,7 +734,7 @@
             }
         }
 
-        // === TOMBOL MUAT & PANAH: DIBUAT PASTI BEBAS BEKAS ===
+        // === TOMBOL MUAT & PANAH: DIPASTIKAN SCROLL BERJALAN ===
         function addLoadMoreAndArrow() {
             const grid = document.getElementById('modal-grid');
             const oldWrap = document.getElementById('btn-arrow-wrapper');
@@ -746,32 +744,50 @@
             wrapper.id = 'btn-arrow-wrapper';
             wrapper.className = 'col-span-full flex items-center justify-center mt-10 mb-6 relative';
 
-            // Tombol Muat Lebih - DIPASTIKAN BEBAS BEKAS
+            // Tombol Muat Lebih
             if (currentDisplayCount < allAds.length) {
                 const loadBtn = document.createElement('button');
                 loadBtn.type = 'button';
                 loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md cursor-pointer z-30';
                 loadBtn.innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> Muat Lebih Banyak Iklan`;
-                // Pakai atribut onclick langsung, tidak bentrok
                 loadBtn.setAttribute('onclick', 'tambahIklanLagi()');
                 wrapper.appendChild(loadBtn);
             }
 
-            // Panah Ke Atas - DIPASTIKAN BISA DIKLIK & SCROLL BENAR
+            // Panah Ke Atas - CARA SCROLL DIPERBAIKI TOTAL
             const upArrow = document.createElement('button');
             upArrow.type = 'button';
             upArrow.id = 'scroll-top-arrow';
             upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all cursor-pointer z-40';
             upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
-            // Scroll langsung ke konten utama modal
-            upArrow.setAttribute('onclick', 'document.querySelector(".modal-content").scrollTo({top:0,behavior:"smooth"})');
-            wrapper.appendChild(upArrow);
+            
+            // Fungsi gulir ke atas PASTI BENAR
+            upArrow.onclick = function() {
+                // Cari semua elemen yang bisa digulir di dalam modal
+                const modal = document.getElementById('modal-all');
+                const scrollable = modal.querySelector('.modal-content') || modal;
+                
+                // Cara 1: Pakai scrollTo standar
+                scrollable.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
 
+                // Cara 2: Cadangan kalau cara 1 gagal
+                setTimeout(() => {
+                    scrollable.scrollTop = 0;
+                }, 100);
+
+                console.log("Panah diklik, sedang ke atas!");
+            };
+
+            wrapper.appendChild(upArrow);
             grid.appendChild(wrapper);
             lucide.createIcons({context: wrapper});
         }
 
-        // Fungsi Muat Lebih - DIPASTIKAN DAPAT DIPANGGIL
+        // Fungsi Muat Lebih
         window.tambahIklanLagi = function() {
             const posisiAwal = currentDisplayCount;
             currentDisplayCount += ITEM_PER_PAGE;
