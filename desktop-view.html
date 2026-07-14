@@ -181,7 +181,7 @@
             gap: 1.5rem;
             margin-top: 2.5rem;
         }
-        /* Banner Slider - DIPERBAIKI */
+        /* Banner Slider - DIPERBAIKI SESUAI PERMINTAAN */
         .banner-section {
             position: relative;
             border-radius: 16px;
@@ -189,21 +189,29 @@
             margin-bottom: 2.5rem;
             overflow: hidden;
             color: white;
+            background: #0F172A; /* Latar belakang menyatu di sisi kiri */
         }
         .banner-bg {
             position: absolute;
-            inset: 0;
-            width: 100%;
+            top: 0;
+            right: 0; /* Gambar rata ke kanan */
+            width: 65%; /* Tampilkan jelas di 65% sisi kanan */
             height: 100%;
             object-fit: cover;
             transition: opacity 0.5s ease;
         }
-        /* Gradasi: Kiri gelap/buram, kanan terang */
+        /* Gradasi memudar: gambar perlahan hilang ke arah kiri */
         .banner-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.55) 45%, rgba(255,255,255,0.1) 100%);
-            backdrop-filter: blur(2px);
+            background: linear-gradient(to right, 
+                #0F172A 0%, 
+                #0F172A 25%, 
+                rgba(15, 23, 42, 0.85) 45%, 
+                rgba(15, 23, 42, 0.3) 65%, 
+                transparent 100%);
+            backdrop-filter: blur(0.5px);
+            z-index: 1;
         }
         .banner-content {
             position: relative;
