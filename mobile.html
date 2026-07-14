@@ -560,20 +560,21 @@
     </div>
 
     <!-- NAVIGASI BAWAH -->
-    <nav class="bottom-nav">
-        <div class="nav-item" id="navSearch">
-            <i data-lucide="search"></i>
-            <span>Cari</span>
-        </div>
-        <div class="nav-item" onclick="window.open('https://rewangiklan.my.id/app', '_blank')">
-            <i data-lucide="download"></i>
-            <span>Instal Aplikasi</span>
-        </div>
-        <div class="nav-item" id="navTop">
-            <i data-lucide="arrow-up-to-line"></i>
-            <span>Kembali ke Atas</span>
-        </div>
-    </nav>
+    <!-- NAVIGASI BAWAH -->
+<nav class="bottom-nav">
+    <div class="nav-item" id="navSearch">
+        <i data-lucide="search"></i>
+        <span>Cari</span>
+    </div>
+    <div class="nav-item" id="navInstall">
+        <i data-lucide="download"></i>
+        <span>Instal Aplikasi</span>
+    </div>
+    <div class="nav-item" id="navTop">
+        <i data-lucide="arrow-up-to-line"></i>
+        <span>Kembali ke Atas</span>
+    </div>
+</nav>
 
     <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
@@ -823,7 +824,43 @@ async function bagikanIklan(id) {
 }
 
 // === MULAI ===
-document.addEventListener('DOMContentLoaded', ambilDataIklan);
+document.addEventListener('DOMContentLoaded', ambilDataIklan
+
+                          // === MEMICU INSTAL APLIKASI PWA ===
+let deferredPrompt;
+const navInstall = document.getElementById('navInstall');
+
+// Simpan peristiwa instal saat browser siap menampilkan tombol
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    navInstall.style.opacity = '1'; // Tampilkan tombol siap instal
+});
+
+// Saat tombol Instal diklik
+navInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+        alert('Fitur instal aplikasi belum tersedia di browser Anda, atau aplikasi sudah terpasang.');
+        return;
+    }
+    // Tampilkan jendela instal bawaan browser
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+        console.log('Pengguna menyetujui instalasi aplikasi');
+    } else {
+        console.log('Pengguna menolak instalasi aplikasi');
+    }
+    // Hapus penyimpanan setelah selesai
+    deferredPrompt = null;
+});
+
+// Sembunyikan tombol jika aplikasi sudah terpasang
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    navInstall.style.opacity = '0.5';
+    navInstall.querySelector('span').textContent = 'Sudah Terpasang';
+});
 </script>
 </body>
 </html>
