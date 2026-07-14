@@ -235,6 +235,9 @@
             margin-bottom: 2rem;
             line-height: 1.7;
         }
+         .sub-group:hover .group-hover\/sub\:block {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-white text-primary font-sans">
@@ -249,33 +252,134 @@
             </div>
 
             <!-- Navigasi Dropdown -->
-            <nav class="hidden lg:flex items-center gap-8">
-                <div class="relative dropdown-group">
-                    <button class="flex items-center gap-1.5 py-2 text-base font-medium hover:text-accent transition-colors">
+                        <!-- Navigasi Dropdown Bertingkat -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <div class="relative group">
+                    <button class="flex items-center gap-1.5 py-2 text-base font-semibold hover:text-accent transition-colors">
                         Kategori Utama
                         <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
-                    <div class="dropdown-menu absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 p-2">
-                        <a href="#properti" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
-                            <i data-lucide="building-2" class="w-4 h-4"></i> Properti
-                        </a>
-                        <a href="#kendaraan" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
-                            <i data-lucide="car" class="w-4 h-4"></i> Kendaraan
-                        </a>
-                        <a href="#barang" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
-                            <i data-lucide="package" class="w-4 h-4"></i> Barang & Perlengkapan
-                        </a>
-                        <a href="#jasa" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
-                            <i data-lucide="briefcase" class="w-4 h-4"></i> Jasa & Layanan
-                        </a>
-                        <a href="#lainnya" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
-                            <i data-lucide="more-horizontal" class="w-4 h-4"></i> Lainnya
-                        </a>
+                    <div class="absolute top-full left-0 mt-2 w-60 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50">
+                        <!-- Kategori Properti -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="building-2" class="w-5 h-5"></i> Properti
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Rumah & Vila Dijual</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Rumah & Vila Disewa</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Apartemen Dijual</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Apartemen Disewa</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Tanah & Kavling</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Ruko, Kantor & Gudang</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Kost & Penginapan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Properti Lainnya</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori Kendaraan -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="car" class="w-5 h-5"></i> Kendaraan
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Mobil Baru</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Mobil Bekas</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Motor Baru</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Motor Bekas</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Sepeda & Aksesoris</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Kendaraan Dinas & Komersial</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Alat Berat & Mesin</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Suku Cadang & Aksesoris Kendaraan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Kapal & Perahu</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori Barang & Perlengkapan -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="package" class="w-5 h-5"></i> Barang & Perlengkapan
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Elektronik & Gadget</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Rumah Tangga & Furnitur</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Pakaian & Aksesoris</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Mainan & Perlengkapan Anak</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Olahraga & Hobi</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Buku & Alat Tulis</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Barang Antik & Koleksi</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Hewan Peliharaan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Barang Bekas Layak Pakai</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori Lowongan & Jasa -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="briefcase" class="w-5 h-5"></i> Lowongan & Jasa
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Lowongan Kerja</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Bangunan & Renovasi</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Pendidikan & Kursus</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Teknis & Perbaikan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Kreatif & Desain</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Penerjemahan & Penulisan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Kesehatan & Kecantikan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Pindahan & Transportasi</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Jasa Lainnya</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori Bisnis & Usaha -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="handshake" class="w-5 h-5"></i> Bisnis & Usaha
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Usaha & Bisnis Dijual</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Peluang Usaha & Waralaba</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Mitra Kerjasama</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Peralatan Usaha</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Bahan Baku & Dagang</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori Lainnya -->
+                        <div class="relative sub-group">
+                            <button class="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-base hover:bg-blue-50 hover:text-accent transition-colors">
+                                <span class="flex items-center gap-2.5">
+                                    <i data-lucide="more-horizontal" class="w-5 h-5"></i> Lainnya
+                                </span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-full top-0 ml-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover/sub:block">
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Kehilangan & Penemuan</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Undangan & Pengumuman</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Permintaan Barang/Jasa</a>
+                                <a href="#" class="block px-3 py-2 rounded-lg text-sm hover:bg-blue-50 hover:text-accent transition-colors">Iklan Lainnya</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <a href="#" class="text-base font-medium hover:text-accent transition-colors">Terbaru</a>
-                <a href="#" class="text-base font-medium hover:text-accent transition-colors">Populer</a>
-                <button onclick="openModal()" class="text-base font-medium text-accent hover:text-blue-700 transition-colors flex items-center gap-1.5">
+                <a href="#" class="text-base font-semibold hover:text-accent transition-colors">Terbaru</a>
+                <a href="#" class="text-base font-semibold hover:text-accent transition-colors">Populer</a>
+                <button onclick="openModal()" class="text-base font-semibold text-accent hover:text-blue-700 transition-colors flex items-center gap-1.5">
                     Lihat Semua Iklan <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
             </nav>
@@ -485,7 +589,7 @@
         }
 
         // Tampilkan kartu iklan
-        function createAdCard(ad) {
+                function createAdCard(ad) {
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => window.open(`https://rewangiklan.my.id/iklan-saya.html?id=${ad.id}`, '_blank');
@@ -493,11 +597,11 @@
             card.innerHTML = `
                 <img src="${ad.image || 'https://picsum.photos/id/1040/400/250'}" alt="${ad.title}" class="card-image" loading="lazy">
                 <div class="p-5">
-                    <h3 class="text-base font-medium line-clamp-2 mb-2">${ad.title}</h3>
-                    <p class="text-sm text-muted line-clamp-2 mb-4">${ad.description.substring(0, 70)}...</p>
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${ad.location}</span>
-                        <span class="text-accent font-medium">${ad.category}</span>
+                    <h3 class="text-lg font-semibold line-clamp-2 mb-2.5">${ad.title}</h3>
+                    <p class="text-base text-muted line-clamp-2 mb-4">${ad.description.substring(0, 70)}...</p>
+                    <div class="flex items-center justify-between text-base">
+                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> ${ad.location}</span>
+                        <span class="text-accent font-semibold">${ad.category}</span>
                     </div>
                 </div>
             `;
