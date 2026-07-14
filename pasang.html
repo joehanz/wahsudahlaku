@@ -230,6 +230,67 @@
 
     <script src="script.js"></script>
     <script>lucide.createIcons();</script>
+        <script>
+// === Fungsi Pratinjau Gambar ===
+const imageInput = document.getElementById('imageInput');
+const previewBox = document.getElementById('previewBox');
+const previewImage = document.getElementById('previewImage');
+const previewText = document.getElementById('previewText');
+
+if (imageInput) {
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Pastikan tipe file gambar
+            if (!file.type.startsWith('image/')) {
+                alert('Silakan pilih file gambar ya bro!');
+                return;
+            }
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Tampilkan gambar, sembunyikan teks
+                previewImage.src = e.target.result;
+                previewImage.classList.remove('hidden');
+                previewText.classList.add('hidden');
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // Jika batal pilih gambar
+            previewImage.classList.add('hidden');
+            previewText.classList.remove('hidden');
+            previewImage.src = '';
+        }
+    });
+}
+
+// === Fungsi Hitung Karakter Deskripsi ===
+const description = document.getElementById('description');
+const charCount = document.getElementById('charCount');
+
+if (description && charCount) {
+    description.addEventListener('input', function() {
+        const current = this.value.length;
+        charCount.textContent = `${current} / 500`;
+        
+        // Ubah warna jika mendekati batas
+        if (current >= 450) {
+            charCount.classList.add('text-orange-500');
+            charCount.classList.remove('text-gray-500');
+        } else if (current >= 500) {
+            charCount.classList.add('text-red-500');
+            charCount.classList.remove('text-gray-500', 'text-orange-500');
+        } else {
+            charCount.classList.remove('text-orange-500', 'text-red-500');
+            charCount.classList.add('text-gray-500');
+        }
+    });
+}
+
+lucide.createIcons();
+</script>
 </body>
 
 </html>
