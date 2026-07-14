@@ -578,7 +578,48 @@
 
     <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
-<script>
+<script
+    // === FITUR INSTAL PWA & PERUBAH TOMBOL ===
+let deferredPrompt;
+const navInstall = document.getElementById('navInstall');
+const installIcon = navInstall.querySelector('i');
+const installText = navInstall.querySelector('span');
+
+// Simpan perintah instal saat browser siap
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Pastikan tampilan tombol instal normal
+    installIcon.setAttribute('data-lucide', 'download');
+    installText.textContent = 'Instal Aplikasi';
+    lucide.createIcons({context: navInstall});
+});
+
+// Saat tombol diklik
+navInstall.addEventListener('click', async () => {
+    // Jika sudah terinstal, buka halaman utama
+    if (!deferredPrompt) {
+        window.location.href = 'https://rewangiklan.my.id/';
+        return;
+    }
+
+    // Tampilkan jendela instal
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Pengguna ${outcome === 'accepted' ? 'setuju' : 'menolak'} instalasi`);
+    deferredPrompt = null;
+});
+
+// Setelah aplikasi berhasil terinstal
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    // Ubah ikon dan tulisan
+    installIcon.setAttribute('data-lucide', 'home');
+    installText.textContent = 'Beranda';
+    lucide.createIcons({context: navInstall});
+});
+
+    
 lucide.createIcons();
 
 // === KONFIGURASI ===
@@ -825,42 +866,6 @@ async function bagikanIklan(id) {
 
 // === MULAI ===
 document.addEventListener('DOMContentLoaded', ambilDataIklan
-
-                          // === MEMICU INSTAL APLIKASI PWA ===
-let deferredPrompt;
-const navInstall = document.getElementById('navInstall');
-
-// Simpan peristiwa instal saat browser siap menampilkan tombol
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    navInstall.style.opacity = '1'; // Tampilkan tombol siap instal
-});
-
-// Saat tombol Instal diklik
-navInstall.addEventListener('click', async () => {
-    if (!deferredPrompt) {
-        alert('Fitur instal aplikasi belum tersedia di browser Anda, atau aplikasi sudah terpasang.');
-        return;
-    }
-    // Tampilkan jendela instal bawaan browser
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-        console.log('Pengguna menyetujui instalasi aplikasi');
-    } else {
-        console.log('Pengguna menolak instalasi aplikasi');
-    }
-    // Hapus penyimpanan setelah selesai
-    deferredPrompt = null;
-});
-
-// Sembunyikan tombol jika aplikasi sudah terpasang
-window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    navInstall.style.opacity = '0.5';
-    navInstall.querySelector('span').textContent = 'Sudah Terpasang';
-});
 </script>
 </body>
 </html>
