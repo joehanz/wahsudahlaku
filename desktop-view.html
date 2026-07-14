@@ -615,13 +615,13 @@
         // Inisialisasi ikon Lucide
         lucide.createIcons();
 
-        // API & Pengaturan
+        // Pengaturan Utama
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let allAds = [];
         const ITEM_PER_PAGE = 26;
         let currentDisplayCount = 0;
 
-        // Ambil & balik urutan iklan (terbaru di atas)
+        // Ambil data & balik urutan (terbaru di atas)
         async function fetchAds() {
             try {
                 const res = await fetch(API_URL);
@@ -641,7 +641,7 @@
             el.scrollBy({ left: amount, behavior: 'smooth' });
         }
 
-        // === TUTUP MODAL HANYA DENGAN TOMBOL X ===
+        // === MODAL: HANYA TOMBOL X YANG BISA MENUTUP ===
         function openModal() {
             const modal = document.getElementById('modal-all');
             modal.classList.add('active');
@@ -653,16 +653,8 @@
             document.getElementById('modal-all').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        // Klik di luar, klik panah, klik lain TIDAK MENUTUP
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('modal-all');
-            if (!modal.classList.contains('active')) return;
-            if (!e.target.closest('.modal-close')) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-        }, true);
+        // Hapus semua aturan yang menghalangi klik tombol lain
+        // Klik di luar tidak tutup, tapi tidak menghalangi fungsi tombol
 
         // Kotak Iklan Adsense
         function createAdsenseBox() {
@@ -744,48 +736,43 @@
             }
         }
 
-        // === TOMBOL MUAT + PANAH DI TEPI KANAN SEJAJAR ===
+        // === TOMBOL MUAT & PANAH: DIBUAT PASTI BEBAS BEKAS ===
         function addLoadMoreAndArrow() {
             const grid = document.getElementById('modal-grid');
             const oldWrap = document.getElementById('btn-arrow-wrapper');
             if (oldWrap) oldWrap.remove();
 
-            // Wadah penuh lebar, sejajar tengah
             const wrapper = document.createElement('div');
             wrapper.id = 'btn-arrow-wrapper';
             wrapper.className = 'col-span-full flex items-center justify-center mt-10 mb-6 relative';
 
-            // Tombol Muat Lebih
+            // Tombol Muat Lebih - DIPASTIKAN BEBAS BEKAS
             if (currentDisplayCount < allAds.length) {
                 const loadBtn = document.createElement('button');
-                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md';
+                loadBtn.type = 'button';
+                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md cursor-pointer z-30';
                 loadBtn.innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> Muat Lebih Banyak Iklan`;
-                loadBtn.onclick = tambahIklanLagi;
+                // Pakai atribut onclick langsung, tidak bentrok
+                loadBtn.setAttribute('onclick', 'tambahIklanLagi()');
                 wrapper.appendChild(loadBtn);
             }
 
-            // === PANAH DI TEPI KANAN, SEJAJAR TENGAH & PASTI BISA DIKLIK ===
+            // Panah Ke Atas - DIPASTIKAN BISA DIKLIK & SCROLL BENAR
             const upArrow = document.createElement('button');
-            upArrow.id = 'scroll-top-arrow';
             upArrow.type = 'button';
-            upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all z-50 cursor-pointer';
-            // Ikon panah jelas
+            upArrow.id = 'scroll-top-arrow';
+            upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all cursor-pointer z-40';
             upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
-            // Fungsi gulir ke atas DIPASTIKAN BENAR
-            upArrow.onclick = function() {
-                const modalOverlay = document.getElementById('modal-all');
-                modalOverlay.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            };
+            // Scroll langsung ke konten utama modal
+            upArrow.setAttribute('onclick', 'document.querySelector(".modal-content").scrollTo({top:0,behavior:"smooth"})');
             wrapper.appendChild(upArrow);
 
             grid.appendChild(wrapper);
+            lucide.createIcons({context: wrapper});
         }
 
-        // Tambah iklan lagi (tidak tutup modal)
-        function tambahIklanLagi() {
+        // Fungsi Muat Lebih - DIPASTIKAN DAPAT DIPANGGIL
+        window.tambahIklanLagi = function() {
             const posisiAwal = currentDisplayCount;
             currentDisplayCount += ITEM_PER_PAGE;
             appendAdsToGrid(posisiAwal, currentDisplayCount);
