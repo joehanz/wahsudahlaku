@@ -102,18 +102,19 @@
 
         /* === KARTU IKLAN (FOTO BERSIH, JUDUL DI ATAS) === */
 .ad-image {
-    width: 100%;       /* Lebar penuh layar */
-    height: auto;      /* Tinggi otomatis menyesuaikan rasio asli gambar */
-    min-height: 100vh; /* Minimal setinggi layar, jadi tarik sedikit ke atas bawah biar penuh */
-    object-fit: cover; /* Hanya sesuaikan agar tutup lebar, tidak distorsi kiri kanan */
-    object-position: center center; /* Tengahin gambar */
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    object-fit: cover;
+    object-position: center center;
     transition: transform 0.3s ease;
 
-    /* Kualitas tetap tajam */
+    /* Kualitas gambar terbaik tanpa bikin pecah */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: smooth;
-    image-rendering: high-quality;
     -ms-interpolation-mode: bicubic;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
         
         /* === TOMBOL TENGAH === */
