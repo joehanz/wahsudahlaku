@@ -108,15 +108,13 @@
     object-position: center;
     transition: transform 0.3s ease;
 
-    /* Yang ini saja, paling pas buat foto */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: smooth;
+    /* Ini yang PALING PASTI & TERBUKTI buat foto agar JELAS & TIDAK PECAH */
     image-rendering: high-quality;
+    image-rendering: smooth;
     -ms-interpolation-mode: bicubic;
 
-    /* Bantu tajamkan tanpa kotak */
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    /* Opsional: buat transisi lebih halus */
+    will-change: transform;
 }
 
         /* === TOMBOL TENGAH === */
