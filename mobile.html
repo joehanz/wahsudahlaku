@@ -578,7 +578,7 @@
     <script>
         lucide.createIcons();
 
-// === KONFIGURASI ===
+// === KONFIGURASI UTAMA ===
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 const ITEM_PER_PAGE = 10;
 let allAds = [];
@@ -587,7 +587,7 @@ let currentDisplayCount = 0;
 let activeAd = null;
 let editMode = false;
 
-// === ELEMEN ===
+// === ELEMEN HALAMAN ===
 const body = document.body;
 const feedContainer = document.getElementById('feedContainer');
 const searchBar = document.getElementById('searchBar');
@@ -603,56 +603,56 @@ const btnKirim = document.getElementById('btnKirim');
 const btnEdit = document.getElementById('btnEdit');
 const btnHapus = document.getElementById('btnHapus');
 
-// === FITUR INSTAL PWA ===
+// === FITUR INSTAL APLIKASI PWA ===
 let deferredPrompt;
+const installIcon = navInstall.querySelector('i');
+const installText = navInstall.querySelector('span');
 
-window.addEventListener('beforeinstallprompt', function(e) {
+window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    navInstall.querySelector('i').setAttribute('data-lucide', 'download');
-    navInstall.querySelector('span').textContent = 'Instal Aplikasi';
+    installIcon.setAttribute('data-lucide', 'download');
+    installText.textContent = 'Instal Aplikasi';
     lucide.createIcons({ context: navInstall });
 });
 
-navInstall.addEventListener('click', async function() {
+navInstall.addEventListener('click', async () => {
     if (!deferredPrompt) {
         window.location.href = 'https://rewangiklan.my.id/';
         return;
     }
     deferredPrompt.prompt();
-    const hasil = await deferredPrompt.userChoice;
-    console.log('Hasil instalasi:', hasil.outcome);
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Status instalasi: ${outcome}`);
     deferredPrompt = null;
 });
 
-window.addEventListener('appinstalled', function() {
+window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
-    navInstall.querySelector('i').setAttribute('data-lucide', 'home');
-    navInstall.querySelector('span').textContent = 'Beranda';
+    installIcon.setAttribute('data-lucide', 'home');
+    installText.textContent = 'Beranda';
     lucide.createIcons({ context: navInstall });
 });
 
-// === AMBIL DATA IKLAN ===
+// === AMBIL DATA IKLAN DARI SERVER ===
 async function ambilDataIklan() {
     try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        allAds = data.filter(function(item) {
-            return item.status === 'aktif';
-        }).reverse();
-        displayAds = allAds.slice();
+        allAds = data.filter(item => item.status === 'aktif').reverse();
+        displayAds = [...allAds];
         tampilkanAwal();
         feedContainer.addEventListener('scroll', deteksiIklanAktif);
     } catch (err) {
-        feedContainer.innerHTML = '<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat iklan</p></div>';
+        feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat iklan, coba lagi nanti</p></div>`;
         lucide.createIcons({ context: feedContainer });
     }
 }
 
-// === DETEKSI IKLAN YANG SEDANG TERLIHAT ===
+// === DETEKSI IKLAN YANG SEDANG TERLIHAT DI LAYAR ===
 function deteksiIklanAktif() {
-    const daftarKartu = document.querySelectorAll('.ad-card');
-    daftarKartu.forEach(function(kartu, indeks) {
+    const kartuList = document.querySelectorAll('.ad-card');
+    kartuList.forEach((kartu, indeks) => {
         const posisi = kartu.getBoundingClientRect();
         if (posisi.top >= 0 && posisi.top <= window.innerHeight / 2) {
             activeAd = displayAds[indeks];
@@ -660,7 +660,7 @@ function deteksiIklanAktif() {
     });
 }
 
-// === TAMPILKAN DAFTAR AWAL ===
+// === TAMPILKAN DAFTAR IKLAN PERTAMA ===
 function tampilkanAwal() {
     feedContainer.innerHTML = '';
     currentDisplayCount = 0;
@@ -668,51 +668,61 @@ function tampilkanAwal() {
     tambahTombolMuat();
 }
 
-// === TAMBAH IKLAN KE HALAMAN ===
+// === TAMBAH IKLAN KE DAFTAR ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
         const iklan = displayAds[i];
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
-        kartu.innerHTML = '<h3 class="ad-title-top">' + (iklan.title || 'Tanpa Judul') + '</h3>' +
-            '<img src="' + (iklan.image || 'https://picsum.photos/id/1040/800/1400') + '" alt="' + (iklan.title || 'Iklan') + '" class="ad-image" loading="lazy">' +
-                '<div class="side-actions">' +
-                '<div class="side-btn" onclick="bukaFormIklan()"><i data-lucide="plus-circle"></i><span>Pasang Iklan</span></div>' +
-                '<div class="side-btn" onclick="bagikanIklan(\'' + (iklan.id || '') + '\')"><i data-lucide="share-2"></i><span>Bagikan</span></div>' +
-                '<div class="side-btn" onclick="bukaDetailIklanSaya()"><i data-lucide="image"></i><span>Iklan Saya</span></div>' +
-            '</div>';
+        kartu.innerHTML = `
+            <h3 class="ad-title-top">${iklan.title || 'Tanpa Judul'}</h3>
+            <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
+            <div class="center-action" onclick="bukaDetail()">
+                <i data-lucide="play"></i>
+            </div>
+            <div class="side-actions">
+                <div class="side-btn" onclick="bukaFormIklan()">
+                    <i data-lucide="plus-circle"></i>
+                    <span>Pasang Iklan</span>
+                </div>
+                <div class="side-btn" onclick="bagikanIklan('${iklan.id}')">
+                    <i data-lucide="share-2"></i>
+                    <span>Bagikan</span>
+                </div>
+                <div class="side-btn" onclick="bukaDetailIklanSaya()">
+                    <i data-lucide="image"></i>
+                    <span>Iklan Saya</span>
+                </div>
+            </div>
+        `;
         feedContainer.appendChild(kartu);
     }
     currentDisplayCount = batas;
     lucide.createIcons({ context: feedContainer });
-    if (displayAds.length > 0) {
-        activeAd = displayAds[0];
-    }
+    if (displayAds.length > 0) activeAd = displayAds[0];
 }
 
-// === TOMBOL MUAT LEBIH BANYAK ===
+// === TOMBOL MUAT LEBIH BANYAK IKLAN ===
 function tambahTombolMuat() {
     const tombolLama = document.getElementById('load-more-wrap');
-    if (tombolLama) {
-        tombolLama.remove();
-    }
-    if (currentDisplayCount >= displayAds.length) {
-        return;
-    }
-    const wadah = document.createElement('div');
-    wadah.id = 'load-more-wrap';
-    wadah.className = 'load-more-wrapper';
-    wadah.innerHTML = '<button class="load-more-btn" onclick="muatLagi()"><i data-lucide="plus-circle"></i> Muat Lebih Banyak</button>';
-    feedContainer.appendChild(wadah);
-    lucide.createIcons({ context: wadah });
+    if (tombolLama) tombolLama.remove();
+    if (currentDisplayCount >= displayAds.length) return;
+    
+    const wrap = document.createElement('div');
+    wrap.id = 'load-more-wrap';
+    wrap.className = 'load-more-wrapper';
+    wrap.innerHTML = `<button class="load-more-btn" onclick="muatLagi()"><i data-lucide="plus-circle"></i> Muat Lebih Banyak</button>`;
+    feedContainer.appendChild(wrap);
+    lucide.createIcons({ context: wrap });
 }
 
 function muatLagi() {
     const tombol = document.querySelector('.load-more-btn');
     tombol.disabled = true;
-    tombol.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Memuat...';
-    setTimeout(function() {
+    tombol.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> Memuat...`;
+    
+    setTimeout(() => {
         tambahIklan(currentDisplayCount, currentDisplayCount + ITEM_PER_PAGE);
         tambahTombolMuat();
     }, 500);
@@ -720,21 +730,21 @@ function muatLagi() {
 
 // === BUKA DETAIL IKLAN SAYA ===
 function bukaDetailIklanSaya() {
-    if (!activeAd) {
-        alert('Data iklan tidak ditemukan');
-        return;
-    }
-    document.getElementById('detailImg').style.backgroundImage = 'url(' + (activeAd.image || 'https://picsum.photos/id/1040/800/1400') + ')';
+    if (!activeAd) return alert('Data iklan tidak ditemukan');
+    
+    document.getElementById('detailImg').style.backgroundImage = `url(${activeAd.image || 'https://picsum.photos/id/1040/800/1400'})`;
     document.getElementById('detailTitle').textContent = activeAd.title || 'Tanpa Judul';
     document.getElementById('detailCat').textContent = activeAd.category || 'Lainnya';
-    document.getElementById('detailLoc').textContent = activeAd.location || 'Tidak diketahui';
+    document.getElementById('detailLoc').textContent = activeAd.location || 'Lokasi tidak diketahui';
     document.getElementById('detailViews').textContent = activeAd.views || '0';
-    document.getElementById('detailDesc').textContent = activeAd.description || 'Tidak ada deskripsi';
-    document.getElementById('btnWa').onclick = function() {
+    document.getElementById('detailDesc').textContent = activeAd.description || 'Tidak ada deskripsi tambahan';
+    
+    document.getElementById('btnWa').onclick = () => {
         const nomor = activeAd.whatsapp.toString().replace(/\D/g, '');
-        const pesan = encodeURIComponent('Halo, saya tertarik dengan iklan "' + activeAd.title + '" di Rewang Iklan.');
-        window.open('https://wa.me/' + nomor + '?text=' + pesan, '_blank');
+        const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" di Rewang Iklan.`);
+        window.open(`https://wa.me/${nomor}?text=${pesan}`, '_blank');
     };
+    
     detailOverlay.classList.add('show');
 }
 
@@ -742,27 +752,28 @@ function tutupDetailIklan() {
     detailOverlay.classList.remove('show');
 }
 
-// === BUKA FORM EDIT ===
+// === BUKA FORM EDIT IKLAN ===
 function bukaEditIklan() {
     tutupDetailIklan();
-    if (!activeAd) {
-        return;
-    }
+    if (!activeAd) return;
+    
     editMode = true;
     formTitle.textContent = 'Edit Iklan';
     btnKirim.style.display = 'none';
     btnEdit.classList.add('show');
     btnHapus.classList.add('show');
+    
     document.getElementById('title').value = activeAd.title || '';
     document.getElementById('category').value = activeAd.category || '';
     document.getElementById('location').value = activeAd.location || '';
     document.getElementById('whatsapp').value = activeAd.whatsapp || '';
     document.getElementById('description').value = activeAd.description || '';
-    document.getElementById('charCount').textContent = String((activeAd.description || '').length) + ' / 500';
+    document.getElementById('charCount').textContent = `${activeAd.description?.length || 0} / 500`;
+    
     adFormOverlay.classList.add('show');
 }
 
-// === BUKA FORM PASANG BARU ===
+// === BUKA FORM PASANG IKLAN BARU ===
 function bukaFormIklan() {
     editMode = false;
     formTitle.textContent = 'Pasang Iklan Baru';
@@ -771,6 +782,7 @@ function bukaFormIklan() {
     btnHapus.classList.remove('show');
     document.getElementById('adForm').reset();
     document.getElementById('charCount').textContent = '0 / 500';
+    
     adFormOverlay.classList.add('show');
 }
 
@@ -779,70 +791,70 @@ function tutupFormIklan() {
 }
 
 // === FITUR PENCARIAN ===
-navSearch.addEventListener('click', function() {
+navSearch.addEventListener('click', () => {
     searchBar.classList.toggle('show');
     if (searchBar.classList.contains('show')) {
-        setTimeout(function() {
-            searchInput.focus();
-        }, 100);
+        setTimeout(() => searchInput.focus(), 100);
     } else {
         searchInput.value = '';
         tampilkanAwal();
     }
 });
 
-searchInput.addEventListener('input', function() {
+searchInput.addEventListener('input', () => {
     const kataKunci = searchInput.value.trim().toLowerCase();
     searchClear.classList.toggle('show', kataKunci !== '');
+    
     if (!kataKunci) {
-        displayAds = allAds.slice();
+        displayAds = [...allAds];
         tampilkanAwal();
         return;
     }
-    displayAds = allAds.filter(function(iklan) {
-        return (iklan.title || '').toLowerCase().indexOf(kataKunci) !== -1 ||
-               (iklan.category || '').toLowerCase().indexOf(kataKunci) !== -1 ||
-               (iklan.location || '').toLowerCase().indexOf(kataKunci) !== -1 ||
-               (iklan.description || '').toLowerCase().indexOf(kataKunci) !== -1;
+    
+    displayAds = allAds.filter(iklan => {
+        return (iklan.title || '').toLowerCase().includes(kataKunci)
+            || (iklan.category || '').toLowerCase().includes(kataKunci)
+            || (iklan.location || '').toLowerCase().includes(kataKunci)
+            || (iklan.description || '').toLowerCase().includes(kataKunci);
     });
+    
     tampilkanAwal();
+    
     if (displayAds.length === 0) {
-        feedContainer.innerHTML = '<div class="empty-state"><i data-lucide="search-x"></i><p>Tidak ditemukan iklan untuk "' + kataKunci + '"</p></div>';
+        feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="search-x"></i><p>Tidak ditemukan iklan untuk kata kunci "${kataKunci}"</p></div>`;
         lucide.createIcons({ context: feedContainer });
     }
 });
 
-searchClear.addEventListener('click', function() {
+searchClear.addEventListener('click', () => {
     searchInput.value = '';
     tampilkanAwal();
 });
 
 // === TOMBOL KEMBALI KE ATAS ===
-navTop.addEventListener('click', function() {
+navTop.addEventListener('click', () => {
     feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// === MODE LAYAR PENUH ===
+// === MODE TAMPILAN PENUH ===
 function bukaDetail() {
     body.classList.add('play-mode');
-    setTimeout(function() {
-        document.addEventListener('click', function() {
-            body.classList.remove('play-mode');
-        }, { once: true });
+    setTimeout(() => {
+        document.addEventListener('click', () => body.classList.remove('play-mode'), { once: true });
     }, 100);
 }
 
 // === FITUR BAGIKAN ===
 async function bagikanIklan(id) {
-    if (!activeAd) {
-        return;
-    }
-    const tautan = 'https://rewangiklan.my.id/iklan-saya.html?id=' + id;
+    if (!activeAd) return;
+    
+    const tautan = `https://rewangiklan.my.id/iklan-saya.html?id=${id}`;
     const dataBerbagi = {
         title: activeAd.title || 'Iklan dari Rewang Iklan',
-        text: 'Lihat iklan menarik ini: ' + activeAd.title,
+        text: `Lihat iklan menarik ini: ${activeAd.title}`,
         url: tautan
     };
+    
     try {
         if (navigator.share) {
             await navigator.share(dataBerbagi);
@@ -854,13 +866,13 @@ async function bagikanIklan(id) {
         try {
             await navigator.clipboard.writeText(tautan);
             alert('Tautan iklan sudah disalin!');
-        } catch (err2) {
-            alert('Maaf, perangkat tidak mendukung berbagi.');
+        } catch {
+            alert('Maaf, perangkat Anda tidak mendukung berbagi.');
         }
     }
 }
 
-// === MULAI PROGRAM ===
+// === MULAI MEMUAT SAAT HALAMAN SIAP ===
 document.addEventListener('DOMContentLoaded', ambilDataIklan);
     </script>
 
