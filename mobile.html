@@ -680,7 +680,7 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
-            <h3 class="ad-title-top" style="text-align:center; font-weight:normal;">${judul}</h3>
+            <h3 class="ad-title-top" style="text-align: center; font-weight: normal; background: transparent; margin: 16px auto 0 auto; color: #222;">${judul}</h3>
             <img src="${gambar}" alt="${judul}" class="ad-image" loading="lazy">
             <div class="side-actions">
                 <div class="side-btn" onclick="bukaFormIklan()">
@@ -705,6 +705,8 @@ function tambahIklan(dari, sampai) {
         activeAd = displayAds[0];
     }
 }
+
+    
 // === TOMBOL MUAT LEBIH BANYAK ===
 function tambahTombolMuat() {
     const tombolLama = document.getElementById('load-more-wrap');
