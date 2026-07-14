@@ -620,13 +620,14 @@
         let allAds = [];
         const ITEM_PER_PAGE = 26;
         let currentDisplayCount = 0;
+        let scrollTimeout;
 
-        // Ambil & balik urutan iklan
+        // Ambil & balik urutan iklan (terbaru di atas)
         async function fetchAds() {
             try {
                 const res = await fetch(API_URL);
                 allAds = await res.json();
-                allAds = allAds.reverse(); // Iklan terbaru di atas
+                allAds = allAds.reverse();
                 renderAllSections();
                 startBannerRotation();
             } catch (err) {
@@ -647,31 +648,40 @@
             document.body.style.overflow = 'hidden';
             currentDisplayCount = 0;
             renderModalGrid();
+            setupScrollArrow(); // Siapkan panah saat modal terbuka
         }
         function closeModal() {
             document.getElementById('modal-all').classList.remove('active');
             document.body.style.overflow = 'auto';
+            // Hapus panah saat modal ditutup
+            const arrow = document.getElementById('scroll-top-arrow');
+            if (arrow) arrow.remove();
         }
         function closeModalOutside(e) {
-            if (!document.querySelector('.modal-content').contains(e.target)) closeModal();
+            // HANYA tutup jika klik di luar modal & bukan tombol lain
+            if (!document.querySelector('.modal-content')?.contains(e.target)) {
+                // Pastikan bukan klik tombol panah atau muat lebih
+                if (!e.target.closest('#scroll-top-arrow') && !e.target.closest('#load-more-button')) {
+                    closeModal();
+                }
+            }
         }
 
-        // Kotak Iklan Adsense (DIPERBAIKI agar tidak macet)
+        // Kotak Iklan Adsense
         function createAdsenseBox() {
             const box = document.createElement('div');
             box.className = 'card flex items-center justify-center bg-gray-50 p-3 rounded-xl';
             box.innerHTML = `
-                <div class="adsense-container">
+                <div class="adsense-wrapper">
                     <ins class="adsbygoogle"
                          style="display:inline-block;width:250px;height:250px"
                          data-ad-client="ca-pub-6458870303612779"
                          data-ad-slot="9441731668"></ins>
                 </div>
             `;
-            // Jalankan iklan setelah elemen siap
             setTimeout(() => {
                 if (window.adsbygoogle) adsbygoogle.push({});
-            }, 100);
+            }, 150);
             return box;
         }
 
@@ -681,12 +691,12 @@
             card.className = 'card';
             card.onclick = () => window.open(`https://rewangiklan.my.id/iklan-saya.html?id=${ad.id}`, '_blank');
             card.innerHTML = `
-                <img src="${ad.image || 'https://picsum.photos/id/1040/400/250'}" alt="${ad.title}" class="card-image" loading="lazy">
+                <img src="${ad.image || 'https://picsum.photos/id/1040/400/250'}" alt="${ad.title || 'Iklan'}" class="card-image" loading="lazy">
                 <div class="p-5">
-                    <h3 class="text-lg font-semibold line-clamp-2 mb-2.5">${ad.title}</h3>
-                    <p class="text-base text-gray-600 line-clamp-2 mb-4">${ad.description?.substring(0,70) || 'Lihat detail untuk info lengkap'}...</p>
+                    <h3 class="text-lg font-semibold line-clamp-2 mb-2.5">${ad.title || 'Tanpa Judul'}</h3>
+                    <p class="text-base text-gray-600 line-clamp-2 mb-4">${ad.description?.substring(0,70) || 'Klik untuk lihat detail lengkap'}...</p>
                     <div class="flex items-center justify-between text-base">
-                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> ${ad.location || 'Lokasi belum ada'}</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> ${ad.location || 'Lokasi tidak diketahui'}</span>
                         <span class="text-blue-600 font-semibold">${ad.category || 'Lainnya'}</span>
                     </div>
                 </div>
@@ -695,7 +705,7 @@
             return card;
         }
 
-        // Render tampilan depan per kategori
+        // Tampilan depan per kategori
         function renderAllSections() {
             const properti = allAds.filter(a => a.category === 'Properti');
             const jasa = allAds.filter(a => a.category === 'Jasa');
@@ -713,7 +723,7 @@
             renderList('lainnya-container', lainnya, 'Lainnya');
         }
 
-        // Render modal dengan paginasi & iklan
+        // Tampilkan awal modal
         function renderModalGrid() {
             const grid = document.getElementById('modal-grid');
             grid.innerHTML = '';
@@ -722,12 +732,12 @@
                 return;
             }
             currentDisplayCount = ITEM_PER_PAGE;
-            appendAds(0, currentDisplayCount);
-            addLoadMoreBtn();
+            appendAdsToGrid(0, currentDisplayCount);
+            addLoadMoreButton();
         }
 
-        // Tambah iklan ke grid + sisipkan Adsense tiap 5
-        function appendAds(start, end) {
+        // Tambah iklan ke bawah + sisipkan Adsense tiap 5
+        function appendAdsToGrid(start, end) {
             const grid = document.getElementById('modal-grid');
             let hitung = 0;
             for (let i = start; i < end && i < allAds.length; i++) {
@@ -737,43 +747,90 @@
             }
         }
 
-        // Tombol muat lebih banyak
-        function addLoadMoreBtn() {
+        // Tombol muat lebih banyak + panah sejajar di kanan
+        function addLoadMoreButton() {
             const grid = document.getElementById('modal-grid');
-            const old = document.getElementById('load-more-btn');
-            if (old) old.remove();
+            const oldBtn = document.getElementById('load-more-button');
+            const oldArrow = document.getElementById('scroll-top-arrow');
+            if (oldBtn) oldBtn.remove();
+            if (oldArrow) oldArrow.remove();
+
+            // Baris wadah tombol + panah
+            const btnRow = document.createElement('div');
+            btnRow.className = 'col-span-full flex items-center justify-center gap-4 mt-8 mb-4 relative';
+
+            // Tombol Muat Lebih
             if (currentDisplayCount < allAds.length) {
-                const btnWrap = document.createElement('div');
-                btnWrap.id = 'load-more-btn';
-                btnWrap.className = 'col-span-full text-center mt-6 mb-2';
-                btnWrap.innerHTML = `<button onclick="loadMoreAds()" class="bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Muat Lebih Banyak Iklan</button>`;
-                grid.appendChild(btnWrap);
-                lucide.createIcons({context: btnWrap});
+                const loadBtn = document.createElement('button');
+                loadBtn.id = 'load-more-button';
+                loadBtn.className = 'bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2';
+                loadBtn.innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> Muat Lebih Banyak Iklan`;
+                loadBtn.onclick = tambahIklanLagi;
+                btnRow.appendChild(loadBtn);
             }
+
+            // Panah ke Atas (sejajar di sebelah kanan)
+            const upArrow = document.createElement('button');
+            upArrow.id = 'scroll-top-arrow';
+            upArrow.className = 'p-3 rounded-full bg-white border border-gray-200 shadow-md hover:bg-blue-50 hover:border-blue-500 transition-all opacity-0 invisible absolute left-full ml-4';
+            upArrow.innerHTML = `<i data-lucide="arrow-up" class="w-5 h-5 text-blue-600"></i>`;
+            upArrow.onclick = () => {
+                const modalContent = document.querySelector('.modal-content');
+                modalContent.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            btnRow.appendChild(upArrow);
+            lucide.createIcons({context: btnRow});
+
+            grid.appendChild(btnRow);
         }
 
-        // Tambah 26 iklan lagi
-        function loadMoreAds() {
-            const next = currentDisplayCount;
+        // Tampilkan/sembunyikan panah saat scroll modal
+        function setupScrollArrow() {
+            const modalContent = document.querySelector('.modal-content');
+            if (!modalContent) return;
+
+            modalContent.onscroll = () => {
+                const arrow = document.getElementById('scroll-top-arrow');
+                if (!arrow) return;
+
+                clearTimeout(scrollTimeout);
+                
+                // Tampilkan panah jika sudah ke bawah, sembunyi jika perlahan ke atas
+                if (modalContent.scrollTop > 300) {
+                    arrow.classList.remove('opacity-0', 'invisible');
+                    arrow.classList.add('opacity-100', 'visible');
+                } else {
+                    scrollTimeout = setTimeout(() => {
+                        arrow.classList.add('opacity-0', 'invisible');
+                        arrow.classList.remove('opacity-100', 'visible');
+                    }, 400);
+                }
+            };
+        }
+
+        // Tambah iklan lagi (tidak tutup modal)
+        function tambahIklanLagi() {
+            const posisiAwal = currentDisplayCount;
             currentDisplayCount += ITEM_PER_PAGE;
-            appendAds(next, currentDisplayCount);
-            addLoadMoreBtn();
+            appendAdsToGrid(posisiAwal, currentDisplayCount);
+            addLoadMoreButton();
+            setupScrollArrow(); // Perbarui pengaturan panah
         }
 
         // Rotasi banner
         function startBannerRotation() {
             if (!allAds.length) return;
-            const update = () => {
-                const ad = allAds[Math.floor(Math.random()*allAds.length)];
+            const updateBanner = () => {
+                const ad = allAds[Math.floor(Math.random() * allAds.length)];
                 document.getElementById('banner-image').src = ad.image || 'https://picsum.photos/id/1040/1200/600';
-                document.getElementById('banner-title').textContent = ad.title;
+                document.getElementById('banner-title').textContent = ad.title || 'Iklan Terbaru';
                 document.getElementById('banner-desc').textContent = ad.description?.substring(0,130) + '...' || 'Klik untuk lihat detail lengkap';
             };
-            update();
-            setInterval(update, 10000);
+            updateBanner();
+            setInterval(updateBanner, 10000);
         }
 
-        // Tampil pesan error
+        // Pesan error
         function showEmptyState() {
             ['properti-container','jasa-container','lainnya-container'].forEach(id => {
                 document.getElementById(id).innerHTML = `<div class="card-empty"><i data-lucide="alert-triangle" class="w-10 h-10 text-gray-400 mb-3"></i><p class="text-base text-gray-500">Gagal memuat iklan</p></div>`;
