@@ -21,12 +21,11 @@
             color: #fff;
         }
 
-        /* === KONFIGURASI UTAMA === */
         :root {
             --item-per-page: 10;
         }
 
-        /* === KONTAINER DAFTAR IKLAN === */
+        /* === KONTAINER DAFTAR === */
         .feed-container {
             height: 100%;
             overflow-y: scroll;
@@ -34,15 +33,10 @@
             scroll-behavior: smooth;
             padding-bottom: 100px;
         }
-        .feed-container::-webkit-scrollbar {
-            display: none;
-        }
-        .feed-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .feed-container::-webkit-scrollbar { display: none; }
+        .feed-container { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === KARTU IKLAN === */
+        /* === KARTU IKLAN (FOTO BERSIH, JUDUL DI ATAS) === */
         .ad-card {
             position: relative;
             width: 100%;
@@ -51,14 +45,28 @@
             overflow: hidden;
             background: #111827;
         }
+        .ad-title-top {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 80px;
+            z-index: 5;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+        }
         .ad-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             transition: transform 0.3s ease;
+            /* Gambar tetap tajam */
+            image-rendering: crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
         }
 
-        /* === TOMBOL LIHAT DETAIL TENGAH === */
+        /* === TOMBOL TENGAH === */
         .center-action {
             position: absolute;
             top: 50%;
@@ -76,22 +84,11 @@
             z-index: 10;
             box-shadow: 0 0 30px rgba(0,0,0,0.4);
         }
-        .center-action i {
-            color: #2563EB;
-            width: 32px;
-            height: 32px;
-            margin-left: 4px;
-        }
-        .center-action:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-            background: #fff;
-        }
-        .play-mode .center-action {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .center-action i { color: #2563EB; width: 32px; height: 32px; margin-left: 4px; }
+        .center-action:hover { transform: translate(-50%, -50%) scale(1.1); background: #fff; }
+        .play-mode .center-action { opacity: 0; pointer-events: none; }
 
-        /* === IKON AKSI KANAN === */
+        /* === TOMBOL SISI KANAN === */
         .side-actions {
             position: absolute;
             right: 16px;
@@ -103,10 +100,7 @@
             z-index: 10;
             transition: opacity 0.3s ease;
         }
-        .play-mode .side-actions {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .play-mode .side-actions { opacity: 0; pointer-events: none; }
         .side-btn {
             display: flex;
             flex-direction: column;
@@ -115,90 +109,29 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        .side-btn i {
-            width: 28px;
-            height: 28px;
-            color: #fff;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-        .side-btn span {
-            font-size: 11px;
-            color: #fff;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-        }
-        .side-btn:hover {
-            transform: scale(1.1);
-        }
+        .side-btn i { width: 28px; height: 28px; color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .side-btn span { font-size: 11px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .side-btn:hover { transform: scale(1.1); }
 
-        /* === INFO IKLAN BAWAH KIRI === */
-        .ad-info {
-            position: absolute;
-            left: 16px;
-            right: 80px;
-            bottom: 90px;
-            z-index: 10;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .play-mode .ad-info {
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-        }
-        .ad-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-        }
-        .ad-category {
-            font-size: 14px;
-            font-weight: 500;
-            color: #93C5FD;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-        }
-        .ad-desc {
-            font-size: 14px;
-            line-height: 1.5;
-            color: #E5E7EB;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-        }
-
-        /* === PANEL INFO LENGKAP === */
-        .info-panel {
+        /* === PANEL DETAIL IKLAN SAYA === */
+        .detail-overlay {
             position: fixed;
-            bottom: 0;
-            left: 0;
+            top: 0;
             right: 0;
+            width: 100%;
+            height: 100%;
             background: #111827;
-            border-radius: 20px 20px 0 0;
-            padding: 24px 20px 40px;
-            transform: translateY(100%);
+            transform: translateX(100%);
             transition: transform 0.3s ease;
             z-index: 100;
-            max-height: 75vh;
             overflow-y: auto;
+            padding-bottom: 90px;
         }
-        .info-panel.show {
-            transform: translateY(0);
-        }
-        .info-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        .info-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #fff;
-        }
-        .info-close {
+        .detail-overlay.show { transform: translateX(0); }
+        .detail-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
             background: #1F2937;
             border: none;
             width: 36px;
@@ -209,48 +142,35 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 10;
         }
-        .info-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 14px;
-            font-size: 15px;
-            color: #D1D5DB;
+        .detail-close:hover { background: #374151; color: #fff; }
+        .detail-main-img {
+            width: 100%;
+            height: 280px;
+            background: #1F2937;
+            background-size: cover;
+            background-position: center;
+            margin-top: 60px;
         }
-        .info-row i {
-            width: 18px;
-            height: 18px;
-            color: #2563EB;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-        .info-full {
-            line-height: 1.6;
-            color: #D1D5DB;
-            margin-top: 10px;
-            white-space: pre-line;
-        }
-        .wa-btn {
-            margin-top: 20px;
+        .detail-content { padding: 20px; }
+        .detail-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .detail-desc { line-height: 1.6; color: #D1D5DB; margin: 16px 0 24px; white-space: pre-line; }
+        .btn-wa, .btn-manage {
             width: 100%;
             padding: 14px;
-            background: #25D366;
-            color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            margin-bottom: 10px;
             transition: background 0.2s ease;
         }
-        .wa-btn:hover {
-            background: #1DA851;
-        }
+        .btn-wa { background: #25D366; color: white; }
+        .btn-wa:hover { background: #1DA851; }
+        .btn-manage { background: #F59E0B; color: white; }
+        .btn-manage:hover { background: #D97706; }
 
         /* === TOMBOL MUAT LEBIH BANYAK === */
         .load-more-wrapper {
@@ -273,15 +193,8 @@
             transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
-        .load-more-btn:hover {
-            background: #1D4ED8;
-            transform: translateY(-2px);
-        }
-        .load-more-btn:disabled {
-            background: #4B5563;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .load-more-btn:hover { background: #1D4ED8; transform: translateY(-2px); }
+        .load-more-btn:disabled { background: #4B5563; cursor: not-allowed; transform: none; }
         .empty-state {
             width: 100%;
             height: 100vh;
@@ -295,11 +208,7 @@
             padding: 20px;
             scroll-snap-align: start;
         }
-        .empty-state i {
-            width: 64px;
-            height: 64px;
-            opacity: 0.5;
-        }
+        .empty-state i { width: 64px; height: 64px; opacity: 0.5; }
 
         /* === NAVIGASI BAWAH === */
         .bottom-nav {
@@ -308,17 +217,14 @@
             left: 0;
             right: 0;
             height: 70px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 9;
             transition: opacity 0.3s ease;
         }
-        .play-mode .bottom-nav {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .play-mode .bottom-nav { opacity: 0; pointer-events: none; }
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -328,40 +234,11 @@
             cursor: pointer;
             transition: color 0.2s ease;
         }
-        .nav-item.active {
-            color: #fff;
-        }
-        .nav-item i {
-            width: 22px;
-            height: 22px;
-        }
-        .nav-item span {
-            font-size: 12px;
-        }
+        .nav-item.active { color: #fff; }
+        .nav-item i { width: 22px; height: 22px; }
+        .nav-item span { font-size: 12px; }
 
-        /* === PENCARIAN === */
-        .search-toggle {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 51;
-            background: rgba(17,24,39,0.7);
-            backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.3s ease;
-        }
-        .play-mode .search-toggle {
-            opacity: 0;
-            pointer-events: none;
-        }
+        /* === KOTAK PENCARIAN DARI ATAS === */
         .search-bar {
             position: fixed;
             top: 16px;
@@ -379,10 +256,7 @@
             transition: all 0.3s ease;
             z-index: 50;
         }
-        .search-bar.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
+        .search-bar.show { transform: translateY(0); opacity: 1; }
         .search-bar input {
             flex: 1;
             background: transparent;
@@ -391,15 +265,8 @@
             color: #fff;
             font-size: 15px;
         }
-        .search-bar input::placeholder {
-            color: #6B7280;
-        }
-        .search-bar i {
-            color: #6B7280;
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
+        .search-bar input::placeholder { color: #6B7280; }
+        .search-bar i { color: #6B7280; width: 20px; height: 20px; flex-shrink: 0; }
         .search-clear {
             background: none;
             border: none;
@@ -408,9 +275,90 @@
             padding: 4px;
             display: none;
         }
-        .search-clear.show {
-            display: block;
+        .search-clear.show { display: block; }
+
+        /* === FORM PASANG IKLAN DARI KANAN + TOMBOL X === */
+        .ad-form-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #111827;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 101;
+            overflow-y: auto;
+            padding-bottom: 90px;
         }
+        .ad-form-overlay.show { transform: translateX(0); }
+        .form-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #1F2937;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #9CA3AF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .form-close:hover { background: #374151; color: #fff; }
+        .form-header {
+            padding: 60px 20px 20px;
+            border-bottom: 1px solid #374151;
+        }
+        .form-header h4 { font-size: 18px; font-weight: 600; }
+        .form-content { padding: 20px; }
+        .form-layout { display: flex; flex-direction: column; gap: 20px; }
+        .upload-side, .data-side { display: flex; flex-direction: column; gap: 12px; }
+        .upload-title { font-size: 15px; font-weight: 500; }
+        .help { font-size: 12px; color: #9CA3AF; }
+        .preview-box {
+            width: 100%;
+            height: 180px;
+            background: #1F2937;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .preview-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 14px; color: #E5E7EB; }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 12px;
+            background: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .char-count { font-size: 12px; color: #9CA3AF; text-align: right; }
+        .form-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .form-buttons button {
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .btn-kirim { background: #2563EB; color: white; }
+        .btn-kirim:hover { background: #1D4ED8; }
+        .btn-edit { background: #10B981; color: white; display: none; }
+        .btn-edit.show { display: block; }
+        .btn-hapus { background: #EF4444; color: white; display: none; }
+        .btn-hapus.show { display: block; }
+        .status-box { margin-top: 15px; padding: 12px; border-radius: 8px; font-size: 14px; display: none; }
 
         /* === PETUNJUK === */
         .play-hint {
@@ -426,17 +374,10 @@
             pointer-events: none;
             z-index: 8;
         }
-        .play-mode .play-hint {
-            opacity: 1;
-        }
+        .play-mode .play-hint { opacity: 1; }
     </style>
 </head>
 <body>
-
-    <!-- Tombol Buka Pencarian -->
-    <button class="search-toggle" id="searchToggle">
-        <i data-lucide="search"></i>
-    </button>
 
     <!-- Kotak Pencarian -->
     <div class="search-bar" id="searchBar">
@@ -455,301 +396,356 @@
         </div>
     </div>
 
-    <!-- Panel Info Lengkap -->
-    <div class="info-panel" id="infoPanel">
-        <div class="info-header">
-            <h3 class="info-title" id="panelTitle">Detail Iklan</h3>
-            <button class="info-close" onclick="tutupPanelInfo()">
-                <i data-lucide="x"></i>
-            </button>
-        </div>
-        <div id="panelContent"></div>
-        <button class="wa-btn" id="waBtn" onclick="hubungiPenjual()">
-            <i data-lucide="message-circle"></i>
-            Hubungi Lewat WhatsApp
+    <!-- PANEL DETAIL IKLAN SAYA -->
+    <div class="detail-overlay" id="detailOverlay">
+        <button class="detail-close" onclick="tutupDetailIklan()">
+            <i data-lucide="x"></i>
         </button>
+        <div class="detail-main-img" id="detailImg"></div>
+        <div class="detail-content">
+            <h2 class="detail-title" id="detailTitle"></h2>
+            <p style="color:#9CA3AF; margin-bottom:8px;">Kategori: <span id="detailCat"></span></p>
+            <p style="color:#9CA3AF; margin-bottom:8px;">📍 <span id="detailLoc"></span></p>
+            <p style="color:#9CA3AF; margin-bottom:12px;">👁️ Dilihat <span id="detailViews"></span> kali</p>
+            <div class="detail-desc" id="detailDesc"></div>
+            <button class="btn-wa" id="btnWa">💬 Hubungi via WhatsApp</button>
+            <button class="btn-manage" onclick="bukaEditIklan()">⚙️ Kelola / Edit / Hapus Iklan</button>
+        </div>
     </div>
 
-    <!-- Navigasi Bawah -->
+    <!-- FORM PASANG IKLAN DARI KANAN -->
+    <div class="ad-form-overlay" id="adFormOverlay">
+        <button class="form-close" onclick="tutupFormIklan()">
+            <i data-lucide="x"></i>
+        </button>
+        <div class="form-header">
+            <h4 id="formTitle">Pasang Iklan Baru</h4>
+        </div>
+        <div class="form-content">
+            <form id="adForm">
+                <div class="form-layout">
+                    <div class="upload-side">
+                        <label class="upload-title">Foto Iklan</label>
+                        <input type="file" id="imageInput" accept="image/*">
+                        <p class="help">Format JPG/PNG, otomatis diubah ke WebP</p>
+                        <div class="preview-box">
+                            <img id="previewImage" alt="Pratinjau Gambar">
+                        </div>
+                    </div>
+                    <div class="data-side">
+                        <div class="form-group">
+                            <label>Judul Iklan</label>
+                            <input type="text" id="title" maxlength="80" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select id="category" required>
+                                <option value="">Pilih Kategori</option>
+                                <option>Mobil</option>
+                                <option>Motor</option>
+                                <option>Properti</option>
+                                <option>Elektronik</option>
+                                <option>Lowongan</option>
+                                <option>Jasa</option>
+                                <option>Hobi</option>
+                                <option>Fashion</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Lokasi / Kota</label>
+                            <input type="text" id="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor WhatsApp</label>
+                            <input type="text" id="whatsapp" placeholder="Contoh: 6281234567890" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi Iklan</label>
+                            <textarea id="description" maxlength="500" required></textarea>
+                            <div id="charCount" class="char-count">0 / 500</div>
+                        </div>
+                        <div class="form-group" id="secretGroup" style="display:none;">
+                            <label>Kode Kelola</label>
+                            <input type="text" id="secretCode" placeholder="Masukkan kode rahasia Anda">
+                            <p class="help">Kode ini didapat saat pertama kali pasang iklan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-kirim" id="btnKirim">✅ Pasang Iklan</button>
+                    <button type="button" class="btn-edit" id="btnEdit">✏️ Simpan Perubahan</button>
+                    <button type="button" class="btn-hapus" id="btnHapus">🗑️ Hapus Iklan</button>
+                </div>
+            </form>
+            <div id="statusBox" class="status-box"></div>
+        </div>
+    </div>
+
+    <!-- NAVIGASI BAWAH -->
     <nav class="bottom-nav">
-        <div class="nav-item active">
-            <i data-lucide="home"></i>
-            <span>Beranda</span>
+        <div class="nav-item" id="navSearch">
+            <i data-lucide="search"></i>
+            <span>Cari</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='https://rewangiklan.my.id/pasang.html'">
-            <i data-lucide="plus-circle"></i>
-            <span>Pasang Iklan</span>
+        <div class="nav-item" onclick="window.open('https://rewangiklan.my.id/app', '_blank')">
+            <i data-lucide="download"></i>
+            <span>Instal Aplikasi</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='https://rewangiklan.my.id/akun.html'">
-            <i data-lucide="user"></i>
-            <span>Akun</span>
+        <div class="nav-item" id="navTop">
+            <i data-lucide="arrow-up-to-line"></i>
+            <span>Kembali ke Atas</span>
         </div>
     </nav>
 
-    <!-- Petunjuk Mode Penuh -->
     <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
 <script>
 lucide.createIcons();
 
-// === KONFIGURASI DATA ===
+// === KONFIGURASI ===
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 const ITEM_PER_PAGE = 10;
 let allAds = [];
 let displayAds = [];
 let currentDisplayCount = 0;
-let activeAd = null;
+let activeAd = null; // Iklan yang sedang terlihat di layar
+let editMode = false; // Mode edit/hapus
 
-// === ELEMEN UTAMA ===
+// === ELEMEN ===
 const body = document.body;
-const searchToggle = document.getElementById('searchToggle');
+const feedContainer = document.getElementById('feedContainer');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
-const feedContainer = document.getElementById('feedContainer');
-const infoPanel = document.getElementById('infoPanel');
-const panelTitle = document.getElementById('panelTitle');
-const panelContent = document.getElementById('panelContent');
-const waBtn = document.getElementById('waBtn');
+const navSearch = document.getElementById('navSearch');
+const navTop = document.getElementById('navTop');
+const detailOverlay = document.getElementById('detailOverlay');
+const adFormOverlay = document.getElementById('adFormOverlay');
+const formTitle = document.getElementById('formTitle');
+const btnKirim = document.getElementById('btnKirim');
+const btnEdit = document.getElementById('btnEdit');
+const btnHapus = document.getElementById('btnHapus');
 
-// === AMBIL DATA DARI SERVER ===
+// === AMBIL DATA ===
 async function ambilDataIklan() {
     try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        // Urutkan terbaru di atas, ambil yang status aktif saja
-        allAds = data.filter(iklan => iklan.status === 'aktif').reverse();
+        allAds = data.filter(i => i.status === 'aktif').reverse();
         displayAds = [...allAds];
         tampilkanAwal();
+        // Deteksi iklan yang sedang terlihat saat digulir
+        feedContainer.addEventListener('scroll', deteksiIklanAktif);
     } catch (err) {
-        console.error("Gagal ambil data:", err);
-        feedContainer.innerHTML = `
-            <div class="empty-state">
-                <i data-lucide="alert-triangle"></i>
-                <p>Gagal memuat iklan.<br>Coba lagi nanti ya.</p>
-            </div>
-        `;
+        feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat iklan</p></div>`;
         lucide.createIcons({context: feedContainer});
     }
 }
 
-// === TAMPILKAN 10 IKLAN PERTAMA ===
+// === DETEKSI IKLAN YANG SEDANG TERLIHAT DI LAYAR ===
+function deteksiIklanAktif() {
+    const kartuList = document.querySelectorAll('.ad-card');
+    kartuList.forEach((kartu, index) => {
+        const rect = kartu.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+            activeAd = displayAds[index];
+        }
+    });
+}
+
+// === TAMPILKAN DAFTAR ===
 function tampilkanAwal() {
     feedContainer.innerHTML = '';
     currentDisplayCount = 0;
     tambahIklan(0, ITEM_PER_PAGE);
     tambahTombolMuat();
 }
-
-// === TAMBAH IKLAN KE DAFTAR ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
         const iklan = displayAds[i];
-        const kartu = buatKartuIklan(iklan);
+        const kartu = document.createElement('div');
+        kartu.className = 'ad-card';
+        kartu.innerHTML = `
+            <h3 class="ad-title-top">${iklan.title || 'Tanpa Judul'}</h3>
+            <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
+            <div class="center-action" onclick="bukaDetail()">
+                <i data-lucide="play"></i>
+            </div>
+            <div class="side-actions">
+                <div class="side-btn" onclick="bukaFormIklan()">
+                    <i data-lucide="plus-circle"></i>
+                    <span>Pasang Iklan</span>
+                </div>
+                <div class="side-btn" onclick="bagikanIklan('${iklan.id}')">
+                    <i data-lucide="share-2"></i>
+                    <span>Bagikan</span>
+                </div>
+                <div class="side-btn" onclick="bukaDetailIklanSaya()">
+                    <i data-lucide="image"></i>
+                    <span>Iklan Saya</span>
+                </div>
+            </div>
+        `;
         feedContainer.appendChild(kartu);
     }
     currentDisplayCount = batas;
     lucide.createIcons({context: feedContainer});
+    // Set iklan pertama sebagai aktif
+    if (displayAds.length > 0) activeAd = displayAds[0];
 }
-
-// === BUAT SATU KARTU IKLAN ===
-function buatKartuIklan(iklan) {
-    const kartu = document.createElement('div');
-    kartu.className = 'ad-card';
-    kartu.innerHTML = `
-        <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
-        
-        <div class="center-action" onclick="bukaDetail('${iklan.id}')">
-            <i data-lucide="play"></i>
-        </div>
-
-        <div class="side-actions">
-            <div class="side-btn" onclick="event.stopPropagation(); simpanIklan('${iklan.id}')">
-                <i data-lucide="heart"></i>
-                <span>Simpan</span>
-            </div>
-            <div class="side-btn" onclick="event.stopPropagation(); bagikanIklan('${iklan.id}')">
-                <i data-lucide="share-2"></i>
-                <span>Bagikan</span>
-            </div>
-            <div class="side-btn" onclick="event.stopPropagation(); bukaPanelInfo('${iklan.id}')">
-                <i data-lucide="info"></i>
-                <span>Info</span>
-            </div>
-        </div>
-
-        <div class="ad-info" onclick="bukaPanelInfo('${iklan.id}')">
-            <h3 class="ad-title">${iklan.title || 'Tanpa Judul'}</h3>
-            <p class="ad-category">${iklan.category || 'Lainnya'} • ${iklan.location || 'Lokasi tidak diketahui'}</p>
-            <p class="ad-desc">${iklan.description?.substring(0,70) || 'Klik untuk lihat detail lengkap...'}</p>
-        </div>
-    `;
-    return kartu;
-}
-
-// === TOMBOL MUAT LEBIH BANYAK ===
 function tambahTombolMuat() {
-    const tombolLama = document.getElementById('load-more-wrap');
-    if (tombolLama) tombolLama.remove();
-
+    const lama = document.getElementById('load-more-wrap');
+    if (lama) lama.remove();
     if (currentDisplayCount >= displayAds.length) return;
-
     const wrap = document.createElement('div');
     wrap.id = 'load-more-wrap';
     wrap.className = 'load-more-wrapper';
-    wrap.innerHTML = `
-        <button class="load-more-btn" onclick="muatLagi()">
-            <i data-lucide="plus-circle"></i>
-            Muat Lebih Banyak Iklan
-        </button>
-    `;
+    wrap.innerHTML = `<button class="load-more-btn" onclick="muatLagi()"><i data-lucide="plus-circle"></i> Muat Lebih Banyak</button>`;
     feedContainer.appendChild(wrap);
     lucide.createIcons({context: wrap});
 }
-
-// === FUNGSI MUAT 10 IKLAN BERIKUTNYA ===
 function muatLagi() {
     const tombol = document.querySelector('.load-more-btn');
     tombol.disabled = true;
     tombol.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> Memuat...`;
-
     setTimeout(() => {
-        const dari = currentDisplayCount;
-        const sampai = currentDisplayCount + ITEM_PER_PAGE;
-        tambahIklan(dari, sampai);
+        tambahIklan(currentDisplayCount, currentDisplayCount + ITEM_PER_PAGE);
         tambahTombolMuat();
     }, 500);
 }
 
+// === FUNGSI IKLAN SAYA ===
+function bukaDetailIklanSaya() {
+    if (!activeAd) return alert('Iklan tidak ditemukan');
+    
+    // Isi data iklan yang sedang terlihat
+    document.getElementById('detailImg').style.backgroundImage = `url(${activeAd.image || 'https://picsum.photos/id/1040/800/1400'})`;
+    document.getElementById('detailTitle').textContent = activeAd.title || 'Tanpa Judul';
+    document.getElementById('detailCat').textContent = activeAd.category || 'Lainnya';
+    document.getElementById('detailLoc').textContent = activeAd.location || 'Tidak diketahui';
+    document.getElementById('detailViews').textContent = activeAd.views || '0';
+    document.getElementById('detailDesc').textContent = activeAd.description || 'Tidak ada deskripsi';
+    
+    // Tombol WA
+    document.getElementById('btnWa').onclick = () => {
+        const nomor = activeAd.whatsapp.toString().replace(/\D/g, '');
+        const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" di Rewang Iklan.`);
+        window.open(`https://wa.me/${nomor}?text=${pesan}`, '_blank');
+    };
+
+    detailOverlay.classList.add('show');
+}
+function tutupDetailIklan() {
+    detailOverlay.classList.remove('show');
+}
+
+// === FUNGSI BUKA FORM EDIT DARI IKLAN SAYA ===
+function bukaEditIklan() {
+    tutupDetailIklan();
+    if (!activeAd) return;
+
+    // Ubah ke mode edit
+    editMode = true;
+    formTitle.textContent = 'Edit Iklan';
+    btnKirim.style.display = 'none';
+    btnEdit.classList.add('show');
+    btnHapus.classList.add('show');
+
+    // Isi form dengan data iklan
+    document.getElementById('title').value = activeAd.title || '';
+    document.getElementById('category').value = activeAd.category || '';
+    document.getElementById('location').value = activeAd.location || '';
+    document.getElementById('whatsapp').value = activeAd.whatsapp || '';
+    document.getElementById('description').value = activeAd.description || '';
+    document.getElementById('charCount').textContent = `${activeAd.description?.length || 0} / 500`;
+
+    adFormOverlay.classList.add('show');
+}
+
+// === FUNGSI FORM PASANG IKLAN ===
+function bukaFormIklan() {
+    // Reset ke mode pasang baru
+    editMode = false;
+    formTitle.textContent = 'Pasang Iklan Baru';
+    btnKirim.style.display = 'block';
+    btnEdit.classList.remove('show');
+    btnHapus.classList.remove('show');
+    document.getElementById('adForm').reset();
+    document.getElementById('charCount').textContent = '0 / 500';
+    
+    adFormOverlay.classList.add('show');
+}
+function tutupFormIklan() {
+    adFormOverlay.classList.remove('show');
+}
+
 // === PENCARIAN ===
-searchToggle.addEventListener('click', () => {
+navSearch.addEventListener('click', () => {
     searchBar.classList.toggle('show');
-    if (searchBar.classList.contains('show')) {
-        setTimeout(() => searchInput.focus(), 100);
-    } else {
-        searchInput.value = '';
-        tampilkanAwal();
-    }
+    if (searchBar.classList.contains('show')) setTimeout(() => searchInput.focus(), 100);
+    else { searchInput.value = ''; tampilkanAwal(); }
 });
-
 searchInput.addEventListener('input', () => {
-    const kataKunci = searchInput.value.trim().toLowerCase();
-    searchClear.classList.toggle('show', kataKunci !== '');
-
-    if (!kataKunci) {
-        displayAds = [...allAds];
-        tampilkanAwal();
-        return;
-    }
-
-    // Cari di judul, kategori, lokasi, deskripsi
-    displayAds = allAds.filter(iklan => {
-        return (iklan.title || '').toLowerCase().includes(kataKunci)
-            || (iklan.category || '').toLowerCase().includes(kataKunci)
-            || (iklan.location || '').toLowerCase().includes(kataKunci)
-            || (iklan.description || '').toLowerCase().includes(kataKunci);
-    });
-
+    const k = searchInput.value.trim().toLowerCase();
+    searchClear.classList.toggle('show', k !== '');
+    if (!k) { displayAds = [...allAds]; tampilkanAwal(); return; }
+    displayAds = allAds.filter(i => 
+        (i.title||'').toLowerCase().includes(k) || (i.category||'').toLowerCase().includes(k)
+        || (i.location||'').toLowerCase().includes(k) || (i.description||'').toLowerCase().includes(k)
+    );
     tampilkanAwal();
-
-    // Tampil pesan jika tidak ada hasil
     if (displayAds.length === 0) {
-        feedContainer.innerHTML = `
-            <div class="empty-state">
-                <i data-lucide="search-x"></i>
-                <p>Maaf, tidak ditemukan iklan yang cocok<br>dengan kata kunci "${kataKunci}"</p>
-                <button class="load-more-btn mt-4" onclick="searchInput.value='';tampilkanAwal();">Kembali ke semua iklan</button>
-            </div>
-        `;
+        feedContainer.innerHTML = `<div class="empty-state"><i data-lucide="search-x"></i><p>Tidak ditemukan iklan untuk "${k}"</p></div>`;
         lucide.createIcons({context: feedContainer});
     }
 });
+searchClear.addEventListener('click', () => { searchInput.value = ''; tampilkanAwal(); });
 
-searchClear.addEventListener('click', () => {
-    searchInput.value = '';
-    searchClear.classList.remove('show');
-    displayAds = [...allAds];
-    tampilkanAwal();
+// === TOMBOL KEMBALI KE ATAS ===
+navTop.addEventListener('click', () => {
+    feedContainer.scrollTo({top: 0, behavior: 'smooth'});
 });
 
-// === FUNGSI TOMBOL LAIN ===
-function bukaDetail(id) {
+// === FUNGSI LAINNYA ===
+function bukaDetail() {
     body.classList.add('play-mode');
-    setTimeout(() => {
-        document.addEventListener('click', keluarModeSekali, { once: true });
-    }, 100);
-}
-function keluarModeSekali() {
-    body.classList.remove('play-mode');
+    setTimeout(() => document.addEventListener('click', () => body.classList.remove('play-mode'), {once:true}), 100);
 }
 
-function bukaPanelInfo(id) {
-    activeAd = displayAds.find(i => i.id === id);
+// === FUNGSI BAGIKAN DENGAN FITUR BAWAAN PERANGKAT ===
+async function bagikanIklan(id) {
     if (!activeAd) return;
-
-    panelTitle.textContent = activeAd.title || 'Detail Iklan';
-    panelContent.innerHTML = `
-        <div class="info-row">
-            <i data-lucide="folder"></i>
-            <span>Kategori: ${activeAd.category || 'Lainnya'}</span>
-        </div>
-        <div class="info-row">
-            <i data-lucide="map-pin"></i>
-            <span>Lokasi: ${activeAd.location || 'Tidak disebutkan'}</span>
-        </div>
-        <div class="info-row">
-            <i data-lucide="calendar"></i>
-            <span>Dipasang: ${new Date(activeAd.date).toLocaleDateString('id-ID')}</span>
-        </div>
-        <div class="info-full">${activeAd.description || 'Tidak ada deskripsi tambahan.'}</div>
-    `;
-    infoPanel.classList.add('show');
-    lucide.createIcons({context: panelContent});
-}
-
-function tutupPanelInfo() {
-    infoPanel.classList.remove('show');
-}
-
-function hubungiPenjual() {
-    if (!activeAd || !activeAd.whatsapp) {
-        alert('Nomor WhatsApp tidak tersedia.');
-        return;
-    }
-    const nomor = activeAd.whatsapp.toString().replace(/\D/g, '');
-    const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" di Rewang Iklan.`);
-    window.open(`https://wa.me/${nomor}?text=${pesan}`, '_blank');
-}
-
-function simpanIklan(id) {
-    alert('Iklan disimpan ke favorit!');
-}
-
-function bagikanIklan(id) {
-    const iklan = displayAds.find(i => i.id === id);
-    if (!iklan) return;
     
     const tautan = `https://rewangiklan.my.id/iklan-saya.html?id=${id}`;
-    if (navigator.share) {
-        navigator.share({
-            title: iklan.title,
-            text: 'Lihat iklan ini di Rewang Iklan',
-            url: tautan
-        });
-    } else {
-        navigator.clipboard.writeText(tautan).then(() => {
-            alert('Link iklan sudah disalin!');
-        });
+    const dataBerbagi = {
+        title: activeAd.title || 'Iklan dari Rewang Iklan',
+        text: `Lihat iklan menarik ini: ${activeAd.title}`,
+        url: tautan
+    };
+
+    try {
+        // Panggil fitur berbagi asli HP/Perangkat
+        if (navigator.share) {
+            await navigator.share(dataBerbagi);
+        } else {
+            // Jika perangkat lama tidak mendukung, langsung salin tautan
+            await navigator.clipboard.writeText(tautan);
+            alert('Tautan iklan sudah disalin ke papan klip!');
+        }
+    } catch (err) {
+        // Jika pengguna membatalkan atau ada kesalahan, salin tautan sebagai cadangan
+        try {
+            await navigator.clipboard.writeText(tautan);
+            alert('Tautan iklan sudah disalin ke papan klip!');
+        } catch {
+            alert('Maaf, perangkat Anda tidak mendukung berbagi. Silakan salin tautan secara manual.');
+        }
     }
 }
 
-// === KELUAR MODE PENUH SAAT DIGULIR ===
-feedContainer.addEventListener('scroll', () => {
-    body.classList.remove('play-mode');
-});
-
-// === MULAI MUAT DATA ===
+// === MULAI ===
 document.addEventListener('DOMContentLoaded', ambilDataIklan);
 </script>
 </body>
