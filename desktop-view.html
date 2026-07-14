@@ -612,16 +612,13 @@
 
     <!-- JavaScript -->
             <script>
-        // Inisialisasi ikon Lucide
         lucide.createIcons();
 
-        // Pengaturan Utama
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let allAds = [];
         const ITEM_PER_PAGE = 26;
         let currentDisplayCount = 0;
 
-        // Ambil data & balik urutan (terbaru di atas)
         async function fetchAds() {
             try {
                 const res = await fetch(API_URL);
@@ -635,13 +632,11 @@
             }
         }
 
-        // Geser scroll kategori
         function scrollSection(wrapperId, amount) {
             const el = document.getElementById(wrapperId);
             el.scrollBy({ left: amount, behavior: 'smooth' });
         }
 
-        // === MODAL: HANYA TOMBOL X YANG BISA MENUTUP ===
         function openModal() {
             const modal = document.getElementById('modal-all');
             modal.classList.add('active');
@@ -654,7 +649,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Kotak Iklan Adsense
         function createAdsenseBox() {
             const box = document.createElement('div');
             box.className = 'card flex items-center justify-center bg-gray-50 p-3 rounded-xl';
@@ -666,13 +660,10 @@
                          data-ad-slot="9441731668"></ins>
                 </div>
             `;
-            setTimeout(() => {
-                if (window.adsbygoogle) adsbygoogle.push({});
-            }, 150);
+            setTimeout(() => { if (window.adsbygoogle) adsbygoogle.push({}); }, 150);
             return box;
         }
 
-        // Buat kartu iklan
         function createAdCard(ad) {
             const card = document.createElement('div');
             card.className = 'card';
@@ -692,7 +683,6 @@
             return card;
         }
 
-        // Tampilan depan per kategori
         function renderAllSections() {
             const properti = allAds.filter(a => a.category === 'Properti');
             const jasa = allAds.filter(a => a.category === 'Jasa');
@@ -710,7 +700,6 @@
             renderList('lainnya-container', lainnya, 'Lainnya');
         }
 
-        // Tampilkan awal modal
         function renderModalGrid() {
             const grid = document.getElementById('modal-grid');
             grid.innerHTML = '';
@@ -723,7 +712,6 @@
             addLoadMoreAndArrow();
         }
 
-        // Tambah iklan ke bawah + sisipkan Adsense tiap 5
         function appendAdsToGrid(start, end) {
             const grid = document.getElementById('modal-grid');
             let hitung = 0;
@@ -734,7 +722,6 @@
             }
         }
 
-        // === TOMBOL MUAT + PANAH DENGAN CARA NAVHOME YANG TERBUKTI ===
         function addLoadMoreAndArrow() {
             const grid = document.getElementById('modal-grid');
             const oldWrap = document.getElementById('btn-arrow-wrapper');
@@ -744,7 +731,6 @@
             wrapper.id = 'btn-arrow-wrapper';
             wrapper.className = 'col-span-full flex items-center justify-center mt-10 mb-6 relative';
 
-            // Tombol Muat Lebih
             if (currentDisplayCount < allAds.length) {
                 const loadBtn = document.createElement('button');
                 loadBtn.type = 'button';
@@ -754,19 +740,32 @@
                 wrapper.appendChild(loadBtn);
             }
 
-            // === PANAH DENGAN LOGIKA SAMA PERSIS NAVHOME ===
             const upArrow = document.createElement('button');
             upArrow.type = 'button';
             upArrow.id = 'scroll-top-arrow';
             upArrow.className = 'absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all cursor-pointer z-40';
             upArrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>`;
             
-            // SAMA PERSIS CARA navHome: pakai scrollTop langsung
+            // LOGIKA CARI WADAH DI DALAM LAYER SAMPAI KETEMU
             upArrow.onclick = () => {
-                // Cari wadah gulir modal (sesuai CSS kamu)
-                const modalScroll = document.querySelector('.modal-content') || document.getElementById('modal-all');
-                // Langsung ke atas, tidak pakai cara yang rawan gagal
-                modalScroll.scrollTop = 0;
+                const modal = document.getElementById('modal-all');
+                const calonWadah = [
+                    modal.querySelector('.modal-content'),
+                    modal.querySelector('.modal-body'),
+                    modal.querySelector('.modal-inner'),
+                    modal.querySelector('.scroll-area'),
+                    modal.querySelector('.scrollable'),
+                    modal.querySelector('main'),
+                    modal.querySelector('section'),
+                    modal
+                ];
+
+                for (const wadah of calonWadah) {
+                    if (wadah && wadah.scrollHeight > wadah.clientHeight) {
+                        wadah.scrollTop = 0;
+                        break;
+                    }
+                }
             };
 
             wrapper.appendChild(upArrow);
@@ -774,7 +773,6 @@
             lucide.createIcons({context: wrapper});
         }
 
-        // Fungsi Muat Lebih
         window.tambahIklanLagi = function() {
             const posisiAwal = currentDisplayCount;
             currentDisplayCount += ITEM_PER_PAGE;
@@ -782,7 +780,6 @@
             addLoadMoreAndArrow();
         }
 
-        // Rotasi banner
         function startBannerRotation() {
             if (!allAds.length) return;
             const updateBanner = () => {
@@ -795,7 +792,6 @@
             setInterval(updateBanner, 10000);
         }
 
-        // Pesan error
         function showEmptyState() {
             ['properti-container','jasa-container','lainnya-container'].forEach(id => {
                 document.getElementById(id).innerHTML = `<div class="card-empty"><i data-lucide="alert-triangle" class="w-10 h-10 text-gray-400 mb-3"></i><p class="text-base text-gray-500">Gagal memuat iklan</p></div>`;
@@ -803,7 +799,6 @@
             lucide.createIcons();
         }
 
-        // Mulai ambil data
         document.addEventListener('DOMContentLoaded', fetchAds);
     </script>
 
