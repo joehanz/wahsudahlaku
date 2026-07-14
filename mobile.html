@@ -1,1 +1,756 @@
-mobile
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rewang Iklan - Tampilan Mobile</title>
+    <meta name="theme-color" content="#0F172A">
+    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        /* === KONFIGURASI UTAMA === */
+        :root {
+            --item-per-page: 10;
+        }
+
+        /* === KONTAINER DAFTAR IKLAN === */
+        .feed-container {
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            padding-bottom: 100px;
+        }
+        .feed-container::-webkit-scrollbar {
+            display: none;
+        }
+        .feed-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* === KARTU IKLAN === */
+        .ad-card {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            overflow: hidden;
+            background: #111827;
+        }
+        .ad-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* === TOMBOL LIHAT DETAIL TENGAH === */
+        .center-action {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        }
+        .center-action i {
+            color: #2563EB;
+            width: 32px;
+            height: 32px;
+            margin-left: 4px;
+        }
+        .center-action:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #fff;
+        }
+        .play-mode .center-action {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* === IKON AKSI KANAN === */
+        .side-actions {
+            position: absolute;
+            right: 16px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        .play-mode .side-actions {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .side-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .side-btn i {
+            width: 28px;
+            height: 28px;
+            color: #fff;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        .side-btn span {
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+        }
+        .side-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* === INFO IKLAN BAWAH KIRI === */
+        .ad-info {
+            position: absolute;
+            left: 16px;
+            right: 80px;
+            bottom: 90px;
+            z-index: 10;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .play-mode .ad-info {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        .ad-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+        }
+        .ad-category {
+            font-size: 14px;
+            font-weight: 500;
+            color: #93C5FD;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+        }
+        .ad-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #E5E7EB;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        }
+
+        /* === PANEL INFO LENGKAP === */
+        .info-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #111827;
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px 40px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 100;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+        .info-panel.show {
+            transform: translateY(0);
+        }
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .info-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .info-close {
+            background: #1F2937;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #9CA3AF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 15px;
+            color: #D1D5DB;
+        }
+        .info-row i {
+            width: 18px;
+            height: 18px;
+            color: #2563EB;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .info-full {
+            line-height: 1.6;
+            color: #D1D5DB;
+            margin-top: 10px;
+            white-space: pre-line;
+        }
+        .wa-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s ease;
+        }
+        .wa-btn:hover {
+            background: #1DA851;
+        }
+
+        /* === TOMBOL MUAT LEBIH BANYAK === */
+        .load-more-wrapper {
+            position: relative;
+            width: 100%;
+            padding: 30px 20px 50px;
+            display: flex;
+            justify-content: center;
+            scroll-snap-align: start;
+        }
+        .load-more-btn {
+            padding: 14px 32px;
+            background: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .load-more-btn:hover {
+            background: #1D4ED8;
+            transform: translateY(-2px);
+        }
+        .load-more-btn:disabled {
+            background: #4B5563;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .empty-state {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: #9CA3AF;
+            text-align: center;
+            padding: 20px;
+            scroll-snap-align: start;
+        }
+        .empty-state i {
+            width: 64px;
+            height: 64px;
+            opacity: 0.5;
+        }
+
+        /* === NAVIGASI BAWAH === */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 9;
+            transition: opacity 0.3s ease;
+        }
+        .play-mode .bottom-nav {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .nav-item.active {
+            color: #fff;
+        }
+        .nav-item i {
+            width: 22px;
+            height: 22px;
+        }
+        .nav-item span {
+            font-size: 12px;
+        }
+
+        /* === PENCARIAN === */
+        .search-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 51;
+            background: rgba(17,24,39,0.7);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+        .play-mode .search-toggle {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .search-bar {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            background: rgba(17,24,39,0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(-120%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+        .search-bar.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 15px;
+        }
+        .search-bar input::placeholder {
+            color: #6B7280;
+        }
+        .search-bar i {
+            color: #6B7280;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .search-clear {
+            background: none;
+            border: none;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 4px;
+            display: none;
+        }
+        .search-clear.show {
+            display: block;
+        }
+
+        /* === PETUNJUK === */
+        .play-hint {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 8;
+        }
+        .play-mode .play-hint {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Buka Pencarian -->
+    <button class="search-toggle" id="searchToggle">
+        <i data-lucide="search"></i>
+    </button>
+
+    <!-- Kotak Pencarian -->
+    <div class="search-bar" id="searchBar">
+        <i data-lucide="search"></i>
+        <input type="text" id="searchInput" placeholder="Cari nama, kategori, lokasi...">
+        <button class="search-clear" id="searchClear">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+
+    <!-- Daftar Iklan -->
+    <div class="feed-container" id="feedContainer">
+        <div class="empty-state">
+            <i data-lucide="loader-2"></i>
+            <p>Memuat iklan...</p>
+        </div>
+    </div>
+
+    <!-- Panel Info Lengkap -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-header">
+            <h3 class="info-title" id="panelTitle">Detail Iklan</h3>
+            <button class="info-close" onclick="tutupPanelInfo()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div id="panelContent"></div>
+        <button class="wa-btn" id="waBtn" onclick="hubungiPenjual()">
+            <i data-lucide="message-circle"></i>
+            Hubungi Lewat WhatsApp
+        </button>
+    </div>
+
+    <!-- Navigasi Bawah -->
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <i data-lucide="home"></i>
+            <span>Beranda</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='https://rewangiklan.my.id/pasang.html'">
+            <i data-lucide="plus-circle"></i>
+            <span>Pasang Iklan</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='https://rewangiklan.my.id/akun.html'">
+            <i data-lucide="user"></i>
+            <span>Akun</span>
+        </div>
+    </nav>
+
+    <!-- Petunjuk Mode Penuh -->
+    <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
+
+<script>
+lucide.createIcons();
+
+// === KONFIGURASI DATA ===
+const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+const ITEM_PER_PAGE = 10;
+let allAds = [];
+let displayAds = [];
+let currentDisplayCount = 0;
+let activeAd = null;
+
+// === ELEMEN UTAMA ===
+const body = document.body;
+const searchToggle = document.getElementById('searchToggle');
+const searchBar = document.getElementById('searchBar');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const feedContainer = document.getElementById('feedContainer');
+const infoPanel = document.getElementById('infoPanel');
+const panelTitle = document.getElementById('panelTitle');
+const panelContent = document.getElementById('panelContent');
+const waBtn = document.getElementById('waBtn');
+
+// === AMBIL DATA DARI SERVER ===
+async function ambilDataIklan() {
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        // Urutkan terbaru di atas, ambil yang status aktif saja
+        allAds = data.filter(iklan => iklan.status === 'aktif').reverse();
+        displayAds = [...allAds];
+        tampilkanAwal();
+    } catch (err) {
+        console.error("Gagal ambil data:", err);
+        feedContainer.innerHTML = `
+            <div class="empty-state">
+                <i data-lucide="alert-triangle"></i>
+                <p>Gagal memuat iklan.<br>Coba lagi nanti ya.</p>
+            </div>
+        `;
+        lucide.createIcons({context: feedContainer});
+    }
+}
+
+// === TAMPILKAN 10 IKLAN PERTAMA ===
+function tampilkanAwal() {
+    feedContainer.innerHTML = '';
+    currentDisplayCount = 0;
+    tambahIklan(0, ITEM_PER_PAGE);
+    tambahTombolMuat();
+}
+
+// === TAMBAH IKLAN KE DAFTAR ===
+function tambahIklan(dari, sampai) {
+    const batas = Math.min(sampai, displayAds.length);
+    for (let i = dari; i < batas; i++) {
+        const iklan = displayAds[i];
+        const kartu = buatKartuIklan(iklan);
+        feedContainer.appendChild(kartu);
+    }
+    currentDisplayCount = batas;
+    lucide.createIcons({context: feedContainer});
+}
+
+// === BUAT SATU KARTU IKLAN ===
+function buatKartuIklan(iklan) {
+    const kartu = document.createElement('div');
+    kartu.className = 'ad-card';
+    kartu.innerHTML = `
+        <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
+        
+        <div class="center-action" onclick="bukaDetail('${iklan.id}')">
+            <i data-lucide="play"></i>
+        </div>
+
+        <div class="side-actions">
+            <div class="side-btn" onclick="event.stopPropagation(); simpanIklan('${iklan.id}')">
+                <i data-lucide="heart"></i>
+                <span>Simpan</span>
+            </div>
+            <div class="side-btn" onclick="event.stopPropagation(); bagikanIklan('${iklan.id}')">
+                <i data-lucide="share-2"></i>
+                <span>Bagikan</span>
+            </div>
+            <div class="side-btn" onclick="event.stopPropagation(); bukaPanelInfo('${iklan.id}')">
+                <i data-lucide="info"></i>
+                <span>Info</span>
+            </div>
+        </div>
+
+        <div class="ad-info" onclick="bukaPanelInfo('${iklan.id}')">
+            <h3 class="ad-title">${iklan.title || 'Tanpa Judul'}</h3>
+            <p class="ad-category">${iklan.category || 'Lainnya'} • ${iklan.location || 'Lokasi tidak diketahui'}</p>
+            <p class="ad-desc">${iklan.description?.substring(0,70) || 'Klik untuk lihat detail lengkap...'}</p>
+        </div>
+    `;
+    return kartu;
+}
+
+// === TOMBOL MUAT LEBIH BANYAK ===
+function tambahTombolMuat() {
+    const tombolLama = document.getElementById('load-more-wrap');
+    if (tombolLama) tombolLama.remove();
+
+    if (currentDisplayCount >= displayAds.length) return;
+
+    const wrap = document.createElement('div');
+    wrap.id = 'load-more-wrap';
+    wrap.className = 'load-more-wrapper';
+    wrap.innerHTML = `
+        <button class="load-more-btn" onclick="muatLagi()">
+            <i data-lucide="plus-circle"></i>
+            Muat Lebih Banyak Iklan
+        </button>
+    `;
+    feedContainer.appendChild(wrap);
+    lucide.createIcons({context: wrap});
+}
+
+// === FUNGSI MUAT 10 IKLAN BERIKUTNYA ===
+function muatLagi() {
+    const tombol = document.querySelector('.load-more-btn');
+    tombol.disabled = true;
+    tombol.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> Memuat...`;
+
+    setTimeout(() => {
+        const dari = currentDisplayCount;
+        const sampai = currentDisplayCount + ITEM_PER_PAGE;
+        tambahIklan(dari, sampai);
+        tambahTombolMuat();
+    }, 500);
+}
+
+// === PENCARIAN ===
+searchToggle.addEventListener('click', () => {
+    searchBar.classList.toggle('show');
+    if (searchBar.classList.contains('show')) {
+        setTimeout(() => searchInput.focus(), 100);
+    } else {
+        searchInput.value = '';
+        tampilkanAwal();
+    }
+});
+
+searchInput.addEventListener('input', () => {
+    const kataKunci = searchInput.value.trim().toLowerCase();
+    searchClear.classList.toggle('show', kataKunci !== '');
+
+    if (!kataKunci) {
+        displayAds = [...allAds];
+        tampilkanAwal();
+        return;
+    }
+
+    // Cari di judul, kategori, lokasi, deskripsi
+    displayAds = allAds.filter(iklan => {
+        return (iklan.title || '').toLowerCase().includes(kataKunci)
+            || (iklan.category || '').toLowerCase().includes(kataKunci)
+            || (iklan.location || '').toLowerCase().includes(kataKunci)
+            || (iklan.description || '').toLowerCase().includes(kataKunci);
+    });
+
+    tampilkanAwal();
+
+    // Tampil pesan jika tidak ada hasil
+    if (displayAds.length === 0) {
+        feedContainer.innerHTML = `
+            <div class="empty-state">
+                <i data-lucide="search-x"></i>
+                <p>Maaf, tidak ditemukan iklan yang cocok<br>dengan kata kunci "${kataKunci}"</p>
+                <button class="load-more-btn mt-4" onclick="searchInput.value='';tampilkanAwal();">Kembali ke semua iklan</button>
+            </div>
+        `;
+        lucide.createIcons({context: feedContainer});
+    }
+});
+
+searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.classList.remove('show');
+    displayAds = [...allAds];
+    tampilkanAwal();
+});
+
+// === FUNGSI TOMBOL LAIN ===
+function bukaDetail(id) {
+    body.classList.add('play-mode');
+    setTimeout(() => {
+        document.addEventListener('click', keluarModeSekali, { once: true });
+    }, 100);
+}
+function keluarModeSekali() {
+    body.classList.remove('play-mode');
+}
+
+function bukaPanelInfo(id) {
+    activeAd = displayAds.find(i => i.id === id);
+    if (!activeAd) return;
+
+    panelTitle.textContent = activeAd.title || 'Detail Iklan';
+    panelContent.innerHTML = `
+        <div class="info-row">
+            <i data-lucide="folder"></i>
+            <span>Kategori: ${activeAd.category || 'Lainnya'}</span>
+        </div>
+        <div class="info-row">
+            <i data-lucide="map-pin"></i>
+            <span>Lokasi: ${activeAd.location || 'Tidak disebutkan'}</span>
+        </div>
+        <div class="info-row">
+            <i data-lucide="calendar"></i>
+            <span>Dipasang: ${new Date(activeAd.date).toLocaleDateString('id-ID')}</span>
+        </div>
+        <div class="info-full">${activeAd.description || 'Tidak ada deskripsi tambahan.'}</div>
+    `;
+    infoPanel.classList.add('show');
+    lucide.createIcons({context: panelContent});
+}
+
+function tutupPanelInfo() {
+    infoPanel.classList.remove('show');
+}
+
+function hubungiPenjual() {
+    if (!activeAd || !activeAd.whatsapp) {
+        alert('Nomor WhatsApp tidak tersedia.');
+        return;
+    }
+    const nomor = activeAd.whatsapp.toString().replace(/\D/g, '');
+    const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" di Rewang Iklan.`);
+    window.open(`https://wa.me/${nomor}?text=${pesan}`, '_blank');
+}
+
+function simpanIklan(id) {
+    alert('Iklan disimpan ke favorit!');
+}
+
+function bagikanIklan(id) {
+    const iklan = displayAds.find(i => i.id === id);
+    if (!iklan) return;
+    
+    const tautan = `https://rewangiklan.my.id/iklan-saya.html?id=${id}`;
+    if (navigator.share) {
+        navigator.share({
+            title: iklan.title,
+            text: 'Lihat iklan ini di Rewang Iklan',
+            url: tautan
+        });
+    } else {
+        navigator.clipboard.writeText(tautan).then(() => {
+            alert('Link iklan sudah disalin!');
+        });
+    }
+}
+
+// === KELUAR MODE PENUH SAAT DIGULIR ===
+feedContainer.addEventListener('scroll', () => {
+    body.classList.remove('play-mode');
+});
+
+// === MULAI MUAT DATA ===
+document.addEventListener('DOMContentLoaded', ambilDataIklan);
+</script>
+</body>
+</html>
