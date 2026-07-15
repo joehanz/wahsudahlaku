@@ -19,26 +19,26 @@
     <meta property="og:title" content="Detail Iklan | Rewang Iklan">
     <meta property="og:description" content="Lihat detail lengkap iklan dan hubungi penjual sekarang juga.">
     <meta property="og:url" content="https://rewangiklan.my.id/iklan-saya.html">
-    <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:secure_url" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Detail Iklan">
 
-    <!-- Twitter / X -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Detail Iklan | Rewang Iklan">
     <meta name="twitter:description" content="Informasi lengkap dan kontak penjual iklan.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
     <meta name="twitter:image:alt" content="Detail Iklan">
 
-    <!-- Ikon / Favicon Situs -->
-    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">  
+    <!-- Icon -->
+    <link rel="icon" type="image/webp" href="https://rewangiklan.my.id/image/iklanbaris.webp">  
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Bonus Meta Aplikasi -->
+    <!-- Bonus Meta -->
     <meta name="application-name" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -98,18 +98,13 @@
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center gap-2.5">
                 <a href="index.html" class="flex items-center gap-2.5">
                     <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
                     <span class="text-2xl font-semibold">Rewang Iklan</span>
                 </a>
             </div>
-
-            <!-- Judul Tengah -->
             <center class="text-2xl font-bold !mb-0">Detail Iklan</center>
-            
-            <!-- Tombol Kembali -->
             <div class="flex items-center gap-4">
                 <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.history.back()">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
@@ -118,30 +113,20 @@
         </div>
     </header>
 
-    <!-- Konten Utama: Detail Iklan -->
+    <!-- Konten Utama: SAMA PERSIS STRUKTUR ID LAMA, HANYA TAMPILAN DIUBAH -->
     <main class="max-w-3xl mx-auto px-6 py-12">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <!-- Gambar Utama -->
-            <div id="detailImg" class="w-full h-80 bg-gray-100 bg-cover bg-center"></div>
-            
-            <!-- Isi Detail -->
+            <div class="w-full h-80 bg-gray-100 bg-cover bg-center" id="detailImg"></div>
             <div class="p-8">
                 <h2 class="text-2xl font-bold mb-4" id="detailTitle"></h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6 text-gray-600">
-                    <p>Kategori: <span id="detailCat" class="font-medium text-primary"></span></p>
-                    <p>📍 <span id="detailLoc" class="font-medium text-primary"></span></p>
-                    <p>👁️ Dilihat <span id="detailViews" class="font-medium text-primary"></span> kali</p>
-                </div>
+                <p class="text-gray-600 mb-2">Kategori: <span id="detailCat"></span></p>
+                <p class="text-gray-600 mb-2">📍 <span id="detailLoc"></span></p>
+                <p class="text-gray-600 mb-6">👁️ Dilihat <span id="detailViews"></span> kali</p>
                 <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc"></div>
-
-                <!-- Tombol Aksi -->
+                
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">
-                        💬 Hubungi via WhatsApp
-                    </button>
-                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnManage">
-                        ⚙️ Kelola / Edit / Hapus Iklan
-                    </button>
+                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
+                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnManage">⚙️ Kelola / Edit / Hapus Iklan</button>
                 </div>
             </div>
         </div>
@@ -151,7 +136,6 @@
     <footer class="bg-primary text-white mt-12">
         <div class="max-w-7xl mx-auto px-6 py-14">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <!-- Kolom 1 -->
                 <div>
                     <div class="flex items-center gap-2.5 mb-5">
                         <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
@@ -159,7 +143,6 @@
                     </div>
                     <p class="text-gray-300 text-base leading-relaxed">Portal iklan baris terpercaya. Tempat mudah menjual, mencari, dan menawarkan barang serta jasa dengan aman dan cepat.</p>
                 </div>
-                <!-- Kolom 2 -->
                 <div>
                     <h4 class="font-semibold text-xl mb-5">Tautan Cepat</h4>
                     <ul class="space-y-3 text-gray-300 text-base">
@@ -169,7 +152,6 @@
                         <li><a href="#" class="hover:text-accent transition-colors">Kebijakan Privasi</a></li>
                     </ul>
                 </div>
-                <!-- Kolom 3 -->
                 <div>
                     <h4 class="font-semibold text-xl mb-5">Hubungi Kami</h4>
                     <ul class="space-y-3.5 text-gray-300 text-base">
@@ -184,48 +166,8 @@
         </div>
     </footer>
 
+    <!-- === SCRIPT DIAMBIL PERSIS DARI TEMPLATE LAMA KAMU === -->
     <script src="script.js"></script>
-    <script>
-        // === AMBIL DATA IKLAN DARI LINK / LOCALSTORAGE ===
-        function ambilDanTampilkanData() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            const iklan = JSON.parse(localStorage.getItem('iklan_' + id) || 'null');
-
-            if (!iklan) {
-                alert('Iklan tidak ditemukan!');
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Isi data ke halaman
-            document.getElementById('detailImg').style.backgroundImage = `url('${iklan.gambar}')`;
-            document.getElementById('detailTitle').textContent = iklan.judul;
-            document.getElementById('detailCat').textContent = iklan.kategori;
-            document.getElementById('detailLoc').textContent = iklan.lokasi;
-            document.getElementById('detailViews').textContent = iklan.dilihat || 0;
-            document.getElementById('detailDesc').textContent = iklan.deskripsi;
-
-            // Tombol WhatsApp
-            document.getElementById('btnWa').onclick = () => {
-                window.open(`https://wa.me/${iklan.wa}?text=Halo%2C%20saya%20tertarik%20dengan%20iklan%20"${encodeURIComponent(iklan.judul)}"`, '_blank');
-            };
-
-            // Tampilkan tombol Kelola jika punya kode
-            const kodeSaya = localStorage.getItem('kode_kelola_saya');
-            if (kodeSaya && kodeSaya === iklan.kode) {
-                document.getElementById('btnManage').classList.remove('hidden');
-                document.getElementById('btnManage').onclick = () => {
-                    window.location.href = `pasang.html?edit=${id}`;
-                };
-            }
-        }
-
-        // Jalankan saat halaman siap
-        document.addEventListener('DOMContentLoaded', () => {
-            ambilDanTampilkanData();
-            lucide.createIcons();
-        });
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
