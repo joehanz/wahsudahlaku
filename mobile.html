@@ -129,12 +129,136 @@ button:hover,.btn-wa:hover,.btn-manage:hover,.btn-kirim:hover,.btn-edit:hover,.b
 </style>
 </head>
 <body>
-<div class="search-bar" id="searchBar"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Cari nama, kategori, lokasi..."><button class="search-clear" id="searchClear"><i data-lucide="x"></i></button></div>
-<div class="feed-container" id="feedContainer"><div class="empty-state"><i data-lucide="loader-2"></i><p>Memuat iklan...</p></div></div>
-<div class="detail-overlay" id="detailOverlay"><button class="detail-close" onclick="tutupDetailIklan()"><i data-lucide="x"></i></button><div class="detail-main-img" id="detailImg"></div><div class="detail-content"><h2 class="detail-title" id="detailTitle"></h2><p style="color:#9CA3AF;margin-bottom:8px">Kategori: <span id="detailCat"></span></p><p style="color:#9CA3AF;margin-bottom:8px">📍 <span id="detailLoc"></span></p><p style="color:#9CA3AF;margin-bottom:12px">👁️ Dilihat <span id="detailViews"></span> kali</p><div class="detail-desc" id="detailDesc"></div><button class="btn-wa" id="btnWa">💬 Hubungi via WhatsApp</button><button class="btn-manage" onclick="bukaEditIklan()">⚙️ Kelola / Edit / Hapus Iklan</button></div></div>
-<div class="ad-form-overlay" id="adFormOverlay"><button class="form-close" onclick="tutupFormIklan()"><i data-lucide="x"></i></button><div class="form-header"><h4 id="formTitle">Pasang Iklan Baru</h4></div><div class="form-content"><form id="adForm"><div class="form-layout"><div class="upload-side"><label class="upload-title">Foto Iklan</label><input type="file" id="imageInput" accept="image/*"><p class="help">Format JPG/PNG, otomatis diubah ke WebP</p><div class="preview-box"><img id="previewImage" alt="Pratinjau Gambar"></div></div><div class="data-side"><div class="form-group"><label>Judul Iklan</label><input type="text" id="title" maxlength="80" required></div><div class="form-group"><label>Kategori</label><select id="category" required><option value="">Pilih Kategori</option><option>Mobil</option><option>Motor</option><option>Properti</option><option>Elektronik</option><option>Lowongan</option><option>Jasa</option><option>Hobi</option><option>Fashion</option><option>Lainnya</option></select></div><div class="form-group"><label>Lokasi / Kota</label><input type="text" id="location" required></div><div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="whatsapp" placeholder="Contoh: 6281234567890" required></div><div class="form-group"><label>Deskripsi Iklan</label><textarea id="description" maxlength="3000" required></textarea><div id="charCount" class="char-count">0 / 3000</div></div><div class="form-group" id="secretGroup" style="display:none"><label>Kode Kelola</label><input type="text" id="secretCode" placeholder="Masukkan kode rahasia Anda"><p class="help">Kode didapat saat pertama kali pasang iklan</p></div></div></div><div class="form-buttons"><button type="submit" class="btn-kirim" id="btnKirim">✅ Pasang Iklan</button><button type="button" class="btn-edit" id="btnEdit">✏️ Simpan Perubahan</button><button type="button" class="btn-hapus" id="btnHapus">🗑️ Hapus Iklan</button></div></form><div id="statusBox" class="status-box"></div></div></div>
-<nav class="bottom-nav"><div class="nav-item" id="navSearch"><i data-lucide="search"></i><span>Search</span></div><div class="nav-item" id="navInstall"><i data-lucide="download"></i><span>Add</span></div><div class="nav-item" id="navTop"><i data-lucide="arrow-up-to-line"></i><span>Back To Top</span></div></nav>
+<div class="search-bar" id="searchBar">
+  <i data-lucide="search"></i
+  ><input
+    type="text"
+    id="searchInput"
+    placeholder="Cari nama, kategori, lokasi..."
+  /><button class="search-clear" id="searchClear">
+    <i data-lucide="x"></i>
+  </button>
+</div>
+<div class="feed-container" id="feedContainer">
+  <div class="empty-state">
+    <i data-lucide="loader-2"></i>
+    <p>Memuat iklan...</p>
+  </div>
+</div>
+<div class="detail-overlay" id="detailOverlay">
+  <button class="detail-close" onclick="tutupDetailIklan()">
+    <i data-lucide="x"></i>
+  </button>
+  <div class="detail-main-img" id="detailImg"></div>
+  <div class="detail-content">
+    <h2 class="detail-title" id="detailTitle"></h2>
+    <p style="color:#9CA3AF;margin-bottom:8px">
+      Kategori: <span id="detailCat"></span>
+    </p>
+    <p style="color:#9CA3AF;margin-bottom:8px">
+      📍 <span id="detailLoc"></span>
+    </p>
+    <p style="color:#9CA3AF;margin-bottom:12px">
+      👁️ Dilihat <span id="detailViews"></span> kali
+    </p>
+    <div class="detail-desc" id="detailDesc"></div>
+    <button class="btn-wa" id="btnWa">💬 Hubungi via WhatsApp</button
+    ><button class="btn-manage" onclick="bukaEditIklan()">
+      ⚙️ Kelola / Edit / Hapus Iklan
+    </button>
+  </div>
+</div>
+<div class="ad-form-overlay" id="adFormOverlay">
+  <button class="form-close" onclick="tutupFormIklan()">
+    <i data-lucide="x"></i>
+  </button>
+  <div class="form-header"><h4 id="formTitle">Pasang Iklan Baru</h4></div>
+  <div class="form-content">
+    <form id="adForm">
+      <div class="form-layout">
+        <div class="upload-side">
+          <label class="upload-title">Foto Iklan</label
+          ><input type="file" id="imageInput" accept="image/*" />
+          <p class="help">Format JPG/PNG, otomatis diubah ke WebP</p>
+          <div class="preview-box">
+            <img id="previewImage" alt="Pratinjau Gambar" />
+          </div>
+        </div>
+        <div class="data-side">
+          <div class="form-group">
+            <label>Judul Iklan</label
+            ><input type="text" id="title" maxlength="80" required />
+          </div>
+          <div class="form-group">
+            <label>Kategori</label
+            ><select id="category" required>
+              <option value="">Pilih Kategori</option>
+              <option>Mobil</option>
+              <option>Motor</option>
+              <option>Properti</option>
+              <option>Elektronik</option>
+              <option>Lowongan</option>
+              <option>Jasa</option>
+              <option>Hobi</option>
+              <option>Fashion</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Lokasi / Kota</label
+            ><input type="text" id="location" required />
+          </div>
+          <div class="form-group">
+            <label>Nomor WhatsApp</label
+            ><input
+              type="text"
+              id="whatsapp"
+              placeholder="Contoh: 6281234567890"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Deskripsi Iklan</label
+            ><textarea id="description" maxlength="3000" required></textarea>
+            <div id="charCount" class="char-count">0 / 3000</div>
+          </div>
+          <div class="form-group" id="secretGroup" style="display:none">
+            <label>Kode Kelola</label
+            ><input
+              type="text"
+              id="secretCode"
+              placeholder="Masukkan kode rahasia Anda"
+            />
+            <p class="help">Kode didapat saat pertama kali pasang iklan</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn-kirim" id="btnKirim">
+          ✅ Pasang Iklan</button
+        ><button type="button" class="btn-edit" id="btnEdit">
+          ✏️ Simpan Perubahan</button
+        ><button type="button" class="btn-hapus" id="btnHapus">
+          🗑️ Hapus Iklan
+        </button>
+      </div>
+    </form>
+    <div id="statusBox" class="status-box"></div>
+  </div>
+</div>
+<nav class="bottom-nav">
+  <div class="nav-item" id="navSearch">
+    <i data-lucide="search"></i><span>Search</span>
+  </div>
+  <div class="nav-item" id="navInstall">
+    <i data-lucide="download"></i><span>Add</span>
+  </div>
+  <div class="nav-item" id="navTop">
+    <i data-lucide="arrow-up-to-line"></i><span>Back To Top</span>
+  </div>
+</nav>
 <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
+
 <script>
 lucide.createIcons();
 const API_URL="https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
@@ -146,12 +270,53 @@ window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPro
 navInstall.addEventListener("click",async()=>{if(!deferredPrompt)return window.location.href="https://rewangiklan.my.id/";deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null});
 window.addEventListener("appinstalled",()=>{deferredPrompt=null;if(installIcon)installIcon.setAttribute("data-lucide","home");if(installText)installText.textContent="Beranda";lucide.createIcons({context:navInstall})});
 
-async function ambilDataIklan(){try{const e=await fetch(API_URL),t=await e.json();allAds=t.filter(e=>e.status==="aktif").reverse();displayAds=[...allAds];tampilkanAwal();feedContainer.addEventListener("scroll",deteksiIklanAktif)}catch(e){feedContainer.innerHTML=`<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat iklan</p></div>`;lucide.createIcons({context:feedContainer})}}
-function deteksiIklanAktif(){document.querySelectorAll(".ad-card").forEach((e,t)=>{const i=e.getBoundingClientRect();i.top>=0&&i.top<=window.innerHeight/2&&(activeAd=displayAds[t])})}
-function tampilkanAwal(){feedContainer.innerHTML="";currentDisplayCount=0;tambahIklan(0,ITEM_PER_PAGE);tambahTombolMuat()}
-function tambahIklan(e,t){const i=Math.min(t,displayAds.length);for(let t=e;t<i;t++){const n=displayAds[t],s=document.createElement("div");s.className="ad-card";const o=n.image||"https://picsum.photos/id/1040/800/1400";s.innerHTML=`<div class="spotlight"></div><img src="${o}" alt="${n.title}" class="ad-image" loading="lazy"><div class="reflection-glass"></div><div class="fade-overlay"></div><h3 class="ad-title">${n.title||"Tanpa Judul"}</h3><div class="side-actions"><div class="side-btn" onclick="bukaFormIklan()"><i data-lucide="plus-circle"></i><span>Pasang Iklan</span></div><div class="side-btn" onclick="bagikanIklan('${n.id}')"><i data-lucide="share-2"></i><span>Bagikan</span></div><div class="side-btn" onclick="bukaDetailIklanSaya()"><i data-lucide="image"></i><span>Iklan Saya</span></div></div>`;const a=s.querySelector(".reflection-glass");if(a)a.style.backgroundImage=`url('${o}')`;feedContainer.appendChild(s)}currentDisplayCount=i;lucide.createIcons({context:feedContainer});displayAds.length>0&&(activeAd=displayAds[0])}
-function tambahTombolMuat(){document.getElementById("load-more-wrap")?.remove();if(currentDisplayCount>=displayAds.length)return;const e=document.createElement("div");e.id="load-more-wrap";e.className="load-more-wrapper";e.innerHTML=`<button class="load-more-btn" onclick="muatLagi()"><i data-lucide="plus-circle"></i> Muat Lebih Banyak</button>`;feedContainer.appendChild(e);lucide.createIcons({context:e})}
-function muatLagi(){const e=document.querySelector(".load-more-btn");e.disabled=!0;e.innerHTML=`<i data-lucide="loader-2" class="animate-spin"></i> Memuat...`;setTimeout(()=>{tambahIklan(currentDisplayCount,currentDisplayCount+ITEM_PER_PAGE);tambahTombolMuat()},500)}
+async function ambilDataIklan(){try{const e=await fetch(API_URL),t=await
+e.json();allAds=t.filter(e=>e.status==="aktif").reverse();displayAds=[...allAds];tampilkanAwal();feedContainer.addEventListener("scroll",deteksiIklanAktif)}catch(e){feedContainer.innerHTML=`
+<div class="empty-state">
+  <i data-lucide="alert-triangle"></i>
+  <p>Gagal memuat iklan</p>
+</div>
+`;lucide.createIcons({context:feedContainer})}} function
+deteksiIklanAktif(){document.querySelectorAll(".ad-card").forEach((e,t)=>{const
+i=e.getBoundingClientRect();i.top>=0&&i.top<=window.innerHeight/2&&(activeAd=displayAds[t])})}
+function
+tampilkanAwal(){feedContainer.innerHTML="";currentDisplayCount=0;tambahIklan(0,ITEM_PER_PAGE);tambahTombolMuat()}
+function tambahIklan(e,t){const i=Math.min(t,displayAds.length);for(let
+t=e;t<i;t++){const
+n=displayAds[t],s=document.createElement("div");s.className="ad-card";const
+o=n.image||"https://picsum.photos/id/1040/800/1400";s.innerHTML=`
+<div class="spotlight"></div>
+<img src="${o}" alt="${n.title}" class="ad-image" loading="lazy" />
+<div class="reflection-glass"></div>
+<div class="fade-overlay"></div>
+<h3 class="ad-title">${n.title||"Tanpa Judul"}</h3>
+<div class="side-actions">
+  <div class="side-btn" onclick="bukaFormIklan()">
+    <i data-lucide="plus-circle"></i><span>Pasang Iklan</span>
+  </div>
+  <div class="side-btn" onclick="bukaDetailIklanSaya()">
+    <i data-lucide="image"></i><span>Detail Iklan</span>
+  </div>
+  <div class="side-btn" onclick="bagikanIklan('${n.id}')">
+    <i data-lucide="share-2"></i><span>Bagikan</span>
+  </div>
+</div>
+`;const
+a=s.querySelector(".reflection-glass");if(a)a.style.backgroundImage=`url('${o}')`;feedContainer.appendChild(s)}currentDisplayCount=i;lucide.createIcons({context:feedContainer});displayAds.length>0&&(activeAd=displayAds[0])}
+function
+tambahTombolMuat(){document.getElementById("load-more-wrap")?.remove();if(currentDisplayCount>=displayAds.length)return;const
+e=document.createElement("div");e.id="load-more-wrap";e.className="load-more-wrapper";e.innerHTML=`<button
+  class="load-more-btn"
+  onclick="muatLagi()"
+>
+  <i data-lucide="plus-circle"></i> Muat Lebih Banyak</button
+>`;feedContainer.appendChild(e);lucide.createIcons({context:e})} function
+muatLagi(){const
+e=document.querySelector(".load-more-btn");e.disabled=!0;e.innerHTML=`<i
+  data-lucide="loader-2"
+  class="animate-spin"
+></i>
+Memuat...`;setTimeout(()=>{tambahIklan(currentDisplayCount,currentDisplayCount+ITEM_PER_PAGE);tambahTombolMuat()},500)}
 
 function bukaDetailIklanSaya(){if(!activeAd)return alert("Data tidak ditemukan");document.getElementById("detailImg").style.backgroundImage=`url(${activeAd.image||"https://picsum.photos/id/1040/800/1400"})`;document.getElementById("detailTitle").textContent=activeAd.title||"Tanpa Judul";document.getElementById("detailCat").textContent=activeAd.category||"Lainnya";document.getElementById("detailLoc").textContent=activeAd.location||"Tidak diketahui";document.getElementById("detailViews").textContent=activeAd.views||"0";document.getElementById("detailDesc").textContent=activeAd.description||"Tidak ada deskripsi";document.getElementById("btnWa").onclick=()=>{const e=activeAd.whatsapp.toString().replace(/\D/g,""),t=encodeURIComponent(`Halo, tertarik dengan iklan "${activeAd.title}"`);window.open(`https://wa.me/${e}?text=${t}`,"_blank")};detailOverlay.classList.add("show")}
 function tutupDetailIklan(){detailOverlay.classList.remove("show")}
