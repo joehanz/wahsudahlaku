@@ -310,16 +310,7 @@
         box-shadow: 0 0 6px rgba(255,255,255,.1) !important;
       }
 
-      /* Perbaiki posisi ikon logo di navigasi */
-.nav-item img {
-  width: 22px !important;
-  height: 22px !important;
-  object-fit: contain;
-  display: block;
-  margin: 0;
-  padding: 0;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
-}
+      
     </style>
   </head>
   <body>
@@ -485,31 +476,27 @@
       const installText = navInstall?.querySelector("span");
 
       // === PWA INSTAL ===
-window.addEventListener("beforeinstallprompt", e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (installIcon) {
-        installIcon.removeAttribute("data-lucide");
-        installIcon.innerHTML = `<img src="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">`;
-    }
-    if (installText) installText.textContent = "Instal";
-});
+      window.addEventListener("beforeinstallprompt", e => {
+          e.preventDefault();
+          deferredPrompt = e;
+          if (installIcon) installIcon.setAttribute("data-lucide", "download");
+          if (installText) installText.textContent = "Instal Aplikasi";
+          lucide.createIcons({ context: navInstall });
+      });
 
-navInstall.addEventListener("click", async () => {
-    if (!deferredPrompt) return window.location.href = "https://rewangiklan.my.id/";
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-});
+      navInstall.addEventListener("click", async () => {
+          if (!deferredPrompt) return window.location.href = "https://rewangiklan.my.id/";
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+      });
 
-window.addEventListener("appinstalled", () => {
-    deferredPrompt = null;
-    if (installIcon) {
-        installIcon.removeAttribute("data-lucide");
-        installIcon.innerHTML = `<img src="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">`;
-    }
-    if (installText) installText.textContent = "Beranda";
-});
+      window.addEventListener("appinstalled", () => {
+          deferredPrompt = null;
+          if (installIcon) installIcon.setAttribute("data-lucide", "home");
+          if (installText) installText.textContent = "Beranda";
+          lucide.createIcons({ context: navInstall });
+      });
       // === AMBIL DATA IKLAN ===
       async function ambilDataIklan() {
           try {
