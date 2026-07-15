@@ -327,6 +327,155 @@ if (description && charCount) {
 
 lucide.createIcons();
 </script>
+        <script>
+            // === KONFIGURASI SESUAI SKRIP KAMU ===
+const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+let modeKelola = false;
+let idIklanDikelola = null;
+let dataIklanLama = null;
+
+// === DETEKSI MODE: PASANG BARU ATAU KELOLA LAMA ===
+async function deteksiMode() {
+    const params = new URLSearchParams(window.location.search);
+    idIklanDikelola = params.get('kelola');
+
+    if (!idIklanDikelola) {
+        // MODE: PASANG IKLAN BARU
+        modeKelola = false;
+        document.getElementById('secretGroup').classList.add('hidden');
+        document.getElementById('btnEdit').classList.add('hidden');
+        document.getElementById('btnHapus').classList.add('hidden');
+        return;
+    }
+
+    // MODE: KELOLA IKLAN LAMA
+    modeKelola = true;
+    document.getElementById('secretGroup').classList.remove('hidden');
+    document.getElementById('btnEdit').classList.remove('hidden');
+    document.getElementById('btnHapus').classList.remove('hidden');
+    document.querySelector('button[type="submit"]').classList.add('hidden');
+
+    try {
+        // AMBIL DATA IKLAN LAMA UNTUK DIISI KE FORM
+        const res = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklanDikelola)}`);
+        const hasil = await res.json();
+
+        if (!hasil.success) {
+            tampilkanPesan('error', hasil.error || 'Gagal memuat data iklan.');
+            return;
+        }
+
+        dataIklanLama = hasil.ad;
+
+        // ISI FORM DENGAN DATA LAMA
+        document.getElementById('title').value = dataIklanLama.title || '';
+        document.getElementById('category').value = dataIklanLama.category || '';
+        document.getElementById('location').value = dataIklanLama.location || '';
+        document.getElementById('whatsapp').value = dataIklanLama.whatsapp || '';
+        document.getElementById('description').value = dataIklanLama.description || '';
+        document.getElementById('charCount').textContent = `${dataIklanLama.description?.length || 0} / 500`;
+
+        // TAMPILKAN GAMBAR LAMA
+        if (dataIklanLama.image) {
+            previewImage.src = dataIklanLama.image;
+            previewImage.classList.remove('hidden');
+            previewText.classList.add('hidden');
+        }
+
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server: ' + err.message);
+    }
+}
+
+// === FUNGSI TAMPILKAN PESAN ===
+function tampilkanPesan(jenis, teks) {
+    const kotak = document.getElementById('statusBox');
+    kotak.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
+    
+    if (jenis === 'error') {
+        kotak.classList.add('bg-red-50', 'text-red-700');
+    } else {
+        kotak.classList.add('bg-green-50', 'text-green-700');
+    }
+    
+    kotak.textContent = teks;
+    kotak.scrollIntoView({behavior: 'smooth'});
+}
+
+// === TOMBOL SIMPAN PERUBAHAN ===
+document.getElementById('btnEdit').addEventListener('click', async () => {
+    const secretCode = document.getElementById('secretCode').value.trim();
+    const statusBox = document.getElementById('statusBox');
+
+    if (!secretCode) {
+        tampilkanPesan('error', 'Masukkan Kode Kelola terlebih dahulu ya bro!');
+        return;
+    }
+
+    try {
+        const params = new URLSearchParams();
+        params.append('action', 'updateAd');
+        params.append('id', idIklanDikelola);
+        params.append('secret_code', secretCode);
+        params.append('title', document.getElementById('title').value.trim());
+        params.append('category', document.getElementById('category').value);
+        params.append('location', document.getElementById('location').value.trim());
+        params.append('description', document.getElementById('description').value.trim());
+
+        const res = await fetch(`${API_URL}?${params.toString()}`);
+        const hasil = await res.json();
+
+        if (hasil.success) {
+            tampilkanPesan('sukses', '✅ Iklan berhasil diperbarui! Mengalihkan ke halaman iklan...');
+            setTimeout(() => {
+                window.location.href = `iklan-saya.html?id=${idIklanDikelola}`;
+            }, 2000);
+        } else {
+            tampilkanPesan('error', '❌ ' + (hasil.error || 'Kode Kelola salah atau tidak berhak mengedit iklan ini.'));
+        }
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server: ' + err.message);
+    }
+});
+
+// === TOMBOL HAPUS IKLAN ===
+document.getElementById('btnHapus').addEventListener('click', async () => {
+    const secretCode = document.getElementById('secretCode').value.trim();
+
+    if (!secretCode) {
+        tampilkanPesan('error', 'Masukkan Kode Kelola terlebih dahulu ya bro!');
+        return;
+    }
+
+    if (!confirm('⚠️ PERINGATAN! Yakin ingin menghapus iklan ini? Tindakan TIDAK BISA dibatalkan!')) {
+        return;
+    }
+
+    try {
+        const params = new URLSearchParams();
+        params.append('action', 'deleteAd');
+        params.append('id', idIklanDikelola);
+        params.append('secret_code', secretCode);
+
+        const res = await fetch(`${API_URL}?${params.toString()}`);
+        const hasil = await res.json();
+
+        if (hasil.success) {
+            tampilkanPesan('sukses', '✅ Iklan berhasil dihapus! Mengalihkan ke halaman utama...');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            tampilkanPesan('error', '❌ ' + (hasil.error || 'Kode Kelola salah atau tidak berhak menghapus iklan ini.'));
+        }
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server: ' + err.message);
+    }
+});
+
+// === JALANKAN SAAT HALAMAN DIBUKA ===
+document.addEventListener('DOMContentLoaded', deteksiMode);
+        </script>
 </body>
 
 </html>
