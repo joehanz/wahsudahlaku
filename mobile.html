@@ -145,39 +145,47 @@ html, body {
     z-index: 1;
 }
 
-/* ✅ EFEK PANTULAN KACA (TERBUKA, TIDAK TERTUTUP) */
+/* ✅ PANTULAN DIPERLUAS SAMPAI BAWAH, TIDAK TERBATAS */
 .reflection-glass {
     position: absolute;
-    top: 25%;
+    top: 25%; /* Mulai persis di bawah gambar utama */
     left: 0;
     right: 0;
-    height: 28%;
+    height: 75%; /* ✅ DARI 28% DIUBAH JADI 75% → MEMENUHI SELURUH SISA LAYAR KE BAWAH */
     background-position: center top;
     background-size: 100% auto;
     background-repeat: no-repeat;
     transform: scaleY(-1);
-    filter: blur(1.5px) brightness(0.7) saturate(1); /* ✅ Lebih terang, kurang buram */
-    opacity: 0.7; /* ✅ Lebih pekat, tidak samar */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+    filter: blur(1.5px) brightness(0.7) saturate(1);
+    opacity: 0.7;
+    mask-image: linear-gradient(to bottom, 
+        rgba(0,0,0,1) 0%, 
+        rgba(0,0,0,0.7) 40%, 
+        rgba(0,0,0,0.3) 70%,
+        transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, 
+        rgba(0,0,0,1) 0%, 
+        rgba(0,0,0,0.7) 40%, 
+        rgba(0,0,0,0.3) 70%,
+        transparent 100%);
     pointer-events: none;
     z-index: 2;
 }
-    
-/* ✅ LAPISAN GELAP TIDAK MENUTUPI PANTULAN */
+
+/* ✅ LAPISAN GELAP DIPERBAIKI SESUAI LUAS PANTULAN */
 .fade-overlay {
     position: absolute;
     top: 25%;
     left: 0;
     right: 0;
-    height: 45%;
+    height: 75%; /* ✅ SAMA DENGAN TINGGI PANTULAN */
     background: linear-gradient(to bottom, 
         rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.02) 30%, /* ✅ Hampir bening, tidak tutup pantulan */
-        rgba(0,0,0,0.25) 60%, /* ✅ Gelap hanya di bagian bawah dekat judul */
-        rgba(0,0,0,0.6) 100%);
+        rgba(0,0,0,0.02) 30%,
+        rgba(0,0,0,0.2) 60%,
+        rgba(0,0,0,0.5) 100%);
     pointer-events: none;
-    z-index: 3; /* ✅ Tetap di atas pantulan tapi tidak gelap */
+    z-index: 3;
 }
     
 /* ✅ JUDUL DI BAWAH, TIDAK TEBAL */
@@ -219,16 +227,16 @@ html, body {
 .center-action:hover { transform: translate(-50%, -50%) scale(1.1); background: #fff; }
 .play-mode .center-action { opacity: 0; pointer-events: none; }
 
-/* === TOMBOL SISI KANAN === */
+/* ✅ TOMBOL SAMPING TETAP DI POSISI TENGAH, TIDAK TERGESER */
 .side-actions {
     position: absolute;
     right: 16px;
-    top: 32%; /* ✅ Pindah ke atas, sejajar pantulan/judul, tidak turun ke bawah */
+    top: 40%; /* ✅ Sedikit diturunkan biar pas di tengah area pantulan */
     display: flex;
     flex-direction: column;
-    gap: 20px; /* ✅ Jarak tombol lebih rapi */
+    gap: 20px;
     align-items: center;
-    z-index: 10; /* ✅ Paling atas, tidak tertutup lapisan lain */
+    z-index: 10;
     transition: opacity 0.3s ease;
 }
     
