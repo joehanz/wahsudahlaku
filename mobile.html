@@ -725,14 +725,20 @@ const btnHapus = document.getElementById('btnHapus');
 
 // === FITUR INSTAL APLIKASI PWA ===
 let deferredPrompt;
-const installIcon = navInstall.querySelector('i');
-const installText = navInstall.querySelector('span');
+const navInstall = document.getElementById('navInstall');
+const installIcon = navInstall?.querySelector('i');
+const installText = navInstall?.querySelector('span');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installIcon.setAttribute('data-lucide', 'download');
-    installText.textContent = 'Instal Aplikasi';
+    // Pastikan elemen ada sebelum diubah
+    if (installIcon) {
+        installIcon.setAttribute('data-lucide', 'download');
+    }
+    if (installText) {
+        installText.textContent = 'Instal Aplikasi';
+    }
     lucide.createIcons({ context: navInstall });
 });
 
@@ -749,8 +755,12 @@ navInstall.addEventListener('click', async () => {
 
 window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
-    installIcon.setAttribute('data-lucide', 'home');
-    installText.textContent = 'Beranda';
+    if (installIcon) {
+        installIcon.setAttribute('data-lucide', 'home');
+    }
+    if (installText) {
+        installText.textContent = 'Beranda';
+    }
     lucide.createIcons({ context: navInstall });
 });
 
