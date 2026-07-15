@@ -113,7 +113,6 @@
             }
         }
     </script>
-
 </head>
 <body class="bg-white text-primary font-sans">
 
@@ -193,7 +192,7 @@
     </footer>
 
     <script>
-        // === AMBIL DATA PERSIS SAMA DENGAN INDEX.HTML ===
+        // === KONFIGURASI ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanSekarang = null;
         let dataIklanSekarang = null;
@@ -213,13 +212,29 @@
                 const respon = await fetch(API_URL);
                 const semuaData = await respon.json();
 
-                // 3. Cari iklan yang cocok ID-nya (sesuai nama kolom di data kamu: "secret code")
+                // 3. Cari iklan yang cocok ID-nya
                 dataIklanSekarang = semuaData.find(iklan => iklan.id === idIklanSekarang);
 
                 if (!dataIklanSekarang) {
                     document.getElementById('detailDesc').textContent = 'Iklan tidak ditemukan atau sudah dihapus.';
                     return;
                 }
+
+                // ✅ TAMBAHAN: HANYA DI HALAMAN INI, TAMBAH HITUNGAN VIEWS
+                const hitunganBaru = (Number(dataIklanSekarang.views) || 0) + 1;
+                // Kirim pembaruan ke Google Sheet untuk disimpan di kolom views
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        aksi: 'tambah_views',
+                        id: idIklanSekarang,
+                        views_baru: hitunganBaru
+                    })
+                });
+                // Perbarui tampilan dengan angka terbaru
+                dataIklanSekarang.views = hitunganBaru;
 
                 // 4. Tampilkan semua data
                 document.getElementById('detailImg').style.backgroundImage = `url('${dataIklanSekarang.image || 'https://picsum.photos/id/1040/800/600'}')`;
