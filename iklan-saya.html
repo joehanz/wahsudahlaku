@@ -127,12 +127,12 @@
                 </a>
             </div>
             <center class="text-2xl font-bold !mb-0">Detail Iklan</center>
-            <div class="flex items-center gap-4">
-                <!-- TOMBOL PANAH KEMBALI KE HALAMAN UTAMA -->
-                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.location.href='index.html'">
-                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                </button>
-            </div>
+             <div class="flex flex-col sm:flex-row gap-3">
+                    <!-- TOMBOL HUBUNGI WA -->
+                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
+                    <!-- TOMBOL EDIT/HAPUS SATU TOMBOL SAJA -->
+                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnKelola">⚙️ Edit / Hapus Iklan</button>
+                </div>
         </div>
     </header>
 
@@ -192,7 +192,7 @@
         </div>
     </footer>
 
-        <script>
+    <script>
         // === AMBIL DATA PERSIS SAMA DENGAN INDEX.HTML ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanSekarang = null;
@@ -245,40 +245,11 @@ Boleh info lebih lanjut?`
                     };
                 }
 
-                // 6. TOMBOL EDIT & HAPUS: SELALU TERLIHAT SEMUA ORANG
-                const tombolEdit = document.getElementById('btnEdit');
-                const tombolHapus = document.getElementById('btnHapus');
-                
-                // Hapus kelas sembunyi, tombol pasti terlihat
-                tombolEdit.classList.remove('hidden');
-                tombolHapus.classList.remove('hidden');
-                
-                // Fungsi cek kunci sebelum Edit
-                tombolEdit.onclick = () => {
-                    const kunciDimasukkan = prompt('Masukkan Kode Rahasia Kelola Iklan ini:');
-                    if (!kunciDimasukkan) return; // Dibatalkan
-
-                    // Bandingkan dengan kunci di data iklan
-                    if (kunciDimasukkan === dataIklanSekarang.kode_kelola) {
-                        // Benar, lanjut ke halaman edit
-                        window.location.href = `pasang.html?edit=${idIklanSekarang}`;
-                    } else {
-                        alert('❌ Kode rahasia salah! Anda tidak berhak mengedit iklan ini.');
-                    }
-                };
-
-                // Fungsi cek kunci sebelum Hapus
-                tombolHapus.onclick = () => {
-                    const kunciDimasukkan = prompt('PERINGATAN! Masukkan Kode Rahasia untuk menghapus iklan ini:');
-                    if (!kunciDimasukkan) return; // Dibatalkan
-
-                    if (kunciDimasukkan === dataIklanSekarang.kode_kelola) {
-                        if(confirm('⚠️ Yakin ingin menghapus iklan ini? Tindakan TIDAK BISA dibatalkan!')) {
-                            alert('✅ Kode cocok! Fitur hapus akan terhubung ke API Google Sheet nanti.');
-                        }
-                    } else {
-                        alert('❌ Kode rahasia salah! Anda tidak berhak menghapus iklan ini.');
-                    }
+                // 6. TOMBOL EDIT/HAPUS: LANGSUNG KE PASANG.HTML
+                const tombolKelola = document.getElementById('btnKelola');
+                tombolKelola.onclick = () => {
+                    // Kirim ID iklan ke halaman pasang.html
+                    window.location.href = `pasang.html?kelola=${idIklanSekarang}`;
                 };
 
             } catch (salah) {
