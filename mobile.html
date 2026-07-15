@@ -724,16 +724,7 @@ function tampilkanAwal() {
     tambahTombolMuat();
 }
 
-// === TAMBAH IKLAN KE DAFTAR (SUDAH PERBAIKAN ERROR & PANTULAN) ===
-// === TAMPILKAN DAFTAR IKLAN PERTAMA ===
-function tampilkanAwal() {
-    feedContainer.innerHTML = '';
-    currentDisplayCount = 0;
-    tambahIklan(0, ITEM_PER_PAGE);
-    tambahTombolMuat();
-}
-
-// === TAMBAH IKLAN KE DAFTAR (VERSI PALING AMAN & PANTULAN PASTI MUNCUL) ===
+// === TAMBAH IKLAN KE DAFTAR (SUDAH BERSIH & PANTULAN MUNCUL) ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -741,7 +732,6 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         
-        // Semua elemen dibuat lengkap, tanpa atribut yang bikin error
         kartu.innerHTML = `
             <div class="spotlight"></div>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
@@ -765,7 +755,7 @@ function tambahIklan(dari, sampai) {
             </div>
         `;
 
-        // Setel gambar pantulan dengan cara paling aman
+        // Setel gambar pantulan dengan aman
         const urlGambar = iklan.image || 'https://picsum.photos/id/1040/800/1400';
         const pantulan = kartu.querySelector('.reflection-glass');
         if (pantulan) {
@@ -781,21 +771,6 @@ function tambahIklan(dari, sampai) {
     lucide.createIcons({ context: feedContainer });
     if (displayAds.length > 0) activeAd = displayAds[0];
 }
-
-        // Setel latar pantulan dengan cara PALING AMAN, tidak pakai setAttribute
-        const urlGambar = iklan.image || 'https://picsum.photos/id/1040/800/1400';
-        const pantulan = kartu.querySelector('.reflection-glass');
-        if (pantulan) {
-            pantulan.style.backgroundImage = `url('${urlGambar}')`;
-        }
-
-        feedContainer.appendChild(kartu);
-    }
-    currentDisplayCount = batas;
-    lucide.createIcons({ context: feedContainer });
-    if (displayAds.length > 0) activeAd = displayAds[0];
-}
-
         
 // === TOMBOL MUAT LEBIH BANYAK IKLAN ===
 function tambahTombolMuat() {
