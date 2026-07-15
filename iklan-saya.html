@@ -185,6 +185,47 @@
     </footer>
 
     <script src="script.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+        // === AMBIL DATA IKLAN DARI LINK / LOCALSTORAGE ===
+        function ambilDanTampilkanData() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const iklan = JSON.parse(localStorage.getItem('iklan_' + id) || 'null');
+
+            if (!iklan) {
+                alert('Iklan tidak ditemukan!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Isi data ke halaman
+            document.getElementById('detailImg').style.backgroundImage = `url('${iklan.gambar}')`;
+            document.getElementById('detailTitle').textContent = iklan.judul;
+            document.getElementById('detailCat').textContent = iklan.kategori;
+            document.getElementById('detailLoc').textContent = iklan.lokasi;
+            document.getElementById('detailViews').textContent = iklan.dilihat || 0;
+            document.getElementById('detailDesc').textContent = iklan.deskripsi;
+
+            // Tombol WhatsApp
+            document.getElementById('btnWa').onclick = () => {
+                window.open(`https://wa.me/${iklan.wa}?text=Halo%2C%20saya%20tertarik%20dengan%20iklan%20"${encodeURIComponent(iklan.judul)}"`, '_blank');
+            };
+
+            // Tampilkan tombol Kelola jika punya kode
+            const kodeSaya = localStorage.getItem('kode_kelola_saya');
+            if (kodeSaya && kodeSaya === iklan.kode) {
+                document.getElementById('btnManage').classList.remove('hidden');
+                document.getElementById('btnManage').onclick = () => {
+                    window.location.href = `pasang.html?edit=${id}`;
+                };
+            }
+        }
+
+        // Jalankan saat halaman siap
+        document.addEventListener('DOMContentLoaded', () => {
+            ambilDanTampilkanData();
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
