@@ -117,26 +117,28 @@
 </head>
 <body class="bg-white text-primary font-sans">
 
-    <!-- Header SAMA PERSIS INDEX.HTML -->
+    <!-- Header: HANYA LOGO + JUDUL + PANAH KEMBALI KE INDEX -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <!-- Logo -->
             <div class="flex items-center gap-2.5">
                 <a href="index.html" class="flex items-center gap-2.5">
                     <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
                     <span class="text-2xl font-semibold">Rewang Iklan</span>
                 </a>
             </div>
+            <!-- Judul Tengah -->
             <center class="text-2xl font-bold !mb-0">Detail Iklan</center>
-             <div class="flex flex-col sm:flex-row gap-3">
-                    <!-- TOMBOL HUBUNGI WA -->
-                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
-                    <!-- TOMBOL EDIT/HAPUS SATU TOMBOL SAJA -->
-                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnKelola">⚙️ Edit / Hapus Iklan</button>
-                </div>
+            <!-- Tombol Panah Kembali ke Halaman Asal Grid -->
+            <div class="flex items-center gap-4">
+                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.location.href='index.html'">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- KONTEN UTAMA -->
+    <!-- KONTEN UTAMA + TOMBOL DI BAWAH DESKRIPSI -->
     <main class="max-w-3xl mx-auto px-6 py-12">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="w-full h-80 bg-gray-100 bg-cover bg-center" id="detailImg"></div>
@@ -147,12 +149,10 @@
                 <p class="text-gray-600 mb-6">👁️ Dilihat <span id="detailViews">0</span> kali</p>
                 <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc">Mengambil data dari server...</div>
                 
+                <!-- DUA TOMBOL DI BAWAH DESKRIPSI: WA DAN KELOLA -->
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <!-- TOMBOL HUBUNGI WA DENGAN LINK IKLAN -->
                     <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
-                    <!-- TOMBOL EDIT & HAPUS SUDAH ADA -->
-                    <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnEdit">✏️ Edit Iklan</button>
-                    <button class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnHapus">🗑️ Hapus Iklan</button>
+                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnKelola">⚙️ Edit / Hapus Iklan</button>
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@
                 const respon = await fetch(API_URL);
                 const semuaData = await respon.json();
 
-                // 3. Cari iklan yang cocok ID-nya
+                // 3. Cari iklan yang cocok ID-nya (sesuai nama kolom di data kamu: "secret code")
                 dataIklanSekarang = semuaData.find(iklan => iklan.id === idIklanSekarang);
 
                 if (!dataIklanSekarang) {
@@ -245,10 +245,9 @@ Boleh info lebih lanjut?`
                     };
                 }
 
-                // 6. TOMBOL EDIT/HAPUS: LANGSUNG KE PASANG.HTML
+                // 6. TOMBOL EDIT/HAPUS: LANGSUNG KE PASANG.HTML BAWA ID IKLAN
                 const tombolKelola = document.getElementById('btnKelola');
                 tombolKelola.onclick = () => {
-                    // Kirim ID iklan ke halaman pasang.html
                     window.location.href = `pasang.html?kelola=${idIklanSekarang}`;
                 };
 
