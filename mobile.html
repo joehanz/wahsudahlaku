@@ -725,14 +725,14 @@ const btnHapus = document.getElementById('btnHapus');
 
 // === FITUR INSTAL APLIKASI PWA ===
 let deferredPrompt;
-const navInstall = document.getElementById('navInstall');
+// JANGAN tulis ulang "const navInstall" di sini! Sudah ada di atas
 const installIcon = navInstall?.querySelector('i');
 const installText = navInstall?.querySelector('span');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    // Pastikan elemen ada sebelum diubah
+    // Cek dulu biar tidak error "null"
     if (installIcon) {
         installIcon.setAttribute('data-lucide', 'download');
     }
