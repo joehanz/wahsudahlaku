@@ -154,16 +154,16 @@ html, body {
     height: 28%;
     background-position: center top;
     background-size: 100% auto;
-    background-repeat: no-repeat; /* ✅ Tambah ini biar gambar tidak berulang */
+    background-repeat: no-repeat;
     transform: scaleY(-1);
-    filter: blur(2px) brightness(0.6) saturate(0.9); /* ✅ Lebih terang, kurang buram */
-    opacity: 0.55; /* ✅ Lebih jelas terlihat */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+    filter: blur(1.5px) brightness(0.7) saturate(1); /* ✅ Lebih terang, kurang buram */
+    opacity: 0.7; /* ✅ Lebih pekat, tidak samar */
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
     pointer-events: none;
-    z-index: 2; /* ✅ Taruh di atas gelap tapi di bawah judul */
+    z-index: 2;
 }
-
+    
 /* ✅ LAPISAN GELAP TIDAK MENUTUPI PANTULAN */
 .fade-overlay {
     position: absolute;
@@ -173,12 +173,12 @@ html, body {
     height: 45%;
     background: linear-gradient(to bottom, 
         rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.05) 25%, /* ✅ Hampir bening di atas */
-        rgba(0,0,0,0.4) 55%, 
-        rgba(0,0,0,0.85) 100%);
+        rgba(0,0,0,0.02) 30%, /* ✅ Hampir bening, tidak tutup pantulan */
+        rgba(0,0,0,0.25) 60%, /* ✅ Gelap hanya di bagian bawah dekat judul */
+        rgba(0,0,0,0.6) 100%);
     pointer-events: none;
-    z-index: 3;
-}  
+    z-index: 3; /* ✅ Tetap di atas pantulan tapi tidak gelap */
+}
     
 /* ✅ JUDUL DI BAWAH, TIDAK TEBAL */
 .ad-title {
@@ -223,14 +223,15 @@ html, body {
 .side-actions {
     position: absolute;
     right: 16px;
-    bottom: 100px;
+    top: 32%; /* ✅ Pindah ke atas, sejajar pantulan/judul, tidak turun ke bawah */
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px; /* ✅ Jarak tombol lebih rapi */
     align-items: center;
-    z-index: 10;
+    z-index: 10; /* ✅ Paling atas, tidak tertutup lapisan lain */
     transition: opacity 0.3s ease;
 }
+    
 .play-mode .side-actions { opacity: 0; pointer-events: none; }
 .side-btn {
     display: flex;
