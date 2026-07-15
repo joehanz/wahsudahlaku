@@ -146,6 +146,7 @@ html, body {
 }
 
 /* ✅ EFEK PANTULAN KACA (PASTI TERLIHAT) */
+/* === EFEK PANTULAN KACA (PASTI TERLIHAT) === */
 .reflection-glass {
     position: absolute;
     top: 25%;
@@ -156,14 +157,14 @@ html, body {
     background-size: 100% auto;
     transform: scaleY(-1);
     filter: blur(3px) brightness(0.5) saturate(0.8);
-    opacity: 0.45;
+    opacity: 0.5; /* Naikkan lagi biar makin jelas */
     mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
     pointer-events: none;
     z-index: 2;
 }
 
-/* ✅ MEMUDAR ALAMI TIDAK MENUTUPI PANTULAN */
+/* === LAPISAN GELAP TIDAK MENUTUPI PANTULAN === */
 .fade-overlay {
     position: absolute;
     top: 25%;
@@ -172,10 +173,9 @@ html, body {
     height: 45%;
     background: linear-gradient(to bottom, 
         rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.15) 30%, 
+        rgba(0,0,0,0.1) 30%, /* Lebih terang lagi */
         rgba(0,0,0,0.5) 60%, 
-        rgba(0,0,0,0.9) 85%, 
-        #000 100%);
+        rgba(0,0,0,0.9) 100%);
     pointer-events: none;
     z-index: 3;
 }
@@ -725,6 +725,15 @@ function tampilkanAwal() {
 }
 
 // === TAMBAH IKLAN KE DAFTAR (SUDAH PERBAIKAN ERROR & PANTULAN) ===
+// === TAMPILKAN DAFTAR IKLAN PERTAMA ===
+function tampilkanAwal() {
+    feedContainer.innerHTML = '';
+    currentDisplayCount = 0;
+    tambahIklan(0, ITEM_PER_PAGE);
+    tambahTombolMuat();
+}
+
+// === TAMBAH IKLAN KE DAFTAR (VERSI PALING AMAN) ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -732,7 +741,7 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         
-        // Masukkan elemen dulu tanpa style inline yang bikin error
+        // Semua elemen dibuat lengkap, TANPA setAttribute atau style inline yang bermasalah
         kartu.innerHTML = `
             <div class="spotlight"></div>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
@@ -756,7 +765,7 @@ function tambahIklan(dari, sampai) {
             </div>
         `;
 
-        // ✅ Setel gambar pantulan SETELAH elemen pasti terbentuk
+        // Setel latar pantulan dengan cara PALING AMAN, tidak pakai setAttribute
         const urlGambar = iklan.image || 'https://picsum.photos/id/1040/800/1400';
         const pantulan = kartu.querySelector('.reflection-glass');
         if (pantulan) {
