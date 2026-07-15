@@ -189,3 +189,76 @@
         }
 
         document.addEventListener('DOMContentLoaded', fetchAds);
+
+// === CEK DAN BERITAHU PEMBARUAN VERSI ===
+let versiBaruTersedia = false;
+
+// Cek Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+        try {
+            const registrasi = await navigator.serviceWorker.register('/sw.js');
+            
+            // Cek kalau ada versi baru ditemukan
+            registrasi.addEventListener('updatefound', () => {
+                const pekerjaBaru = registrasi.installing;
+                
+                pekerjaBaru.addEventListener('statechange', () => {
+                    // Kalau versi baru sudah siap dipakai
+                    if (pekerjaBaru.state === 'installed' && navigator.serviceWorker.controller) {
+                        versiBaruTersedia = true;
+                        tampilkanNotifikasiPembaruan();
+                    }
+                });
+            });
+
+            // Cek pembaruan secara berkala tiap 1 jam
+            setInterval(() => {
+                registrasi.update();
+            }, 60 * 60 * 1000);
+
+        } catch (err) {
+            console.log('Service Worker tidak aktif:', err);
+        }
+    });
+}
+
+// === TAMPILKAN NOTIFIKASI KE PENGGUNA ===
+function tampilkanNotifikasiPembaruan() {
+    const kotak = document.createElement('div');
+    kotak.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(17,24,39,0.95);
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        z-index: 99999;
+        max-width: 90%;
+        text-align: center;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.15);
+    `;
+
+    kotak.innerHTML = `
+        <div style="margin-bottom: 10px;">✅ Ada pembaruan aplikasi tersedia!</div>
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button onclick="window.lokasiUlang()" style="padding:8px 16px; border:none; border-radius:8px; background:#2563EB; color:white; font-weight:500;">Muat Versi Baru</button>
+            <button onclick="this.parentElement.parentElement.remove()" style="padding:8px 16px; border:none; border-radius:8px; background:rgba(255,255,255,0.1); color:white;">Nanti Saja</button>
+        </div>
+    `;
+
+    document.body.appendChild(kotak);
+}
+
+// === FUNGSI UNTUK LANGSUNG GUNAKAN VERSI BARU ===
+window.lokasiUlang = () => {
+    if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+    }
+    window.location.reload(true); // true = ambil langsung dari server, bukan simpanan lama
+};
