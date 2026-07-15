@@ -95,7 +95,7 @@
 </head>
 <body class="bg-white text-primary font-sans">
 
-    <!-- Header -->
+    <!-- Header SAMA PERSIS INDEX.HTML -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -113,26 +113,26 @@
         </div>
     </header>
 
-    <!-- Konten Utama: SAMA PERSIS STRUKTUR ID LAMA, HANYA TAMPILAN DIUBAH -->
+    <!-- KONTEN UTAMA + KODE AMBIL DATA SESUAI API KAMU -->
     <main class="max-w-3xl mx-auto px-6 py-12">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="w-full h-80 bg-gray-100 bg-cover bg-center" id="detailImg"></div>
             <div class="p-8">
-                <h2 class="text-2xl font-bold mb-4" id="detailTitle"></h2>
-                <p class="text-gray-600 mb-2">Kategori: <span id="detailCat"></span></p>
-                <p class="text-gray-600 mb-2">📍 <span id="detailLoc"></span></p>
-                <p class="text-gray-600 mb-6">👁️ Dilihat <span id="detailViews"></span> kali</p>
-                <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc"></div>
+                <h2 class="text-2xl font-bold mb-4" id="detailTitle">Memuat data...</h2>
+                <p class="text-gray-600 mb-2">Kategori: <span id="detailCat">-</span></p>
+                <p class="text-gray-600 mb-2">📍 <span id="detailLoc">-</span></p>
+                <p class="text-gray-600 mb-6">👁️ Dilihat <span id="detailViews">0</span> kali</p>
+                <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc">Sedang mengambil data iklan...</div>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
+                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnWa">💬 Hubungi via WhatsApp</button>
                     <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnManage">⚙️ Kelola / Edit / Hapus Iklan</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer SAMA PERSIS INDEX.HTML -->
     <footer class="bg-primary text-white mt-12">
         <div class="max-w-7xl mx-auto px-6 py-14">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -166,8 +166,60 @@
         </div>
     </footer>
 
-    <!-- === SCRIPT DIAMBIL PERSIS DARI TEMPLATE LAMA KAMU === -->
     <script src="script.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+    // === KODE AMBIL DATA SESUAI API GOOGLE SHEET KAMU ===
+    const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+
+    async function tampilkanDetailIklan() {
+        // Ambil ID dari link
+        const params = new URLSearchParams(window.location.search);
+        const idDicari = params.get('id');
+        if (!idDicari) {
+            alert('ID iklan tidak ditemukan!');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        try {
+            // Ambil SEMUA data dari API persis seperti index.html
+            const res = await fetch(API_URL);
+            const semuaIklan = await res.json();
+            
+            // Cari iklan yang ID-nya cocok
+            const iklan = semuaIklan.find(item => item.id === idDicari);
+            if (!iklan) {
+                alert('Iklan sudah dihapus atau tidak ditemukan!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Isi data ke halaman
+            document.getElementById('detailImg').style.backgroundImage = `url('${iklan.image || 'https://picsum.photos/id/1040/800/600'}')`;
+            document.getElementById('detailTitle').textContent = iklan.title || 'Tanpa Judul';
+            document.getElementById('detailCat').textContent = iklan.category || 'Lainnya';
+            document.getElementById('detailLoc').textContent = iklan.location || 'Lokasi tidak diketahui';
+            document.getElementById('detailViews').textContent = iklan.views || '0';
+            document.getElementById('detailDesc').textContent = iklan.description || 'Tidak ada deskripsi';
+
+            // Tombol WhatsApp
+            const btnWa = document.getElementById('btnWa');
+            if (iklan.whatsapp) {
+                btnWa.classList.remove('hidden');
+                btnWa.onclick = () => {
+                    window.open(`https://wa.me/${iklan.whatsapp}?text=Halo%2C%20saya%20tertarik%20dengan%20iklan%20"${encodeURIComponent(iklan.title)}"`, '_blank');
+                };
+            }
+
+        } catch (err) {
+            console.error('Gagal ambil data:', err);
+            document.getElementById('detailDesc').textContent = 'Gagal memuat data, coba lagi nanti.';
+        }
+
+        lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', tampilkanDetailIklan);
+    </script>
 </body>
 </html>
