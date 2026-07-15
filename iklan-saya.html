@@ -106,7 +106,8 @@
             </div>
             <center class="text-2xl font-bold !mb-0">Detail Iklan</center>
             <div class="flex items-center gap-4">
-                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.history.back()">
+                <!-- TOMBOL PANAH KEMBALI KE HALAMAN UTAMA -->
+                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.location.href='index.html'">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -125,8 +126,11 @@
                 <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc">Mengambil data dari server...</div>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnWa">💬 Hubungi via WhatsApp</button>
-                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnManage">⚙️ Kelola Iklan</button>
+                    <!-- TOMBOL HUBUNGI WA DENGAN LINK IKLAN -->
+                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
+                    <!-- TOMBOL EDIT & HAPUS SUDAH ADA -->
+                    <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnEdit">✏️ Edit Iklan</button>
+                    <button class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors hidden" id="btnHapus">🗑️ Hapus Iklan</button>
                 </div>
             </div>
         </div>
@@ -169,13 +173,15 @@
     <script>
         // === AMBIL DATA PERSIS SAMA DENGAN INDEX.HTML ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+        let idIklanSekarang = null;
+        let dataIklanSekarang = null;
 
         async function mulaiMuat() {
             // 1. Ambil ID dari alamat link
             const linkParams = new URLSearchParams(window.location.search);
-            const idYangDicari = linkParams.get('id');
+            idIklanSekarang = linkParams.get('id');
 
-            if (!idYangDicari) {
+            if (!idIklanSekarang) {
                 document.getElementById('detailDesc').textContent = 'Link tidak lengkap, tidak ada ID iklan.';
                 return;
             }
@@ -186,28 +192,54 @@
                 const semuaData = await respon.json();
 
                 // 3. Cari iklan yang cocok ID-nya
-                const dataIklan = semuaData.find(iklan => iklan.id === idYangDicari);
+                dataIklanSekarang = semuaData.find(iklan => iklan.id === idIklanSekarang);
 
-                if (!dataIklan) {
+                if (!dataIklanSekarang) {
                     document.getElementById('detailDesc').textContent = 'Iklan tidak ditemukan atau sudah dihapus.';
                     return;
                 }
 
                 // 4. Tampilkan semua data
-                document.getElementById('detailImg').style.backgroundImage = `url('${dataIklan.image || 'https://picsum.photos/id/1040/800/600'}')`;
-                document.getElementById('detailTitle').textContent = dataIklan.title || 'Tanpa Judul';
-                document.getElementById('detailCat').textContent = dataIklan.category || 'Lainnya';
-                document.getElementById('detailLoc').textContent = dataIklan.location || 'Lokasi tidak diketahui';
-                document.getElementById('detailViews').textContent = dataIklan.views || '0';
-                document.getElementById('detailDesc').textContent = dataIklan.description || 'Tidak ada deskripsi tambahan.';
+                document.getElementById('detailImg').style.backgroundImage = `url('${dataIklanSekarang.image || 'https://picsum.photos/id/1040/800/600'}')`;
+                document.getElementById('detailTitle').textContent = dataIklanSekarang.title || 'Tanpa Judul';
+                document.getElementById('detailCat').textContent = dataIklanSekarang.category || 'Lainnya';
+                document.getElementById('detailLoc').textContent = dataIklanSekarang.location || 'Lokasi tidak diketahui';
+                document.getElementById('detailViews').textContent = dataIklanSekarang.views || '0';
+                document.getElementById('detailDesc').textContent = dataIklanSekarang.description || 'Tidak ada deskripsi tambahan.';
 
-                // 5. Tampilkan tombol WhatsApp kalau ada nomornya
+                // 5. TOMBOL WA DENGAN LINK LENGKAP IKLAN
                 const tombolWA = document.getElementById('btnWa');
-                if (dataIklan.whatsapp) {
-                    tombolWA.classList.remove('hidden');
+                const linkIklanLengkap = window.location.href;
+                if (dataIklanSekarang.whatsapp) {
                     tombolWA.onclick = () => {
-                        const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${dataIklan.title}"`);
-                        window.open(`https://wa.me/${dataIklan.whatsapp}?text=${pesan}`, '_blank');
+                        const pesan = encodeURIComponent(
+`Halo, saya tertarik dengan iklan:
+📌 ${dataIklanSekarang.title}
+🔗 Link: ${linkIklanLengkap}
+
+Boleh info lebih lanjut?`
+                        );
+                        window.open(`https://wa.me/${dataIklanSekarang.whatsapp}?text=${pesan}`, '_blank');
+                    };
+                }
+
+                // 6. TOMBOL EDIT & HAPUS (jika ada kode kelola)
+                const kodeTersimpan = localStorage.getItem('kode_kelola_iklan') || '';
+                const tombolEdit = document.getElementById('btnEdit');
+                const tombolHapus = document.getElementById('btnHapus');
+                
+                // Tampilkan jika kode cocok dengan iklan
+                if (kodeTersimpan && dataIklanSekarang.kode_kelola === kodeTersimpan) {
+                    tombolEdit.classList.remove('hidden');
+                    tombolHapus.classList.remove('hidden');
+                    
+                    tombolEdit.onclick = () => {
+                        window.location.href = `pasang.html?edit=${idIklanSekarang}`;
+                    };
+                    tombolHapus.onclick = () => {
+                        if(confirm('Yakin ingin menghapus iklan ini? Tindakan tidak bisa dibatalkan!')) {
+                            alert('Fungsi hapus akan terhubung ke API, nanti saya tambahkan ya bro!');
+                        }
                     };
                 }
 
