@@ -515,6 +515,61 @@ html, body {
     z-index: 8;
 }
 .play-mode .play-hint { opacity: 1; }
+
+    /* ✅ GAYA UMUM SEMUA TOMBOL: SERAGAM, TIDAK WARNA-WARNI */
+button,
+.btn-wa,
+.btn-manage,
+.btn-kirim,
+.btn-edit,
+.btn-hapus,
+.load-more-btn,
+.detail-close,
+.form-close,
+.search-clear {
+    background: rgba(17, 24, 39, 0.75) !important; /* Latar gelap transparan */
+    color: #ffffff !important; /* Teks putih */
+    border: 1px solid rgba(255, 255, 255, 0.18) !important; /* Garis pinggir samar putih */
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.25), 
+                inset 0 0 8px rgba(255, 255, 255, 0.05) !important; /* Bayangan luar putih */
+    backdrop-filter: blur(10px); /* Efek kaca */
+    transition: all 0.15s ease !important;
+    font-weight: 500 !important;
+}
+
+/* ✅ SAAT DIKLIK / DITEKAN: TERTEKAN MASUK, BAYANGAN MENIPIS */
+button:active,
+.btn-wa:active,
+.btn-manage:active,
+.btn-kirim:active,
+.btn-edit:active,
+.btn-hapus:active,
+.load-more-btn:active {
+    transform: scale(0.97) translateY(1px) !important; /* Efek masuk ke dalam */
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.12), 
+                inset 0 2px 4px rgba(0, 0, 0, 0.3) !important; /* Bayangan mengecil */
+    background: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* ✅ SAAT DIARAHKAN KURSOR: BAYANGAN SEDIKIT BERTAMBAH */
+button:hover,
+.btn-wa:hover,
+.btn-manage:hover,
+.btn-kirim:hover,
+.btn-edit:hover,
+.btn-hapus:hover,
+.load-more-btn:hover {
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.32), 
+                inset 0 0 10px rgba(255, 255, 255, 0.08) !important;
+    background: rgba(31, 41, 55, 0.75) !important;
+}
+
+/* ✅ TOMBOL DINONAKTIFKAN */
+.load-more-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.1) !important;
+}
 </style>
 </head>
 <body>
