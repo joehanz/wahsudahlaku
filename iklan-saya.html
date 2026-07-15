@@ -192,7 +192,7 @@
         </div>
     </footer>
 
-    <script>
+        <script>
         // === AMBIL DATA PERSIS SAMA DENGAN INDEX.HTML ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanSekarang = null;
@@ -245,25 +245,41 @@ Boleh info lebih lanjut?`
                     };
                 }
 
-                // 6. TOMBOL EDIT & HAPUS (jika ada kode kelola)
-                const kodeTersimpan = localStorage.getItem('kode_kelola_iklan') || '';
+                // 6. TOMBOL EDIT & HAPUS: SELALU TERLIHAT SEMUA ORANG
                 const tombolEdit = document.getElementById('btnEdit');
                 const tombolHapus = document.getElementById('btnHapus');
                 
-                // Tampilkan jika kode cocok dengan iklan
-                if (kodeTersimpan && dataIklanSekarang.kode_kelola === kodeTersimpan) {
-                    tombolEdit.classList.remove('hidden');
-                    tombolHapus.classList.remove('hidden');
-                    
-                    tombolEdit.onclick = () => {
+                // Hapus kelas sembunyi, tombol pasti terlihat
+                tombolEdit.classList.remove('hidden');
+                tombolHapus.classList.remove('hidden');
+                
+                // Fungsi cek kunci sebelum Edit
+                tombolEdit.onclick = () => {
+                    const kunciDimasukkan = prompt('Masukkan Kode Rahasia Kelola Iklan ini:');
+                    if (!kunciDimasukkan) return; // Dibatalkan
+
+                    // Bandingkan dengan kunci di data iklan
+                    if (kunciDimasukkan === dataIklanSekarang.kode_kelola) {
+                        // Benar, lanjut ke halaman edit
                         window.location.href = `pasang.html?edit=${idIklanSekarang}`;
-                    };
-                    tombolHapus.onclick = () => {
-                        if(confirm('Yakin ingin menghapus iklan ini? Tindakan tidak bisa dibatalkan!')) {
-                            alert('Fungsi hapus akan terhubung ke API, nanti saya tambahkan ya bro!');
+                    } else {
+                        alert('❌ Kode rahasia salah! Anda tidak berhak mengedit iklan ini.');
+                    }
+                };
+
+                // Fungsi cek kunci sebelum Hapus
+                tombolHapus.onclick = () => {
+                    const kunciDimasukkan = prompt('PERINGATAN! Masukkan Kode Rahasia untuk menghapus iklan ini:');
+                    if (!kunciDimasukkan) return; // Dibatalkan
+
+                    if (kunciDimasukkan === dataIklanSekarang.kode_kelola) {
+                        if(confirm('⚠️ Yakin ingin menghapus iklan ini? Tindakan TIDAK BISA dibatalkan!')) {
+                            alert('✅ Kode cocok! Fitur hapus akan terhubung ke API Google Sheet nanti.');
                         }
-                    };
-                }
+                    } else {
+                        alert('❌ Kode rahasia salah! Anda tidak berhak menghapus iklan ini.');
+                    }
+                };
 
             } catch (salah) {
                 console.error('Error ambil data:', salah);
