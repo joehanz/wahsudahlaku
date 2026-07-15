@@ -98,8 +98,8 @@
             <!-- KODE KELOLA (HANYA MUNCUL SAAT EDIT) -->
             <div id="kodeKelolaGrup">
                 <label for="inputKode" class="block text-sm font-medium text-gray-700 mb-2">Kode Kelola Iklan *</label>
-                <input type="text" id="inputKode" required placeholder="Masukkan kode rahasia yang Anda dapatkan sebelumnya" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                <p class="mt-1 text-xs text-gray-500">Kode ini diberikan saat pertama kali Anda memasang iklan</p>
+                <input type="text" id="inputKode" placeholder="Masukkan kode rahasia Anda" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                <p class="mt-1 text-xs text-gray-500">Kode ini didapat saat pertama kali Anda memasang iklan</p>
             </div>
 
             <!-- TOMBOL AKSI -->
@@ -128,13 +128,12 @@ idIklan = parameterUrl.get('kelola');
 if (idIklan) {
     document.body.classList.add('mode-kelola');
     document.getElementById('judulHalaman').textContent = 'Edit Iklan Saya';
-    // Ambil data iklan setelah halaman siap
     ambilDataIklan();
 }
 
-// === 2. AMBIL DATA IKLAN & ISIKAN KE FORM OTOMATIS ===
+// === 2. AMBIL DATA IKLAN & ISIKAN KE FORM ===
 async function ambilDataIklan() {
-    tampilkanPesan('loading', 'Sedang memuat data iklan...');
+    tampilkanPesan('info', 'Sedang memuat data iklan...');
     try {
         const res = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklan)}`);
         const data = await res.json();
@@ -142,18 +141,15 @@ async function ambilDataIklan() {
         if (!data.success) throw new Error(data.error || 'Iklan tidak ditemukan');
         const iklan = data.ad;
 
-        // Isi semua kolom form
         document.getElementById('inputJudul').value = iklan.title || '';
         document.getElementById('inputKategori').value = iklan.category || '';
         document.getElementById('inputLokasi').value = iklan.location || '';
         document.getElementById('inputWa').value = iklan.whatsapp || '';
         document.getElementById('inputDeskripsi').value = iklan.description || '';
         
-        // Perbarui hitungan karakter
         const panjang = iklan.description?.length || 0;
         document.getElementById('jumlahKarakter').textContent = `${panjang} / 500`;
 
-        // Tampilkan foto lama jika ada
         if (iklan.image) {
             const gambarPratinjau = document.getElementById('gambarPratinjau');
             const teksPratinjau = document.getElementById('teksPratinjau');
@@ -168,7 +164,80 @@ async function ambilDataIklan() {
     }
 }
 
-// === 3. PRATINJAU GAMBAR BERJALAN ===
+// === 3. TOMBOL SIMPAN PERUBAHAN ===
+document.getElementById('btnEdit').addEventListener('click', async function() {
+    const kodeKelola = document.getElementById('inputKode').value.trim();
+
+    // Cek apakah kode kosong
+    if (!kodeKelola) {
+        tampilkanPesan('error', 'Harap masukkan Kode Kelola yang Anda dapatkan saat pertama kali memasang iklan!');
+        return;
+    }
+
+    tampilkanPesan('info', 'Sedang menyimpan perubahan...');
+
+    try {
+        const dataKirim = new URLSearchParams();
+        dataKirim.append('action', 'updateAd');
+        dataKirim.append('id', idIklan);
+        dataKirim.append('secret_code', kodeKelola);
+        dataKirim.append('title', document.getElementById('inputJudul').value.trim());
+        dataKirim.append('category', document.getElementById('inputKategori').value);
+        dataKirim.append('location', document.getElementById('inputLokasi').value.trim());
+        dataKirim.append('whatsapp', document.getElementById('inputWa').value.trim());
+        dataKirim.append('description', document.getElementById('inputDeskripsi').value.trim());
+
+        const res = await fetch(`${API_URL}?${dataKirim.toString()}`);
+        const hasil = await res.json();
+
+        if (hasil.success) {
+            tampilkanPesan('sukses', '✅ Perubahan berhasil disimpan!');
+            setTimeout(() => window.location.href = 'index.html', 2500);
+        } else {
+            tampilkanPesan('error', '❌ Kode Kelola tidak cocok! Silakan periksa kembali kode Anda.');
+        }
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
+    }
+});
+
+// === 4. TOMBOL HAPUS IKLAN ===
+document.getElementById('btnHapus').addEventListener('click', async function() {
+    const kodeKelola = document.getElementById('inputKode').value.trim();
+
+    // Cek apakah kode kosong
+    if (!kodeKelola) {
+        tampilkanPesan('error', 'Harap masukkan Kode Kelola yang Anda dapatkan saat pertama kali memasang iklan!');
+        return;
+    }
+
+    // Konfirmasi penghapusan
+    const yakin = confirm('⚠️ Peringatan: Iklan akan dihapus secara permanen dan tidak bisa dikembalikan. Yakin ingin melanjutkan?');
+    if (!yakin) return;
+
+    tampilkanPesan('info', 'Sedang menghapus iklan...');
+
+    try {
+        const dataKirim = new URLSearchParams();
+        dataKirim.append('action', 'deleteAd');
+        dataKirim.append('id', idIklan);
+        dataKirim.append('secret_code', kodeKelola);
+
+        const res = await fetch(`${API_URL}?${dataKirim.toString()}`);
+        const hasil = await res.json();
+
+        if (hasil.success) {
+            tampilkanPesan('sukses', '✅ Iklan berhasil dihapus.');
+            setTimeout(() => window.location.href = 'index.html', 2500);
+        } else {
+            tampilkanPesan('error', '❌ Kode Kelola tidak cocok! Silakan periksa kembali kode Anda.');
+        }
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
+    }
+});
+
+// === 5. PRATINJAU GAMBAR ===
 const inputFoto = document.getElementById('inputFoto');
 const gambarPratinjau = document.getElementById('gambarPratinjau');
 const teksPratinjau = document.getElementById('teksPratinjau');
@@ -189,7 +258,7 @@ inputFoto.addEventListener('change', function(e) {
     pembaca.readAsDataURL(file);
 });
 
-// === 4. HITUNG KARAKTER DESKRIPSI ===
+// === 6. HITUNG KARAKTER DESKRIPSI ===
 const inputDeskripsi = document.getElementById('inputDeskripsi');
 const jumlahKarakter = document.getElementById('jumlahKarakter');
 
