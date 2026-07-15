@@ -71,6 +71,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -79,12 +80,12 @@
             font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
         html, body {
-    height: 100%;
-    overflow: hidden;
-    background: transparent;
-    color: #fff;
-    font-size: 16px; /* Ukuran dasar diperbesar */
-}
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-size: 16px;
+        }
 
         :root {
             --item-per-page: 10;
@@ -96,28 +97,71 @@
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            padding-bottom: 100px;
+            padding-bottom: 70px;
         }
         .feed-container::-webkit-scrollbar { display: none; }
         .feed-container { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === KARTU IKLAN (FOTO BERSIH, JUDUL DI ATAS) === */
-.ad-image {
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-    object-fit: cover;
-    object-position: center center;
-    transition: transform 0.3s ease;
+        /* === KARTU IKLAN (PERSIS SESUAI CONTOH) === */
+        .ad-card {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Kualitas gambar terbaik tanpa bikin pecah */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: smooth;
-    -ms-interpolation-mode: bicubic;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-}
-        
+        /* GAMBAR LANDSCAPE ASLI: TIDAK DIPOTONG, TIDAK DIPERBESAR */
+        .ad-image {
+            width: 100%;
+            height: 25%; /* Cuma pakai 25% layar bagian atas */
+            min-height: 320px;
+            object-fit: cover; /* Tetap utuh proporsional */
+            object-position: center top;
+            transition: transform 0.3s ease;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: smooth;
+            -ms-interpolation-mode: bicubic;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* EFEK MEMUDAR DARI GAMBAR KE BAWAH */
+        .fade-overlay {
+            position: absolute;
+            top: 25%;
+            left: 0;
+            right: 0;
+            height: 45%;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0) 0%, 
+                rgba(0,0,0,0.35) 25%, 
+                rgba(0,0,0,0.7) 55%, 
+                rgba(0,0,0,0.92) 80%, 
+                #000 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* JUDUL DI TENGAH ATAS GAMBAR */
+        .ad-title {
+            position: absolute;
+            top: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            z-index: 3;
+            max-width: 90%;
+            line-height: 1.4;
+        }
+
         /* === TOMBOL TENGAH === */
         .center-action {
             position: absolute;
@@ -144,7 +188,7 @@
         .side-actions {
             position: absolute;
             right: 16px;
-            bottom: 120px;
+            bottom: 100px;
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -427,15 +471,6 @@
             z-index: 8;
         }
         .play-mode .play-hint { opacity: 1; }
-
-        .ad-card {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    scroll-snap-align: start;
-    overflow: hidden;
-    background: transparent !important; /* Pasti bening */
-}
     </style>
 </head>
 <body>
@@ -662,8 +697,9 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
-            <h3 style="position: absolute; top: 24px; left: 50%; transform: translateX(-50%); text-align: center; font-weight: normal; background: transparent; font-size: 1.3rem; color: #ffffff; padding: 0; margin: 0; z-index: 2;">${iklan.title || 'Tanpa Judul'}</h3>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
+            <div class="fade-overlay"></div>
+            <h3 class="ad-title">${iklan.title || 'Tanpa Judul'}</h3>
             
             <div class="side-actions">
                 <div class="side-btn" onclick="bukaFormIklan()">
@@ -859,6 +895,5 @@ async function bagikanIklan(id) {
 // === MULAI MEMUAT SAAT HALAMAN SIAP ===
 document.addEventListener('DOMContentLoaded', ambilDataIklan);
     </script>
-
 </body>
 </html>
