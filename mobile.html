@@ -309,6 +309,11 @@
         cursor: not-allowed !important;
         box-shadow: 0 0 6px rgba(255,255,255,.1) !important;
       }
+
+      .nav-item img { 
+        filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); 
+      }
+
     </style>
   </head>
   <body>
@@ -474,27 +479,33 @@
       const installText = navInstall?.querySelector("span");
 
       // === PWA INSTAL ===
-      window.addEventListener("beforeinstallprompt", e => {
-          e.preventDefault();
-          deferredPrompt = e;
-          if (installIcon) installIcon.setAttribute("data-lucide", "download");
-          if (installText) installText.textContent = "Instal Aplikasi";
-          lucide.createIcons({ context: navInstall });
-      });
+window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Pakai ikon logo situs kamu
+    if (installIcon) {
+        installIcon.removeAttribute("data-lucide");
+        installIcon.innerHTML = `<img src="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp" style="width:22px;height:22px;object-fit:contain;">`;
+    }
+    if (installText) installText.textContent = "Instal";
+});
 
-      navInstall.addEventListener("click", async () => {
-          if (!deferredPrompt) return window.location.href = "https://rewangiklan.my.id/";
-          deferredPrompt.prompt();
-          await deferredPrompt.userChoice;
-          deferredPrompt = null;
-      });
+navInstall.addEventListener("click", async () => {
+    if (!deferredPrompt) return window.location.href = "https://rewangiklan.my.id/";
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+});
 
-      window.addEventListener("appinstalled", () => {
-          deferredPrompt = null;
-          if (installIcon) installIcon.setAttribute("data-lucide", "home");
-          if (installText) installText.textContent = "Beranda";
-          lucide.createIcons({ context: navInstall });
-      });
+window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    // Tetap pakai ikon logo situs setelah terinstal
+    if (installIcon) {
+        installIcon.removeAttribute("data-lucide");
+        installIcon.innerHTML = `<img src="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp" style="width:22px;height:22px;object-fit:contain;">`;
+    }
+    if (installText) installText.textContent = "Beranda";
+});
 
       // === AMBIL DATA IKLAN ===
       async function ambilDataIklan() {
