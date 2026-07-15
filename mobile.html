@@ -338,6 +338,42 @@ navTop.addEventListener("click",()=>{feedContainer.scrollTo({top:0,behavior:"smo
 async function bagikanIklan(e){if(!activeAd)return;const t=`https://rewangiklan.my.id/iklan-saya.html?id=${e}`,n={title:activeAd.title||"Iklan Rewang Iklan",text:`Lihat iklan: ${activeAd.title}`,url:t};try{if(navigator.share)await navigator.share(n);else await navigator.clipboard.writeText(t),alert("Tautan disalin!")}catch(e){try{await navigator.clipboard.writeText(t),alert("Tautan disalin!")}catch(e){alert("Perangkat tidak mendukung berbagi")}}}
 
 document.addEventListener("DOMContentLoaded",ambilDataIklan);
+
+    // === TAMBAH: FUNGSI TAMBAH PENGUNJUNG ===
+async function tambahPengunjung(idIklan) {
+    try {
+        const data = new URLSearchParams();
+        data.append("action", "incrementView");
+        data.append("id", idIklan);
+        await fetch(`${API_URL}?${data.toString()}`);
+    } catch (err) {
+        console.log("Gagal simpan hitungan:", err);
+    }
+}
+
+// === UBAH FUNGSI BUKA DETAIL IKLAN SAMA SAYA ===
+function bukaDetailIklanSaya() {
+    if (!activeAd) return alert("Data tidak ditemukan");
+
+    // ➕ Otomatis tambah pengunjung saat dibuka
+    tambahPengunjung(activeAd.id);
+
+    document.getElementById("detailImg").style.backgroundImage = `url(${activeAd.image||"https://picsum.photos/id/1040/800/1400"})`;
+    document.getElementById("detailTitle").textContent = activeAd.title||"Tanpa Judul";
+    document.getElementById("detailCat").textContent = activeAd.category||"Lainnya";
+    document.getElementById("detailLoc").textContent = activeAd.location||"Tidak diketahui";
+    // Tampilkan angka terbaru
+    const jumlahBaru = (Number(activeAd.views) || 0) + 1;
+    document.getElementById("detailViews").textContent = jumlahBaru;
+    document.getElementById("detailDesc").textContent = activeAd.description||"Tidak ada deskripsi";
+
+    document.getElementById("btnWa").onclick = () => {
+        const nomor = activeAd.whatsapp.toString().replace(/\D/g,"");
+        const pesan = encodeURIComponent(`Halo, tertarik dengan iklan "${activeAd.title}"`);
+        window.open(`https://wa.me/${nomor}?text=${pesan}`,"_blank");
+    };
+    detailOverlay.classList.add("show");
+}
 </script>
 </body>
 </html>
