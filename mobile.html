@@ -145,8 +145,7 @@ html, body {
     z-index: 1;
 }
 
-/* ✅ EFEK PANTULAN KACA (PASTI TERLIHAT) */
-/* === EFEK PANTULAN KACA (PASTI TERLIHAT) === */
+/* ✅ EFEK PANTULAN KACA (TERBUKA, TIDAK TERTUTUP) */
 .reflection-glass {
     position: absolute;
     top: 25%;
@@ -155,16 +154,17 @@ html, body {
     height: 28%;
     background-position: center top;
     background-size: 100% auto;
+    background-repeat: no-repeat; /* ✅ Tambah ini biar gambar tidak berulang */
     transform: scaleY(-1);
-    filter: blur(3px) brightness(0.5) saturate(0.8);
-    opacity: 0.5; /* Naikkan lagi biar makin jelas */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    filter: blur(2px) brightness(0.6) saturate(0.9); /* ✅ Lebih terang, kurang buram */
+    opacity: 0.55; /* ✅ Lebih jelas terlihat */
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
     pointer-events: none;
-    z-index: 2;
+    z-index: 2; /* ✅ Taruh di atas gelap tapi di bawah judul */
 }
 
-/* === LAPISAN GELAP TIDAK MENUTUPI PANTULAN === */
+/* ✅ LAPISAN GELAP TIDAK MENUTUPI PANTULAN */
 .fade-overlay {
     position: absolute;
     top: 25%;
@@ -173,13 +173,13 @@ html, body {
     height: 45%;
     background: linear-gradient(to bottom, 
         rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.1) 30%, /* Lebih terang lagi */
-        rgba(0,0,0,0.5) 60%, 
-        rgba(0,0,0,0.9) 100%);
+        rgba(0,0,0,0.05) 25%, /* ✅ Hampir bening di atas */
+        rgba(0,0,0,0.4) 55%, 
+        rgba(0,0,0,0.85) 100%);
     pointer-events: none;
     z-index: 3;
-}
-
+}  
+    
 /* ✅ JUDUL DI BAWAH, TIDAK TEBAL */
 .ad-title {
     position: absolute;
@@ -733,7 +733,7 @@ function tampilkanAwal() {
     tambahTombolMuat();
 }
 
-// === TAMBAH IKLAN KE DAFTAR (VERSI PALING AMAN) ===
+// === TAMBAH IKLAN KE DAFTAR (VERSI PALING AMAN & PANTULAN PASTI MUNCUL) ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -741,7 +741,7 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         
-        // Semua elemen dibuat lengkap, TANPA setAttribute atau style inline yang bermasalah
+        // Semua elemen dibuat lengkap, tanpa atribut yang bikin error
         kartu.innerHTML = `
             <div class="spotlight"></div>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
@@ -764,6 +764,23 @@ function tambahIklan(dari, sampai) {
                 </div>
             </div>
         `;
+
+        // Setel gambar pantulan dengan cara paling aman
+        const urlGambar = iklan.image || 'https://picsum.photos/id/1040/800/1400';
+        const pantulan = kartu.querySelector('.reflection-glass');
+        if (pantulan) {
+            pantulan.style.backgroundImage = `url('${urlGambar}')`;
+            pantulan.style.backgroundSize = '100% auto';
+            pantulan.style.backgroundPosition = 'center top';
+            pantulan.style.backgroundRepeat = 'no-repeat';
+        }
+
+        feedContainer.appendChild(kartu);
+    }
+    currentDisplayCount = batas;
+    lucide.createIcons({ context: feedContainer });
+    if (displayAds.length > 0) activeAd = displayAds[0];
+}
 
         // Setel latar pantulan dengan cara PALING AMAN, tidak pakai setAttribute
         const urlGambar = iklan.image || 'https://picsum.photos/id/1040/800/1400';
