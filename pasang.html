@@ -208,11 +208,11 @@
                         <p class="mt-1 text-sm text-gray-500">Kode ini didapat saat pertama kali pasang iklan</p>
                     </div>
 
-                    <!-- TOMBOL: KELAS HIDDEN DIHAPUS DARI HTML -->
+                    <!-- TOMBOL -->
                     <div class="flex flex-col gap-3 pt-4">
                         <button type="submit" id="btnPasang" class="w-full bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✅ Pasang Iklan</button>
-                        <button type="button" id="btnEdit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✏️ Simpan Perubahan</button>
-                        <button type="button" id="btnHapus" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">🗑️ Hapus Iklan</button>
+                        <button type="button" id="btnEdit" class="hidden w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✏️ Simpan Perubahan</button>
+                        <button type="button" id="btnHapus" class="hidden w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">🗑️ Hapus Iklan</button>
                     </div>
 
                     <!-- Pesan Status -->
@@ -260,58 +260,73 @@
     <script>lucide.createIcons();</script>
 
     <script>
-        // === Fungsi Pratinjau Gambar ===
-        const imageInput = document.getElementById('imageInput');
-        const previewBox = document.getElementById('previewBox');
-        const previewImage = document.getElementById('previewImage');
-        const previewText = document.getElementById('previewText');
-
-        if (imageInput) {
-            imageInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    if (!file.type.startsWith('image/')) {
-                        alert('Silakan pilih file gambar ya bro!');
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewImage.src = e.target.result;
-                        previewImage.classList.remove('hidden');
-                        previewText.classList.add('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    previewImage.classList.add('hidden');
-                    previewText.classList.remove('hidden');
-                    previewImage.src = '';
-                }
-            });
-        }
-
-        // === Fungsi Hitung Karakter Deskripsi ===
-        const description = document.getElementById('description');
-        const charCount = document.getElementById('charCount');
-        if (description && charCount) {
-            description.addEventListener('input', function() {
-                const current = this.value.length;
-                charCount.textContent = `${current} / 500`;
-                charCount.classList.toggle('text-orange-500', current >= 450 && current < 500);
-                charCount.classList.toggle('text-red-500', current >= 500);
-                charCount.classList.toggle('text-gray-500', current < 450);
-            });
-        }
-
-        // === KONFIGURASI & DETEKSI MODE ===
+        // === KONFIGURASI UTAMA ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanDikelola = null;
 
-        async function deteksiMode() {
+        // === FUNGSI BANTU: TAMPILKAN PESAN ===
+        function tampilkanPesan(jenis, teks) {
+            const kotak = document.getElementById('statusBox');
+            kotak.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
+            kotak.classList.add('hidden');
+            void kotak.offsetWidth; // Reset animasi
+            
+            if (jenis === 'error') {
+                kotak.classList.add('bg-red-50', 'text-red-700');
+            } else {
+                kotak.classList.add('bg-green-50', 'text-green-700');
+            }
+            kotak.textContent = teks;
+            kotak.classList.remove('hidden');
+            kotak.scrollIntoView({behavior: 'smooth'});
+        }
+
+        // === FUNGSI BANTU: PRATINJAU GAMBAR ===
+        const imageInput = document.getElementById('imageInput');
+        const previewImage = document.getElementById('previewImage');
+        const previewText = document.getElementById('previewText');
+        if (imageInput) {
+            imageInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) {
+                    previewImage.classList.add('hidden');
+                    previewText.classList.remove('hidden');
+                    return;
+                }
+                if (!file.type.startsWith('image/')) {
+                    alert('Pilih file gambar saja!');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = e => {
+                    previewImage.src = e.target.result;
+                    previewImage.classList.remove('hidden');
+                    previewText.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // === FUNGSI BANTU: HITUNG KARAKTER ===
+        const deskripsi = document.getElementById('description');
+        const hitungKarakter = document.getElementById('charCount');
+        if (deskripsi) {
+            deskripsi.addEventListener('input', () => {
+                const jumlah = deskripsi.value.length;
+                hitungKarakter.textContent = `${jumlah} / 500`;
+                hitungKarakter.classList.toggle('text-orange-500', jumlah >= 450 && jumlah < 500);
+                hitungKarakter.classList.toggle('text-red-500', jumlah >= 500);
+                hitungKarakter.classList.toggle('text-gray-500', jumlah < 450);
+            });
+        }
+
+        // === DETEKSI MODE: PASANG BARU / KELOLA LAMA ===
+        async function mulai() {
             const params = new URLSearchParams(window.location.search);
             idIklanDikelola = params.get('kelola');
 
             if (!idIklanDikelola) {
-                // === MODE PASANG BARU: TAMPILKAN TOMBOL PASANG SAJA ===
+                // MODE 1: PASANG IKLAN BARU
                 document.getElementById('btnPasang').classList.remove('hidden');
                 document.getElementById('btnEdit').classList.add('hidden');
                 document.getElementById('btnHapus').classList.add('hidden');
@@ -319,66 +334,53 @@
                 return;
             }
 
-            // === MODE KELOLA LAMA: TAMPILKAN TOMBOL EDIT/HAPUS & KODE KELUA ===
+            // MODE 2: KELOLA IKLAN LAMA
             document.getElementById('btnPasang').classList.add('hidden');
             document.getElementById('btnEdit').classList.remove('hidden');
             document.getElementById('btnHapus').classList.remove('hidden');
             document.getElementById('secretGroup').classList.remove('hidden');
 
+            // AMBIL DATA IKLAN DAN ISI KE FORM
             try {
                 const res = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklanDikelola)}`);
-                const hasil = await res.json();
-
-                if (!hasil.success) {
-                    tampilkanPesan('error', hasil.error || 'Gagal memuat data iklan.');
-                    return;
-                }
-
-                const data = hasil.ad;
-                // Isi form dengan data lama
-                document.getElementById('title').value = data.title || '';
-                document.getElementById('category').value = data.category || '';
-                document.getElementById('location').value = data.location || '';
-                document.getElementById('whatsapp').value = data.whatsapp || '';
-                document.getElementById('description').value = data.description || '';
-                document.getElementById('charCount').textContent = `${data.description?.length || 0} / 500`;
+                const data = await res.json();
                 
-                // Tampilkan gambar lama
-                if (data.image) {
-                    previewImage.src = data.image;
+                if (!data.success) throw new Error(data.error || 'Iklan tidak ditemukan');
+                
+                const iklan = data.ad;
+                document.getElementById('title').value = iklan.title || '';
+                document.getElementById('category').value = iklan.category || '';
+                document.getElementById('location').value = iklan.location || '';
+                document.getElementById('whatsapp').value = iklan.whatsapp || '';
+                document.getElementById('description').value = iklan.description || '';
+                hitungKarakter.textContent = `${iklan.description?.length || 0} / 500`;
+                
+                if (iklan.image) {
+                    previewImage.src = iklan.image;
                     previewImage.classList.remove('hidden');
                     previewText.classList.add('hidden');
                 }
             } catch (err) {
-                tampilkanPesan('error', 'Gagal terhubung ke server: ' + err.message);
+                tampilkanPesan('error', 'Gagal memuat data: ' + err.message);
             }
         }
 
-        // === FUNGSI TAMPILKAN PESAN ===
-        function tampilkanPesan(jenis, teks) {
-            const kotak = document.getElementById('statusBox');
-            kotak.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
-            kotak.classList.add(jenis === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
-            kotak.textContent = teks;
-            kotak.scrollIntoView({behavior: 'smooth'});
-        }
-
-        // === TOMBOL EDIT ===
+        // === TOMBOL: SIMPAN PERUBAHAN ===
         document.getElementById('btnEdit').addEventListener('click', async () => {
-            const secretCode = document.getElementById('secretCode').value.trim();
-            if (!secretCode) return tampilkanPesan('error', 'Masukkan Kode Kelola terlebih dahulu ya bro!');
+            const kode = document.getElementById('secretCode').value.trim();
+            if (!kode) return tampilkanPesan('error', 'Masukkan Kode Kelola dulu ya!');
 
             try {
-                const formData = new URLSearchParams();
-                formData.append('action', 'updateAd');
-                formData.append('id', idIklanDikelola);
-                formData.append('secret_code', secretCode);
-                formData.append('title', document.getElementById('title').value.trim());
-                formData.append('category', document.getElementById('category').value);
-                formData.append('location', document.getElementById('location').value.trim());
-                formData.append('description', document.getElementById('description').value.trim());
+                const url = new URLSearchParams();
+                url.append('action', 'updateAd');
+                url.append('id', idIklanDikelola);
+                url.append('secret_code', kode);
+                url.append('title', document.getElementById('title').value.trim());
+                url.append('category', document.getElementById('category').value);
+                url.append('location', document.getElementById('location').value.trim());
+                url.append('description', document.getElementById('description').value.trim());
 
-                const res = await fetch(`${API_URL}?${formData.toString()}`);
+                const res = await fetch(`${API_URL}?${url.toString()}`);
                 const hasil = await res.json();
 
                 if (hasil.success) {
@@ -392,19 +394,19 @@
             }
         });
 
-        // === TOMBOL HAPUS ===
+        // === TOMBOL: HAPUS IKLAN ===
         document.getElementById('btnHapus').addEventListener('click', async () => {
-            const secretCode = document.getElementById('secretCode').value.trim();
-            if (!secretCode) return tampilkanPesan('error', 'Masukkan Kode Kelola terlebih dahulu ya bro!');
-            if (!confirm('⚠️ Yakin ingin menghapus? Tindakan TIDAK BISA dibatalkan!')) return;
+            const kode = document.getElementById('secretCode').value.trim();
+            if (!kode) return tampilkanPesan('error', 'Masukkan Kode Kelola dulu ya!');
+            if (!confirm('⚠️ Yakin hapus iklan? Tindakan TIDAK BISA dibatalkan!')) return;
 
             try {
-                const formData = new URLSearchParams();
-                formData.append('action', 'deleteAd');
-                formData.append('id', idIklanDikelola);
-                formData.append('secret_code', secretCode);
+                const url = new URLSearchParams();
+                url.append('action', 'deleteAd');
+                url.append('id', idIklanDikelola);
+                url.append('secret_code', kode);
 
-                const res = await fetch(`${API_URL}?${formData.toString()}`);
+                const res = await fetch(`${API_URL}?${url.toString()}`);
                 const hasil = await res.json();
 
                 if (hasil.success) {
@@ -418,8 +420,8 @@
             }
         });
 
-        // === JALANKAN SAAT HALAMAN DIBUKA ===
-        document.addEventListener('DOMContentLoaded', deteksiMode);
+        // === JALANKAN SEMUA SAAT HALAMAN SIAP ===
+        document.addEventListener('DOMContentLoaded', mulai);
     </script>
 </body>
 </html>
