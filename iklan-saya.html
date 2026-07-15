@@ -192,10 +192,9 @@
     </footer>
 
     <script>
-        // === KONFIGURASI ===
+                // === SESUAI 100% DENGAN SKRIP .GS KAMU ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanSekarang = null;
-        let dataIklanSekarang = null;
 
         async function mulaiMuat() {
             // 1. Ambil ID dari alamat link
@@ -208,67 +207,50 @@
             }
 
             try {
-                // 2. Ambil semua data iklan
-                const respon = await fetch(API_URL);
-                const semuaData = await respon.json();
+                // 2. PANGGIL FUNGSI getDetailById DI SKRIP KAMU (OTOMATIS TAMBAH VIEWS)
+                const respon = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklanSekarang)}`);
+                const hasil = await respon.json();
 
-                // 3. Cari iklan yang cocok ID-nya
-                dataIklanSekarang = semuaData.find(iklan => iklan.id === idIklanSekarang);
-
-                if (!dataIklanSekarang) {
-                    document.getElementById('detailDesc').textContent = 'Iklan tidak ditemukan atau sudah dihapus.';
+                if (!hasil.success) {
+                    document.getElementById('detailDesc').textContent = hasil.error || 'Iklan tidak ditemukan.';
                     return;
                 }
 
-                // ✅ TAMBAHAN: HANYA DI HALAMAN INI, TAMBAH HITUNGAN VIEWS
-                const hitunganBaru = (Number(dataIklanSekarang.views) || 0) + 1;
-                // Kirim pembaruan ke Google Sheet untuk disimpan di kolom views
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        aksi: 'tambah_views',
-                        id: idIklanSekarang,
-                        views_baru: hitunganBaru
-                    })
-                });
-                // Perbarui tampilan dengan angka terbaru
-                dataIklanSekarang.views = hitunganBaru;
+                const dataIklan = hasil.ad;
 
-                // 4. Tampilkan semua data
-                document.getElementById('detailImg').style.backgroundImage = `url('${dataIklanSekarang.image || 'https://picsum.photos/id/1040/800/600'}')`;
-                document.getElementById('detailTitle').textContent = dataIklanSekarang.title || 'Tanpa Judul';
-                document.getElementById('detailCat').textContent = dataIklanSekarang.category || 'Lainnya';
-                document.getElementById('detailLoc').textContent = dataIklanSekarang.location || 'Lokasi tidak diketahui';
-                document.getElementById('detailViews').textContent = dataIklanSekarang.views || '0';
-                document.getElementById('detailDesc').textContent = dataIklanSekarang.description || 'Tidak ada deskripsi tambahan.';
+                // 3. Tampilkan semua data (views sudah bertambah otomatis)
+                document.getElementById('detailImg').style.backgroundImage = `url('${dataIklan.image || 'https://rewangiklan.my.id/image/no-image.webp'}')`;
+                document.getElementById('detailTitle').textContent = dataIklan.title || 'Tanpa Judul';
+                document.getElementById('detailCat').textContent = dataIklan.category || 'Lainnya';
+                document.getElementById('detailLoc').textContent = dataIklan.location || 'Lokasi tidak diketahui';
+                document.getElementById('detailViews').textContent = dataIklan.views || '0';
+                document.getElementById('detailDesc').textContent = dataIklan.description || 'Tidak ada deskripsi tambahan.';
 
-                // 5. TOMBOL WA DENGAN LINK LENGKAP IKLAN
+                // 4. TOMBOL WA DENGAN LINK LENGKAP IKLAN
                 const tombolWA = document.getElementById('btnWa');
                 const linkIklanLengkap = window.location.href;
-                if (dataIklanSekarang.whatsapp) {
+                if (dataIklan.whatsapp) {
                     tombolWA.onclick = () => {
                         const pesan = encodeURIComponent(
 `Halo, saya tertarik dengan iklan:
-📌 ${dataIklanSekarang.title}
+📌 ${dataIklan.title}
 🔗 Link: ${linkIklanLengkap}
 
 Boleh info lebih lanjut?`
                         );
-                        window.open(`https://wa.me/${dataIklanSekarang.whatsapp}?text=${pesan}`, '_blank');
+                        window.open(`https://wa.me/${dataIklan.whatsapp}?text=${pesan}`, '_blank');
                     };
                 }
 
-                // 6. TOMBOL EDIT/HAPUS: LANGSUNG KE PASANG.HTML BAWA ID IKLAN
+                // 5. TOMBOL EDIT/HAPUS KE pasang.html
                 const tombolKelola = document.getElementById('btnKelola');
                 tombolKelola.onclick = () => {
-                    window.location.href = `pasang.html?kelola=${idIklanSekarang}`;
+                    window.location.href = `pasang.html?kelola=${encodeURIComponent(idIklanSekarang)}`;
                 };
 
             } catch (salah) {
-                console.error('Error ambil data:', salah);
-                document.getElementById('detailDesc').textContent = 'Gagal terhubung ke server, coba muat ulang halaman (F5).';
+                console.error('Error:', salah);
+                document.getElementById('detailDesc').textContent = 'Gagal terhubung ke server, coba muat ulang.';
             }
 
             lucide.createIcons();
