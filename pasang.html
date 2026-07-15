@@ -201,18 +201,18 @@
                         <div id="charCount" class="text-right text-sm text-gray-500 mt-1">0 / 500</div>
                     </div>
 
-                    <!-- Kode Kelola -->
-                    <div id="secretGroup" class="hidden">
+                    <!-- Kode Kelola: pakai style.display sama seperti mobile.html -->
+                    <div id="secretGroup" style="display:none;">
                         <label for="secretCode" class="block text-sm font-medium text-gray-700 mb-2">Kode Kelola</label>
                         <input type="text" id="secretCode" placeholder="Masukkan kode rahasia Anda" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-base">
                         <p class="mt-1 text-sm text-gray-500">Kode ini didapat saat pertama kali pasang iklan</p>
                     </div>
 
-                    <!-- TOMBOL -->
+                    <!-- TOMBOL: pakai cara .show persis sama mobile.html -->
                     <div class="flex flex-col gap-3 pt-4">
-                        <button type="submit" id="btnPasang" class="w-full bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✅ Pasang Iklan</button>
-                        <button type="button" id="btnEdit" class="hidden w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✏️ Simpan Perubahan</button>
-                        <button type="button" id="btnHapus" class="hidden w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">🗑️ Hapus Iklan</button>
+                        <button type="submit" id="btnKirim" class="w-full bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">✅ Pasang Iklan</button>
+                        <button type="button" id="btnEdit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" style="display:none;">✏️ Simpan Perubahan</button>
+                        <button type="button" id="btnHapus" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" style="display:none;">🗑️ Hapus Iklan</button>
                     </div>
 
                     <!-- Pesan Status -->
@@ -260,7 +260,7 @@
     <script>lucide.createIcons();</script>
 
     <script>
-        // === KONFIGURASI UTAMA ===
+        // === KONFIGURASI SAMA PENUH DENGAN SKRIP KAMU ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
         let idIklanDikelola = null;
 
@@ -268,20 +268,18 @@
         function tampilkanPesan(jenis, teks) {
             const kotak = document.getElementById('statusBox');
             kotak.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
-            kotak.classList.add('hidden');
-            void kotak.offsetWidth; // Reset animasi
             
             if (jenis === 'error') {
-                kotak.classList.add('bg-red-50', 'text-red-700');
+                kotak.classList.add('hidden', 'bg-red-50', 'text-red-700');
             } else {
-                kotak.classList.add('bg-green-50', 'text-green-700');
+                kotak.classList.add('hidden', 'bg-green-50', 'text-green-700');
             }
             kotak.textContent = teks;
             kotak.classList.remove('hidden');
             kotak.scrollIntoView({behavior: 'smooth'});
         }
 
-        // === FUNGSI BANTU: PRATINJAU GAMBAR ===
+        // === PRATINJAU GAMBAR ===
         const imageInput = document.getElementById('imageInput');
         const previewImage = document.getElementById('previewImage');
         const previewText = document.getElementById('previewText');
@@ -307,7 +305,7 @@
             });
         }
 
-        // === FUNGSI BANTU: HITUNG KARAKTER ===
+        // === HITUNG KARAKTER ===
         const deskripsi = document.getElementById('description');
         const hitungKarakter = document.getElementById('charCount');
         if (deskripsi) {
@@ -326,19 +324,19 @@
             idIklanDikelola = params.get('kelola');
 
             if (!idIklanDikelola) {
-                // MODE 1: PASANG IKLAN BARU
-                document.getElementById('btnPasang').classList.remove('hidden');
-                document.getElementById('btnEdit').classList.add('hidden');
-                document.getElementById('btnHapus').classList.add('hidden');
-                document.getElementById('secretGroup').classList.add('hidden');
+                // === MODE PASANG BARU: TAMPILKAN TOMBOL PASANG SAJA ===
+                document.getElementById('btnKirim').style.display = 'block';
+                document.getElementById('btnEdit').style.display = 'none';
+                document.getElementById('btnHapus').style.display = 'none';
+                document.getElementById('secretGroup').style.display = 'none';
                 return;
             }
 
-            // MODE 2: KELOLA IKLAN LAMA
-            document.getElementById('btnPasang').classList.add('hidden');
-            document.getElementById('btnEdit').classList.remove('hidden');
-            document.getElementById('btnHapus').classList.remove('hidden');
-            document.getElementById('secretGroup').classList.remove('hidden');
+            // === MODE KELOLA LAMA: TAMPILKAN TOMBOL EDIT/HAPUS & KODE KELUA ===
+            document.getElementById('btnKirim').style.display = 'none';
+            document.getElementById('btnEdit').style.display = 'block';
+            document.getElementById('btnHapus').style.display = 'block';
+            document.getElementById('secretGroup').style.display = 'block';
 
             // AMBIL DATA IKLAN DAN ISI KE FORM
             try {
@@ -365,7 +363,7 @@
             }
         }
 
-        // === TOMBOL: SIMPAN PERUBAHAN ===
+        // === TOMBOL SIMPAN PERUBAHAN ===
         document.getElementById('btnEdit').addEventListener('click', async () => {
             const kode = document.getElementById('secretCode').value.trim();
             if (!kode) return tampilkanPesan('error', 'Masukkan Kode Kelola dulu ya!');
@@ -394,7 +392,7 @@
             }
         });
 
-        // === TOMBOL: HAPUS IKLAN ===
+        // === TOMBOL HAPUS IKLAN ===
         document.getElementById('btnHapus').addEventListener('click', async () => {
             const kode = document.getElementById('secretCode').value.trim();
             if (!kode) return tampilkanPesan('error', 'Masukkan Kode Kelola dulu ya!');
@@ -420,7 +418,7 @@
             }
         });
 
-        // === JALANKAN SEMUA SAAT HALAMAN SIAP ===
+        // === JALANKAN SAAT HALAMAN SIAP ===
         document.addEventListener('DOMContentLoaded', mulai);
     </script>
 </body>
