@@ -724,7 +724,7 @@ function tampilkanAwal() {
     tambahTombolMuat();
 }
 
-// === TAMBAH IKLAN KE DAFTAR ===
+        // === TAMBAH IKLAN KE DAFTAR ===
 function tambahIklan(dari, sampai) {
     const batas = Math.min(sampai, displayAds.length);
     for (let i = dari; i < batas; i++) {
@@ -732,7 +732,9 @@ function tambahIklan(dari, sampai) {
         const kartu = document.createElement('div');
         kartu.className = 'ad-card';
         kartu.innerHTML = `
+            <div class="spotlight"></div>
             <img src="${iklan.image || 'https://picsum.photos/id/1040/800/1400'}" alt="${iklan.title}" class="ad-image" loading="lazy">
+            <div class="reflection-glass" style="background-image: url('${iklan.image || 'https://picsum.photos/id/1040/800/1400'}')"></div>
             <div class="fade-overlay"></div>
             <h3 class="ad-title">${iklan.title || 'Tanpa Judul'}</h3>
             
@@ -758,6 +760,7 @@ function tambahIklan(dari, sampai) {
     if (displayAds.length > 0) activeAd = displayAds[0];
 }
 
+        
 // === TOMBOL MUAT LEBIH BANYAK IKLAN ===
 function tambahTombolMuat() {
     const tombolLama = document.getElementById('load-more-wrap');
