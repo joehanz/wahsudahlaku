@@ -2,16 +2,26 @@
 <html lang="id-ID">
 <head>
     <script>
-    // Alihkan ke Desktop jika dibuka di layar besar
+    // Alihkan ke tampilan yang sesuai berdasarkan ukuran layar & perangkat
     (function() {
-        const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigatoFr.userAgent) 
+        // Cek apakah dibuka di layar besar (desktop)
+        const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
                         && window.innerWidth >= 768;
-        if (isDesktop && !window.location.pathname.includes('/index.html')) {
+
+        // Kalau layar besar & belum di halaman utama desktop, pindah ke index.html
+        if (isDesktop && !window.location.pathname.endsWith('/index.html') && window.location.pathname !== '/') {
             window.location.href = 'https://rewangiklan.my.id/index.html';
         }
     })();
-    </script>
 
+    // Tambahan: otomatis pindah saat ukuran jendela diubah
+    window.addEventListener('resize', function() {
+        const isDesktop = window.innerWidth >= 768;
+        if (isDesktop && !window.location.pathname.endsWith('/index.html') && window.location.pathname !== '/') {
+            window.location.href = 'https://rewangiklan.my.id/index.html';
+        }
+    });
+</script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
