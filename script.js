@@ -377,7 +377,6 @@ function makeLinks(text){
   );
 }
 
-
 // Isi lengkap panduan
 const TEKS_PANDUAN = `
 Banyak pedagang yang sudah beriklan berkali-kali di berbagai tempat tapi belum mendapatkan hasil yang diharapkan. Seringkali hal ini terjadi bukan karena barang atau jasanya kurang bagus, melainkan cara menyampaikan iklannya yang kurang tepat sasaran, kurang jelas, atau tidak membangun kepercayaan calon pembeli. Rewang Iklan hadir tidak hanya sebagai tempat memajang iklan, tapi juga sebagai teman belajar agar setiap iklan yang kamu pasang bisa membawa manfaat nyata bagi usahamu. Berikut adalah panduan mendalam yang kami susun khusus berdasarkan pengalaman ribuan iklan yang sudah tayang:
@@ -433,5 +432,6 @@ function tambahPanduan() {
 function kecilkanPanduan() {
   batasTampil = AWAL_KARAKTER;
   perbaruiTampilanPanduan();
-  document.getElementById("isi-panduan").scrollIntoView({behavior:"smooth", block:"start"});
+  // Gulir ke atas bagian panduan
+  document.getElementById("isi-panduan").scrollIntoView({behavior:"smooth"});
 }
