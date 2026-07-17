@@ -9,55 +9,55 @@
 </head>
 <body>
 
-<!-- HEADER & NAVIGASI SAMA PERSIS DENGAN HALAMAN LAIN -->
-<header class="header">
-    <div class="container">
-        <div class="logo">
-            <h2>🟢 REWANG IKLAN</h2>
-        </div>
-        <nav class="nav-menu">
-            <a href="index.html">Beranda</a>
-            <a href="index.html#iklan">Daftar Iklan</a>
-            <a href="panduan.html">Panduan Beriklan</a>
-            <a href="pasang.html">Pasang Iklan</a>
-            <a href="iklan-saya.html" class="aktif">Kelola Iklan</a>
-            <a href="#">Tentang Kami</a>
-        </nav>
-        <div class="menu-toggle" id="mobileMenu">☰</div>
+<!-- HEADER SESUAI ASLI + TAMPILAN BARU -->
+<header class="top-header">
+    <div class="logo-box">
+        <h1>REWANG IKLAN</h1>
+        <p>Iklan Baris Gratis, Tanpa Daftar Langsung Tayang!</p>
     </div>
+    <a href="index.html" class="post-btn">LIHAT IKLAN TERPASANG</a>
 </header>
 
-<section class="content-wrapper">
-    <div class="container">
-        <div class="form-page">
-            <div class="form-card">
-                <h2>KELOLA IKLAN SAYA</h2>
-                <!-- STRUKTUR INI PERSIS SAMA DENGAN YANG KAMU BERIKAN, TIDAK DIUBAH -->
-                <div style="padding:25px;">
-                    <div class="form-group">
-                        <label> ID Iklan </label>
-                        <input type="text" id="adId" placeholder="Contoh: IKL000123" />
-                    </div>
+<!-- MENU SESUAI ASLI -->
+<nav class="main-menu">
+    <h2 style="color: white;">KELOLA IKLAN SAYA</h2>
+</nav>
 
-                    <div class="form-group">
-                        <label> Kode Kelola </label>
-                        <input type="text" id="secretCode" placeholder="Contoh: Q8M7X2KP" />
-                    </div>
-
-                    <button id="checkBtn" class="submit-btn">TAMPILKAN IKLAN</button>
-
-                    <div id="resultBox" class="status-box" style="margin-top:20px;"></div>
+<!-- LAYOUT & ELEMEN 100% PERSIS SAMA DENGAN KEBUTUHAN JS -->
+<main>
+    <div class="form-page">
+        <div class="form-card">
+            <div style="padding:25px;">
+                <div class="form-group">
+                    <label> ID Iklan </label>
+                    <input type="text" id="adId" placeholder="Contoh: IKL000123" />
                 </div>
+
+                <div class="form-group">
+                    <label> Kode Kelola </label>
+                    <input type="text" id="secretCode" placeholder="Contoh: Q8M7X2KP" />
+                </div>
+
+                <button id="checkBtn" class="submit-btn">TAMPILKAN IKLAN</button>
+
+                <div id="resultBox" class="status-box" style="margin-top:20px;"></div>
             </div>
         </div>
     </div>
-</section>
 
-<!-- Iklan AdSense Persis Seperti Asli -->
-<div class="container" style="max-width:1100px; margin:20px auto;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
-     crossorigin="anonymous"></script>
-<!-- ptdwiprima_jika_AdSense1_1x1_as -->
+    <!-- API_URL DITAMBAHKAN AGAR JS BISA DIBACA -->
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+    </script>
+
+    <!-- MUAT SCRIPT KAMU TERAKHIR -->
+    <script src="iklan-saya.js"></script>
+</main>
+
+<!-- IKLAN ADSENSE PERSIS ASLI -->
+<div class="footer-banner">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
+ crossorigin="anonymous"></script>
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-6458870303612779"
@@ -69,7 +69,7 @@
 </script>
 </div>
 
-<!-- FOOTER SAMA PERSIS -->
+<!-- FOOTER PERSIS ASLI -->
 <footer class="footer">
     <div class="footer-grid">
         <div>
@@ -100,17 +100,5 @@
     </div>
 </footer>
 
-<script>
-// FUNGSI MENU
-const menuToggle = document.getElementById('mobileMenu');
-const navMenu = document.querySelector('.nav-menu');
-menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-document.addEventListener('click', e => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
-});
-</script>
-
-<!-- SCRIPT INI DIPANGGIL TERAKHIR AGAR BISA MEMBACA SEMUA ELEMEN DENGAN BENAR -->
-<script src="iklan-saya.js"></script>
 </body>
 </html>
