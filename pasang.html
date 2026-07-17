@@ -132,7 +132,7 @@ document.addEventListener('click', e => {
     if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
 });
 
-// KONFIGURASI SESUAI IKLAN-SAYA.JS
+// KONFIGURASI
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 const STORAGE_KEY = "rewang_iklan_history";
 const params = new URLSearchParams(location.search);
@@ -162,7 +162,10 @@ if (editId) {
     submitBtn.style.display = "none";
     editButtons.style.display = "flex";
     adForm.querySelector("#imageInput").required = false;
-    statusBox.innerHTML = `<div style="padding:15px; background:#e7f3ff; border:1px solid #0d6efd;">Masukkan <strong>Kode Kelola</strong> terlebih dahulu, lalu klik tombol Simpan atau Hapus.</div>`;
+    statusBox.innerHTML = `<div style="padding:15px; background:#e7f3ff; border:1px solid #0d6efd;">✅ Data iklan dimuat. Masukkan <strong>Kode Kelola</strong> terlebih dahulu sebelum menyimpan atau menghapus.</div>`;
+
+    // ✅ MUTLAK WAJIB: MUNCULKAN DATA IKLAN KE FORM SAAT HALAMAN TERBUKA
+    muatDataIklan(editId);
 } else {
     // MODE PASANG BARU: TAMPILAN BIASA
     pageTitle.textContent = "Pasang Iklan Gratis — Rewang Iklan";
@@ -170,6 +173,32 @@ if (editId) {
     secretGroup.style.display = "none";
     submitBtn.style.display = "block";
     editButtons.style.display = "none";
+}
+
+// ======================
+// ✅ FUNGSI MEMUAT DATA KE FORM (DIPANGGIL OTOMATIS DI ATAS)
+// ======================
+async function muatDataIklan(id) {
+    try {
+        // Ambil data iklan saja dulu untuk ditampilkan di form
+        const res = await fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id));
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || "Iklan tidak ditemukan");
+
+        currentAd = data.ad;
+        // Isi SEMUA kolom form otomatis
+        document.getElementById("title").value = currentAd.title;
+        document.getElementById("category").value = currentAd.category;
+        document.getElementById("location").value = currentAd.location;
+        document.getElementById("whatsapp").value = currentAd.whatsapp;
+        document.getElementById("description").value = currentAd.description;
+        count.textContent = currentAd.description.length + " / 500";
+        document.getElementById("previewImage").src = currentAd.image;
+        imageBase64 = currentAd.image; // Simpan foto lama jika tidak diganti
+
+    } catch (err) {
+        statusBox.innerHTML = `<div style="padding:15px; background:#f8d7da; border:1px solid #dc3545;">❌ ${err.message}</div>`;
+    }
 }
 
 // ======================
@@ -251,12 +280,12 @@ document.getElementById("saveEditBtn").addEventListener("click", async () => {
 
     statusBox.innerHTML = "⏳ Memverifikasi & menyimpan...";
     try {
-        // AMBIL DATA DULU UNTUK VALIDASI (SESUAI POLA IKLAN-SAYA.JS)
+        // Cek kode kelola hanya saat tombol diklik
         const cekRes = await fetch(API_URL + "?action=getAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const cekData = await cekRes.json();
         if (!cekData.success) throw new Error(cekData.error || "ID Iklan atau Kode Kelola tidak valid!");
 
-        // JIKA VALID, LANJUT UPDATE
+        // Kirim perubahan
         const payload = {
             id: editId,
             secret_code: secret,
@@ -265,7 +294,7 @@ document.getElementById("saveEditBtn").addEventListener("click", async () => {
             location: document.getElementById("location").value,
             whatsapp: document.getElementById("whatsapp").value,
             description: document.getElementById("description").value,
-            image: imageBase64 || cekData.ad.image
+            image: imageBase64 // Pakai foto baru jika diganti, foto lama jika tidak
         };
 
         const res = await fetch(API_URL + "?action=updateAd", { method: "POST", body: JSON.stringify(payload) });
@@ -291,12 +320,12 @@ document.getElementById("deleteBtn").addEventListener("click", async () => {
 
     statusBox.innerHTML = "⏳ Memverifikasi & menghapus...";
     try {
-        // CEK VALIDASI DULU SEPERTI DI ATAS
+        // Cek kode kelola hanya saat tombol diklik
         const cekRes = await fetch(API_URL + "?action=getAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const cekData = await cekRes.json();
         if (!cekData.success) throw new Error(cekData.error || "ID Iklan atau Kode Kelola tidak valid!");
 
-        // JIKA VALID, LANJUT HAPUS
+        // Hapus iklan
         const res = await fetch(API_URL + "?action=deleteAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const data = await res.json();
         if (data.success) {
