@@ -102,29 +102,36 @@ white-space:nowrap;
 }
 
 /* =========================
-MENU (DENGAN DROPDOWN)
+MENU (RESPONSIF SCROLL HORIZONTAL + DROPDOWN ACTIVE)
 ========================= */
 
 .main-menu {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Mengalir ke kanan untuk mempertahankan menu lama */
   background: #000;
-  flex-wrap: wrap; /* Menu turun rapi jika di layar kecil */
-  position: relative; /* Menjadi acuan tumpukan utama menu */
-  z-index: 99999;     /* Naikkan kasta tumpukan menu utama di atas segalanya */
+  overflow-x: auto;            /* Mempertahankan fitur geser kanan-kiri pakai jari di mobile */
+  overflow-y: visible;         /* PENTING: Mencegah sub-menu terpotong ke bawah */
+  -webkit-overflow-scrolling: touch; /* Membuat usapan di HP sangat mulus */
+  position: relative; 
+  z-index: 99999;              /* Lapisan tinggi agar menu utama berada di depan */
+  padding: 0 10px;
+}
+
+/* Menyembunyikan scrollbar agar tampilan menu tetap bersih dan minimalis */
+.main-menu::-webkit-scrollbar {
+  display: none;
 }
 
 /* Container untuk item yang mempunyai dropdown */
 .nav-item-dropdown {
-  position: relative;
-  display: inline-block;
+  position: static; /* Mengubah acuan koordinat ke level menu utama agar dropdown bebas melayang keluar */
 }
 
 /* Mengambil gaya tombol utama dari a lama Anda */
 .main-menu a.dropdown-toggle {
   color: #fff;
   padding: 14px 22px;
-  white-space: nowrap;
+  white-space: nowrap; /* Mencegah tulisan teks kategori patah berantakan */
   font-size: 14px;
   text-decoration: none;
   display: block;
@@ -143,11 +150,9 @@ MENU (DENGAN DROPDOWN)
   background-color: #111; /* Hitam sedikit terang agar kontras */
   min-width: 200px;
   box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
-  z-index: 100000; /* Lapisan tertinggi agar mutlak berada di atas Hero */
+  z-index: 100000; /* Lapisan kasta tertinggi mutlak di atas Hero cover */
   border: 1px solid #333;
   border-top: none;
-  left: 0;
-  top: 100%; /* Memastikan dropdown menempel tepat di bawah bar menu utama */
 }
 
 /* Gaya link di dalam sub-kategori dropdown */
@@ -159,6 +164,7 @@ MENU (DENGAN DROPDOWN)
   font-size: 13px;
   text-align: left;
   white-space: nowrap;
+  background: #111;
 }
 
 /* Efek hover untuk list di dalam sub-kategori */
@@ -181,7 +187,7 @@ HERO
   background-size: cover;
   background-position: center;
   position: relative;
-  z-index: 1; /* Diturunkan kasta z-indexnya agar mengalah dengan dropdown menu */
+  z-index: 1; /* Diturunkan kastanya agar mengalah di bawah dropdown melayang */
 }
 
 .hero-overlay {
