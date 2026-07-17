@@ -315,6 +315,51 @@ padding:10px;
 }
 
 /* =========================
+PANDUAN BERIKLAN (SESUAI SIDEBAR KAMU)
+========================= */
+.side-box .info-list {
+  padding: 15px;
+  line-height: 1.8;
+  color: #444;
+  font-size: 15px;
+  text-align: justify;
+}
+
+.side-box .info-list h4 {
+  color: #2e7d32;
+  font-size: 16px;
+  margin: 18px 0 8px;
+  font-weight: bold;
+}
+
+.side-box .info-list p {
+  margin-bottom: 12px;
+}
+
+.tombol-panduan {
+  padding: 0 15px 15px;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+}
+
+.btn-panduan {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 0;
+  text-decoration: underline;
+  width: 100%;
+  text-align: left;
+}
+
+.btn-panduan:hover {
+  color: #1b5e20;
+}
+
+/* =========================
 CONTENT
 ========================= */
 
