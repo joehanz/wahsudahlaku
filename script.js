@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSearch();
   initStickyBanner();
 
-  // INJEKSI LOGIK DROPDOWN UNTUK HANDPHONE & DESKTOP (SCROLL FRIENDLY)
+  // 1. KONTROL DROPDOWN (Hanya memicu sub-menu keluar, tidak memfilter hasil)
   const toggles = document.querySelectorAll(".dropdown-toggle");
   toggles.forEach(toggle => {
     toggle.addEventListener("click", (e) => {
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Buka / Tutup dropdown saat ini
       parent.classList.toggle("show");
 
-      // Hitung koordinat tombol secara realtime agar dropdown tidak terpotong oleh sistem scroll horizontal
+      // Hitung koordinat tombol secara realtime agar dropdown melayang bebas (Scroll Horizontal Friendly)
       if (parent.classList.contains("show") && menu) {
         const rect = toggle.getBoundingClientRect();
         menu.style.left = (rect.left + window.scrollX) + "px";
@@ -41,7 +41,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Otomatis tutup dropdown jika pengguna mengklik area mana saja di luar menu
+  // 2. KONTROL KLIK SUB-KATEGORI (Ini yang memicu hasil pencarian iklan)
+  document.querySelectorAll(".dropdown-menu a").forEach(subLink => {
+    subLink.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Ambil nilai kategori dari data-category milik sub-menu yang diklik
+      const value = this.dataset.category || this.innerText.trim();
+      const select = document.getElementById("categoryFilter");
+      
+      if (select) {
+        select.value = value;
+        // Jalankan filter pencarian bawaan
+        select.dispatchEvent(new Event("change"));
+      }
+
+      // Otomatis tutup kembali dropdown setelah sub-kategori dipilih
+      document.querySelectorAll(".nav-item-dropdown").forEach(item => {
+        item.classList.remove("show");
+      });
+    });
+  });
+
+  // Otomatis tutup dropdown jika pengguna mengklik area sembarang di luar menu
   document.addEventListener("click", () => {
     document.querySelectorAll(".nav-item-dropdown").forEach(item => {
       item.classList.remove("show");
@@ -101,6 +124,9 @@ function initSearch(){
   }
 }
 
+/* =========================
+FILTER PROSES
+========================= */
 function filterAds(){
   const keyword = document.getElementById("searchInput").value.toLowerCase();
   const category = document.getElementById("categoryFilter").value;
@@ -229,6 +255,9 @@ function renderPagination(){
   pagination.innerHTML = html;
 }
 
+/* =========================
+GO PAGE
+========================= */
 function goPage(page){
   currentPage = page;
   renderAds();
@@ -347,19 +376,3 @@ function makeLinks(text){
     }
   );
 }
-
-// Handler pengarah klik link menu utama ke filter pencarian
-document.querySelectorAll(".main-menu a").forEach(link=>{
-  link.addEventListener("click", function(e){
-    // Cegah bawaan jika link hanya untuk filter kategori
-    if (this.classList.contains("dropdown-toggle")) return;
-    
-    e.preventDefault();
-    const value = this.dataset.category;
-    const select = document.getElementById("categoryFilter");
-    if(select) {
-      select.value = value;
-      select.dispatchEvent(new Event("change"));
-    }
-  });
-});
