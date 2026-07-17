@@ -128,9 +128,10 @@ document.addEventListener('click', (e) => {
 });
 
 /* =========================
-CONFIG API SAMA PERSIS DENGAN YANG LAMA
+CONFIG API & PENYIMPANAN LOKAL
 ========================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+const STORAGE_KEY = "rewang_iklan_history";
 
 /* =========================
 HITUNG KARAKTER
@@ -143,7 +144,7 @@ desc.addEventListener("input", () => {
 });
 
 /* =========================
-PREVIEW & KONVERSI GAMBAR SAMA PERSIS DENGAN YANG LAMA
+PREVIEW & KONVERSI GAMBAR
 ========================= */
 let imageBase64 = "";
 
@@ -180,14 +181,87 @@ function convertToWebP(file) {
 }
 
 /* =========================
-CARA KIRIM FORM DIKEMBALIKAN PERSIS SEPERTI YANG LAMA (PASTI BERHASIL)
+1. CEK BATAS MAKSIMAL 3 IKLAN DALAM 24 JAM
+========================= */
+function cekBatasIklan() {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const sekarang = new Date();
+    const batasWaktu = 24 * 60 * 60 * 1000; // 24 jam
+
+    // Hitung iklan yang dikirim dalam 24 jam terakhir
+    const iklanHariIni = riwayat.filter(tanggal => {
+        return (sekarang - new Date(tanggal)) < batasWaktu;
+    });
+
+    if (iklanHariIni.length >= 3) {
+        alert("⚠️ PERINGATAN: Anda sudah memasang 3 iklan dalam 24 jam terakhir.\nSilakan coba lagi besok ya!");
+        return false;
+    }
+    return true;
+}
+
+/* =========================
+2. CEK KEMIRIPAN DENGAN IKLAN SEBELUMNYA (≥80% = DITOLAK)
+========================= */
+function cekKemiripan() {
+    const judulBaru = document.getElementById("title").value.toLowerCase().trim();
+    const deskripsiBaru = document.getElementById("description").value.toLowerCase().trim();
+    const teksBaru = (judulBaru + " " + deskripsiBaru).replace(/\s+/g, " ");
+
+    // Ambil daftar iklan yang pernah dikirim dari penyimpanan lokal
+    const iklanSebelumnya = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+
+    for (let lama of iklanSebelumnya) {
+        const persen = hitungPersenMirip(teksBaru, lama);
+        if (persen >= 0.80) { // 80% mirip
+            alert(`⚠️ PERINGATAN: Iklan ini sekitar ${Math.round(persen*100)}% mirip dengan iklan yang sudah Anda pasang sebelumnya.\n\nSilakan ubah judul atau deskripsinya agar berbeda, jangan mengirim iklan yang sama berulang kali ya!`);
+            return false;
+        }
+    }
+    return true;
+}
+
+// Hitung persentase kesamaan kata
+function hitungPersenMirip(a, b) {
+    const kataA = a.split(" ");
+    const kataB = b.split(" ");
+    let sama = 0;
+    kataA.forEach(kata => {
+        if (kataB.includes(kata)) sama++;
+    });
+    return sama / Math.max(kataA.length, kataB.length);
+}
+
+/* =========================
+3. SIMPAN KE RIWAYAT SETELAH BERHASIL
+========================= */
+function simpanKeRiwayat(judul, deskripsi) {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const teksRiwayat = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+
+    // Simpan waktu pengiriman
+    riwayat.push(new Date().toISOString());
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(riwayat));
+
+    // Simpan teks iklan untuk cek kemiripan nanti
+    teksRiwayat.push((judul + " " + deskripsi).toLowerCase().trim().replace(/\s+/g, " "));
+    localStorage.setItem(STORAGE_KEY + "_teks", JSON.stringify(teksRiwayat));
+}
+
+/* =========================
+KIRIM FORM KE SERVER (DENGAN PERATURAN)
 ========================= */
 document.getElementById("adForm").addEventListener("submit", submitAd);
 
 async function submitAd(e) {
     e.preventDefault();
     const status = document.getElementById("statusBox");
-    status.innerHTML = "Mengirim iklan...";
+
+    // ✅ JALANKAN SEMUA PERATURAN SEBELUM DIKIRIM
+    if (!cekBatasIklan()) return;
+    if (!cekKemiripan()) return;
+
+    status.innerHTML = "Mengirim iklan ke server...";
 
     const payload = {
         title: document.getElementById("title").value,
@@ -200,7 +274,6 @@ async function submitAd(e) {
     };
 
     try {
-        // Kembali ke cara kirim lama yang terbukti lancar
         const res = await fetch(API_URL, {
             method: "POST",
             body: JSON.stringify(payload)
@@ -223,6 +296,8 @@ async function submitAd(e) {
                 Kami tidak dapat menampilkan kembali kode ini.
             </div>`;
 
+            // ✅ Simpan iklan ke riwayat karena berhasil terkirim
+            simpanKeRiwayat(payload.title, payload.description);
             imageBase64 = "";
         } else {
             status.innerHTML = `
@@ -237,7 +312,7 @@ async function submitAd(e) {
         count.textContent = "0 / 500";
 
     } catch (err) {
-        status.innerHTML = "❌ Gagal mengirim iklan.";
+        status.innerHTML = "❌ Gagal mengirim iklan. Coba lagi nanti.";
         console.error(err);
     }
 }
