@@ -355,7 +355,7 @@ const rawDescription = ad.description || "";
 const urlRegex = /(https?:\/\/[^\s]+)/g; 
 const formattedDescription = rawDescription.replace(urlRegex, function(url) {
   // Ditambahkan style warna biru muda (color: #00a2ff) pada link
-  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color: #00a2ff; text-decoration: underline;">' + url + '</a>';
+  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color: #00a2ff; text-decoration: none;">' + url + '</a>';
 });
 
 const descEl = document.getElementById("adDescription");
