@@ -63,7 +63,7 @@ function tampilkanSebagianIklan() {
             <p>${(iklan.description || "").substring(0, 90)}...</p>
             <span class="lokasi">📍 ${iklan.location || "Lokasi tidak disebutkan"}</span>
             <span class="kategori">📂 ${iklan.category || "Lainnya"}</span>
-            <a href="https://rewangiklan.my.id/iklan.html?id=${iklan.id}" class="btn-detail" target="_blank">Lihat Detail & Hubungi</a>
+            <a href="https://rewangiklan.my.id/iklan.html?id=${iklan.id}" class="btn-detail" >Lihat Detail & Hubungi</a>
         </div>
     `).join("");
 
