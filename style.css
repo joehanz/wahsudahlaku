@@ -307,63 +307,182 @@
 }
 
 /* =========================
-PASANG IKLAN
+FORM PASANG IKLAN (DARI STYLE LAMA KAMU)
 ========================= */
 
-.form-page{
-max-width:1100px;
-margin:30px auto;
-padding:0 15px;
+.form-page {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 15px;
 }
 
-.form-card{
-background:#fff;
-border:1px solid #ccc;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
-overflow:hidden;
+.form-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+  overflow: hidden;
 }
 
-.form-card h2{
-background:#000;
-color:#fff;
-padding:18px 25px;
-font-size:28px;
+.form-card h2 {
+  background: #000;
+  color: #fff;
+  padding: 18px 25px;
+  font-size: 28px;
 }
 
-#adForm{
-padding:25px;
+#adForm {
+  padding: 25px;
 }
 
-.form-group{
-margin-bottom:22px;
+.form-group {
+  margin-bottom: 22px;
 }
 
-.form-group label{
-display:block;
-font-weight:bold;
-margin-bottom:8px;
-font-size:15px;
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 15px;
 }
 
 .form-group input,
 .form-group select,
-.form-group textarea{
-width:100%;
-padding:14px;
-border:1px solid #bbb;
-font-size:15px;
-background:#fff;
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #bbb;
+  font-size: 15px;
+  background: #fff;
 }
 
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus{
-outline:none;
-border-color:#000;
+.form-group textarea:focus {
+  outline: none;
+  border-color: #000;
 }
 
-.form-group textarea{
-height:180px;
-resize:none;
+.form-group textarea {
+  height: 180px;
+  resize: none;
 }
 
+.char-count {
+  margin-top: 8px;
+  text-align: right;
+  font-size: 13px;
+  color: #666;
+}
+
+.help {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.preview-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+  border: 2px dashed #ccc;
+  min-height: 300px;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.preview-box img {
+  max-width: 100%;
+  max-height: 500px;
+  display: block;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 60px;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  opacity: .9;
+}
+
+.status-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-left: 4px solid #000;
+}
+
+/* =========================
+LAYOUT DUA KOLOM FORM
+========================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 25px;
+}
+
+.upload-side {
+  background: #fafafa;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+.data-side {
+  background: #fff;
+}
+
+.upload-title {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.preview-box {
+  margin-top: 15px;
+  min-height: 400px;
+  background: #fff;
+  border: 2px dashed #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =========================
+RESPONSIVE FORM
+========================= */
+
+@media(max-width: 900px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card h2 {
+    font-size: 22px;
+  }
+}
