@@ -107,7 +107,8 @@ border-radius:8px;
 
 <h3>${ad.title}</h3>
 
-<p>${ad.description}</p>
+<!-- Di sini ditambahkan white-space: pre-line agar enter terbaca sebagai baris baru -->
+<p style="white-space: pre-line;">${ad.description}</p>
 
 <p>
 <b>Kategori:</b>
@@ -366,3 +367,5 @@ Gagal terhubung ke server.
 
 }
 );
+
+```
