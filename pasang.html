@@ -19,7 +19,7 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
-111111111
+222222222222
 <header class="sticky top-0 bg-white shadow-sm z-50">
     <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="index.html" class="flex items-center gap-2 text-gray-700 hover:text-blue-600">
@@ -59,7 +59,7 @@
                     <option>Properti</option>
                     <option>Elektronik & Gadget</option>
                     <option>Lowongan Kerja</option>
-                    <option>Jasa & Layanan</option>
+                    <option>Jasa</option>
                     <option>Hobi & Olahraga</option>
                     <option>Fashion & Aksesoris</option>
                     <option>Lainnya</option>
@@ -105,7 +105,7 @@
 <script>
 lucide.createIcons();
 
-// === GANTI DENGAN URL BARU HASIL PASANG ULANG .GS ===
+// URL SUDAH DIISI SESUAI SKRIP YANG BERJALAN
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 let idIklan = null;
 let gambarBase64 = "";
@@ -119,7 +119,7 @@ if (idIklan) {
     ambilDataIklan();
 }
 
-// === AMBIL DATA UNTUK EDIT ===
+// AMBIL DATA UNTUK EDIT
 async function ambilDataIklan() {
     tampilkanPesan('info', 'Sedang memuat data iklan...');
     try {
@@ -150,30 +150,25 @@ async function ambilDataIklan() {
     }
 }
 
-// === KIRIM IKLAN BARU - FORMAT COCOK PENUH DENGAN .GS ===
+// KIRIM IKLAN BARU - FORMAT SESUAI SKRIP 100%
 document.getElementById('formIklan').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const judul = document.getElementById('inputJudul').value.trim();
-    const kategori = document.getElementById('inputKategori').value;
-    const lokasi = document.getElementById('inputLokasi').value.trim();
-    const wa = document.getElementById('inputWa').value.trim();
-    const deskripsi = document.getElementById('inputDeskripsi').value.trim();
-
     tampilkanPesan('info', 'Sedang mengirim iklan...');
+
+    const formData = new FormData();
+    formData.append('action', 'createAd');
+    formData.append('title', document.getElementById('inputJudul').value.trim());
+    formData.append('category', document.getElementById('inputKategori').value);
+    formData.append('location', document.getElementById('inputLokasi').value.trim());
+    formData.append('whatsapp', document.getElementById('inputWa').value.trim());
+    formData.append('description', document.getElementById('inputDeskripsi').value.trim());
+    formData.append('image', gambarBase64);
 
     try {
         const res = await fetch(API_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                title: judul,
-                category: kategori,
-                location: lokasi,
-                whatsapp: wa,
-                description: deskripsi,
-                image: gambarBase64
-            })
+            body: formData
         });
 
         const hasil = await res.json();
@@ -189,7 +184,7 @@ document.getElementById('formIklan').addEventListener('submit', async function(e
     }
 });
 
-// === EDIT IKLAN - FORMAT SESUAI updateAdBySecret ===
+// EDIT IKLAN
 document.getElementById('btnEdit').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
@@ -221,7 +216,7 @@ document.getElementById('btnEdit').addEventListener('click', async function() {
     }
 });
 
-// === HAPUS IKLAN - FORMAT SESUAI deleteAdBySecret ===
+// HAPUS IKLAN
 document.getElementById('btnHapus').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
@@ -248,7 +243,7 @@ document.getElementById('btnHapus').addEventListener('click', async function() {
     }
 });
 
-// === PROSES GAMBAR KE BASE64 ===
+// PROSES GAMBAR KE BASE64
 const inputFoto = document.getElementById('inputFoto');
 const gambarPratinjau = document.getElementById('gambarPratinjau');
 const teksPratinjau = document.getElementById('teksPratinjau');
@@ -276,7 +271,7 @@ inputFoto.addEventListener('change', function(e) {
     pembaca.readAsDataURL(file);
 });
 
-// === HITUNG KARAKTER ===
+// HITUNG KARAKTER
 const inputDeskripsi = document.getElementById('inputDeskripsi');
 const jumlahKarakter = document.getElementById('jumlahKarakter');
 inputDeskripsi.addEventListener('input', function() {
