@@ -354,13 +354,14 @@ const rawDescription = ad.description || "";
 // Regex untuk mendeteksi url link otomatis
 const urlRegex = /(https?:\/\/[^\s]+)/g; 
 const formattedDescription = rawDescription.replace(urlRegex, function(url) {
-  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+  // Ditambahkan style warna biru muda (color: #00a2ff) pada link
+  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color: #00a2ff; text-decoration: underline;">' + url + '</a>';
 });
 
 const descEl = document.getElementById("adDescription");
-descEl.innerHTML = formattedDescription; // Menggunakan innerHTML agar tag <a> aktif
-descEl.style.whiteSpace = "pre-wrap";    // Tetap mempertahankan spasi & enter dari spreadsheet
-
+descEl.innerHTML = formattedDescription; 
+descEl.style.whiteSpace = "pre-wrap";
+  
 document.getElementById("adViews").textContent =
 ad.views;
 
