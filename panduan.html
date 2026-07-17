@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Beriklan — Rewang Iklan</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan.">
+</head>
+<body>
+
+<!-- Header Sama Persis dengan Beranda -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <h2>🟢 REWANG IKLAN</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html">Beranda</a>
+            <a href="index.html#iklan">Daftar Iklan</a>
+            <a href="panduan.html" class="aktif">Panduan Beriklan</a>
+            <a href="#">Tentang Kami</a>
+            <button class="btn-pasang">Pasang Iklan Gratis</button>
+        </nav>
+        <div class="menu-toggle" id="mobileMenu">☰</div>
+    </div>
+</header>
+
+<section class="content-wrapper">
+    <div class="container">
+        <div class="col-panduan" style="max-width:900px; margin:0 auto;">
+            <h3>📚 Panduan Lengkap Beriklan yang Efektif & Disukai Pembeli</h3>
+            <p class="intro-panduan">Banyak pedagang yang sudah beriklan berkali-kali di berbagai tempat tapi belum mendapatkan hasil yang diharapkan. Seringkali hal ini terjadi bukan karena barang atau jasanya kurang bagus, melainkan cara menyampaikan iklannya yang kurang tepat sasaran, kurang jelas, atau tidak membangun kepercayaan calon pembeli. Rewang Iklan hadir tidak hanya sebagai tempat memajang iklan, tapi juga sebagai teman belajar agar setiap iklan yang kamu pasang bisa membawa manfaat nyata bagi usahamu.</p>
+
+            <div id="daftar-panduan">
+                <p style="text-align:center;">Memuat panduan...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
+    </div>
+</footer>
+
+<script>
+// Ambil data panduan dari file JSON
+fetch('panduan.json')
+.then(res => res.json())
+.then(data => {
+    const wadah = document.getElementById('daftar-panduan');
+    wadah.innerHTML = data.map(bagian => `
+        <div class="isi-panduan">
+            <h4>${bagian.judul}</h4>
+            <p>${bagian.isi}</p>
+        </div>
+    `).join('');
+})
+.catch(err => {
+    document.getElementById('daftar-panduan').innerHTML = `<p style="color:red;">Gagal memuat panduan.</p>`;
+    console.error(err);
+});
+
+// Fungsi menu
+const menuToggle = document.getElementById('mobileMenu');
+const navMenu = document.querySelector('.nav-menu');
+menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+document.addEventListener('click', e => {
+    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
+});
+</script>
+
+</body>
+</html>
