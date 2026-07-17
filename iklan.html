@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<!-- HEADER & NAVIGASI SAMA PERSIS DENGAN HALAMAN LAIN -->
+<!-- HEADER & NAVIGASI -->
 <header class="header">
     <div class="container">
         <div class="logo">
@@ -30,7 +30,6 @@
     <div class="container">
         <div class="col-panduan" style="max-width:900px; margin:0 auto;">
 
-            <!-- ISI UTUH DARI KODE LAMA KAMU -->
             <div class="breadcrumb" style="padding:10px 0; margin-bottom:20px;">
                 <a href="javascript:history.back()" style="color:#2e7d32;">Beranda</a>
                 <span style="margin:0 8px;">›</span>
@@ -117,10 +116,9 @@
                     <a class="post-btn" href="index.html" style="display:inline-block; padding:15px 30px; background:#000; color:white; font-weight:bold; border-radius:5px; text-decoration:none;">
                         ← Lihat Iklan Lain
                     </a>
-                    <a href="pasang.html?id=${ad.id}" class="submit-btn" style="display:block; text-align:center; text-decoration:none; margin-bottom:10px;">
-    ⚙️ Kelola Iklan (Hapus/Edit)
-</a>
-                    
+                    <a id="kelolaBtn" href="pasang.html" class="submit-btn" style="display:inline-block; padding:12px 25px; background:#f5f5f5; color:#333; border-radius:5px; text-decoration:none; font-size:14px;">
+                        ⚙️ Kelola Iklan (Hapus/Edit)
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,7 +138,7 @@
 </script>
 </div>
 
-<!-- FOOTER SAMA PERSIS DENGAN HALAMAN LAIN -->
+<!-- FOOTER -->
 <footer class="footer">
     <div class="container">
         <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
@@ -148,28 +146,16 @@
 </footer>
 
 <script>
-// FUNGSI MENU SAMA DENGAN HALAMAN LAIN
+// FUNGSI MENU
 const menuToggle = document.getElementById('mobileMenu');
 const navMenu = document.querySelector('.nav-menu');
-
-menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+document.addEventListener('click', e => {
+    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
 });
 
-document.addEventListener('click', (e) => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-    }
-});
-
-/* =========================
-CONFIG API SAMA DENGAN MILIKMU
-========================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 
-/* =========================
-AMBIL DATA IKLAN UTUH DARI KODE LAMA
-========================= */
 const params = new URLSearchParams(location.search);
 const id = params.get("id");
 
@@ -193,7 +179,10 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     const ad = res.ad;
     document.getElementById("detailContent").style.display = "block";
 
-    // Isi data
+    // ✅ Link kelola otomatis dengan ID iklan
+    document.getElementById("kelolaBtn").href = `pasang.html?id=${ad.id}`;
+
+    // Isi semua data iklan
     document.getElementById("adImage").src = ad.image;
     document.getElementById("adImage").alt = ad.title;
     document.getElementById("adTitle").textContent = ad.title;
@@ -201,10 +190,10 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     document.getElementById("adCategory2").textContent = ad.category;
     document.getElementById("adLocation").textContent = ad.location;
 
-    // Otomatis ubah link jadi biru & bisa diklik
+    // Ubah link di deskripsi jadi bisa diklik
     const rawDescription = ad.description || "";
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const formattedDescription = rawDescription.replace(urlRegex, function(url) {
+    const formattedDescription = rawDescription.replace(urlRegex, url => {
         return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">' + url + '</a>';
     });
     const descEl = document.getElementById("adDescription");
@@ -215,7 +204,7 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     document.getElementById("adPhone").textContent = ad.whatsapp || "-";
     document.getElementById("adStatus").textContent = ad.status || "-";
 
-    // Format tanggal Indonesia
+    // Format tanggal
     const t = new Date(ad.date);
     document.getElementById("adDate").textContent = t.toLocaleDateString("id-ID", {
         day: "2-digit",
@@ -226,7 +215,6 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     // Link WhatsApp
     document.getElementById("waButton").href = "https://wa.me/" + ad.whatsapp + "?text=" + encodeURIComponent("Saya tertarik dengan iklan: " + ad.title);
 
-    // Perbarui SEO otomatis
     updateSEO(ad);
 })
 .catch(err => {
@@ -235,9 +223,6 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     document.getElementById("errorBox").style.display = "block";
 });
 
-/* =========================
-SEO UTUH DARI KODE LAMA
-========================= */
 function updateSEO(ad) {
     document.title = ad.title + " | Rewang Iklan";
     const desc = ad.description.length > 155 ? ad.description.substring(0,155) + "..." : ad.description;
@@ -263,9 +248,6 @@ function setMetaProperty(property, content) {
     if (tag) tag.setAttribute("content", content);
 }
 
-/* =========================
-BAGIKAN SOSIAL MEDIA UTUH
-========================= */
 document.addEventListener("DOMContentLoaded", () => {
     const id = new URLSearchParams(location.search).get("id");
     const wa = document.getElementById("waShare");
