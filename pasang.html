@@ -1,295 +1,656 @@
 <!DOCTYPE html>
-<html lang="id-ID">
-<head>
+<html lang="id">
+
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasang & Kelola Iklan - Rewang Iklan</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pasang Iklan Gratis | Rewang Iklan</title>
+    <meta name="description" content="Pasang iklan baris gratis di Rewang Iklan. Jual beli properti, kendaraan, elektronik, lowongan kerja, jasa, hewan peliharaan, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="author" content="Rewang Iklan">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://rewangiklan.my.id/pasang.html">
+    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
+    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+<!-- Open Graph -->
 
-    <style>
-        #btnPasang { display: block !important; }
-        #btnEdit, #btnHapus, #kodeKelolaGrup { display: none !important; }
-        body.mode-kelola #btnPasang { display: none !important; }
-        body.mode-kelola #btnEdit, body.mode-kelola #btnHapus, body.mode-kelola #kodeKelolaGrup { display: block !important; }
-    </style>
-</head>
-<body class="bg-gray-50 font-sans text-gray-800">
-222222222222
-<header class="sticky top-0 bg-white shadow-sm z-50">
-    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="index.html" class="flex items-center gap-2 text-gray-700 hover:text-blue-600">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            <span class="font-medium">Kembali</span>
-        </a>
-        <h1 class="text-lg font-bold" id="judulHalaman">Pasang Iklan Baru</h1>
-        <div class="w-16"></div>
-    </div>
-</header>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Rewang Iklan">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
+    <meta property="og:description" content="Pasang iklan gratis dan temukan properti, kendaraan, elektronik, lowongan kerja, jasa, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
+    <meta property="og:url" content="https://rewangiklan.my.id/">
+    <meta property="og:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:secure_url" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Rewang Iklan">
 
-<main class="max-w-2xl mx-auto px-4 py-6">
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <form id="formIklan" class="space-y-5">
+<!-- Twitter -->
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Foto Iklan</label>
-                <input type="file" id="inputFoto" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                <p class="mt-1 text-xs text-gray-500">Format JPG/PNG, maks 5MB</p>
-                <div id="kotakPratinjau" class="mt-3 w-full h-52 bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img id="gambarPratinjau" alt="Pratinjau Foto" class="max-w-full max-h-full object-contain hidden">
-                    <span id="teksPratinjau" class="text-gray-400">Foto iklan akan muncul di sini</span>
-                </div>
-            </div>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
+    <meta name="twitter:description" content="Pasang iklan gratis dan temukan berbagai produk serta jasa dari seluruh Indonesia.">
+    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta name="twitter:image:alt" content="Rewang Iklan">
 
-            <div>
-                <label for="inputJudul" class="block text-sm font-medium text-gray-700 mb-2">Judul Iklan *</label>
-                <input type="text" id="inputJudul" maxlength="80" required placeholder="Contoh: Rumah Minimalis Dekat Kota" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            </div>
+<!-- Icon -->
 
-            <div>
-                <label for="inputKategori" class="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
-                <select id="inputKategori" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    <option value="">Pilih Kategori Iklan</option>
-                    <option>Mobil</option>
-                    <option>Motor</option>
-                    <option>Properti</option>
-                    <option>Elektronik & Gadget</option>
-                    <option>Lowongan Kerja</option>
-                    <option>Jasa</option>
-                    <option>Hobi & Olahraga</option>
-                    <option>Fashion & Aksesoris</option>
-                    <option>Lainnya</option>
-                </select>
-            </div>
+    <link rel="icon" type="image/webp" href="https://rewangiklan.my.id/image/iklanbaris.webp">  
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 
-            <div>
-                <label for="inputLokasi" class="block text-sm font-medium text-gray-700 mb-2">Lokasi / Kota *</label>
-                <input type="text" id="inputLokasi" required placeholder="Contoh: Surabaya, Jawa Timur" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            </div>
+<!-- Bonus I -->
 
-            <div>
-                <label for="inputWa" class="block text-sm font-medium text-gray-700 mb-2">Nomor WhatsApp *</label>
-                <input type="text" id="inputWa" required placeholder="Contoh: 6281234567890" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            </div>
+    <meta name="application-name" content="Rewang Iklan">
+    <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+<!-- Bonus II -->
 
-            <div>
-                <label for="inputDeskripsi" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Iklan *</label>
-                <textarea id="inputDeskripsi" maxlength="3000" required rows="5" placeholder="Jelaskan detail barang atau jasa Anda..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"></textarea>
-                <div class="flex justify-between items-center mt-1">
-                    <span class="text-xs text-gray-500">Maksimal 3000 karakter</span>
-                    <span id="jumlahKarakter" class="text-xs text-gray-500">0 / 3000</span>
-                </div>
-            </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-            <div id="kodeKelolaGrup">
-                <label for="inputKode" class="block text-sm font-medium text-gray-700 mb-2">Kode Kelola Iklan *</label>
-                <input type="text" id="inputKode" placeholder="Masukkan kode rahasia Anda" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                <p class="mt-1 text-xs text-gray-500">Kode ini didapat saat pertama kali Anda memasang iklan</p>
-            </div>
+<!-- Website Schema -->
 
-            <div class="space-y-3 pt-4">
-                <button type="submit" id="btnPasang" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">✅ Pasang Iklan Sekarang</button>
-                <button type="button" id="btnEdit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">✏️ Simpan Perubahan Iklan</button>
-                <button type="button" id="btnHapus" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors">🗑️ Hapus Iklan Permanen</button>
-            </div>
-
-            <div id="kotakPesan" class="mt-4 p-4 rounded-lg text-center hidden"></div>
-        </form>
-    </div>
-</main>
-
-<script>
-lucide.createIcons();
-
-// URL SUDAH DIISI SESUAI SKRIP YANG BERJALAN
-const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-let idIklan = null;
-let gambarBase64 = "";
-
-const parameterUrl = new URLSearchParams(window.location.search);
-idIklan = parameterUrl.get('kelola');
-
-if (idIklan) {
-    document.body.classList.add('mode-kelola');
-    document.getElementById('judulHalaman').textContent = 'Edit Iklan Saya';
-    ambilDataIklan();
-}
-
-// AMBIL DATA UNTUK EDIT
-async function ambilDataIklan() {
-    tampilkanPesan('info', 'Sedang memuat data iklan...');
-    try {
-        const res = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklan)}`);
-        const data = await res.json();
-        if (!data.success) throw new Error(data.error || 'Iklan tidak ditemukan');
-        const iklan = data.ad;
-
-        document.getElementById('inputJudul').value = iklan.title || '';
-        document.getElementById('inputKategori').value = iklan.category || '';
-        document.getElementById('inputLokasi').value = iklan.location || '';
-        document.getElementById('inputWa').value = iklan.whatsapp || '';
-        document.getElementById('inputDeskripsi').value = iklan.description || '';
-        
-        const panjang = iklan.description?.length || 0;
-        document.getElementById('jumlahKarakter').textContent = `${panjang} / 3000`;
-
-        if (iklan.image) {
-            const gambarPratinjau = document.getElementById('gambarPratinjau');
-            const teksPratinjau = document.getElementById('teksPratinjau');
-            gambarPratinjau.src = iklan.image;
-            gambarPratinjau.classList.remove('hidden');
-            teksPratinjau.classList.add('hidden');
-        }
-        sembunyikanPesan();
-    } catch (err) {
-        tampilkanPesan('error', 'Gagal memuat data: ' + err.message);
-    }
-}
-
-// KIRIM IKLAN BARU - FORMAT SESUAI SKRIP 100%
-document.getElementById('formIklan').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    tampilkanPesan('info', 'Sedang mengirim iklan...');
-
-    const formData = new FormData();
-    formData.append('action', 'createAd');
-    formData.append('title', document.getElementById('inputJudul').value.trim());
-    formData.append('category', document.getElementById('inputKategori').value);
-    formData.append('location', document.getElementById('inputLokasi').value.trim());
-    formData.append('whatsapp', document.getElementById('inputWa').value.trim());
-    formData.append('description', document.getElementById('inputDeskripsi').value.trim());
-    formData.append('image', gambarBase64);
-
-    try {
-        const res = await fetch(API_URL, {
-            method: "POST",
-            body: formData
-        });
-
-        const hasil = await res.json();
-        if (hasil.success) {
-            tampilkanPesan('sukses', `✅ Iklan berhasil terpasang!\nSimpan Kode Kelola: ${hasil.secret_code}`);
-            setTimeout(() => window.location.href = 'index.html', 6000);
-        } else {
-            tampilkanPesan('error', `❌ ${hasil.error}`);
-        }
-    } catch (err) {
-        tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
-        console.error(err);
-    }
-});
-
-// EDIT IKLAN
-document.getElementById('btnEdit').addEventListener('click', async function() {
-    const kodeKelola = document.getElementById('inputKode').value.trim();
-    if (!kodeKelola) {
-        tampilkanPesan('error', 'Masukkan Kode Kelola Anda!');
-        return;
-    }
-    tampilkanPesan('info', 'Sedang menyimpan perubahan...');
-    try {
-        const dataKirim = new URLSearchParams();
-        dataKirim.append('action', 'updateAd');
-        dataKirim.append('id', idIklan);
-        dataKirim.append('secret_code', kodeKelola);
-        dataKirim.append('title', document.getElementById('inputJudul').value.trim());
-        dataKirim.append('category', document.getElementById('inputKategori').value);
-        dataKirim.append('location', document.getElementById('inputLokasi').value.trim());
-        dataKirim.append('whatsapp', document.getElementById('inputWa').value.trim());
-        dataKirim.append('description', document.getElementById('inputDeskripsi').value.trim());
-
-        const res = await fetch(`${API_URL}?${dataKirim.toString()}`);
-        const hasil = await res.json();
-        if (hasil.success) {
-            tampilkanPesan('sukses', '✅ Perubahan disimpan!');
-            setTimeout(() => window.location.href = 'index.html', 2500);
-        } else {
-            tampilkanPesan('error', '❌ Kode Kelola tidak cocok!');
-        }
-    } catch (err) {
-        tampilkanPesan('error', 'Gagal terhubung ke server.');
-    }
-});
-
-// HAPUS IKLAN
-document.getElementById('btnHapus').addEventListener('click', async function() {
-    const kodeKelola = document.getElementById('inputKode').value.trim();
-    if (!kodeKelola) {
-        tampilkanPesan('error', 'Masukkan Kode Kelola Anda!');
-        return;
-    }
-    if (!confirm('⚠️ Hapus permanen? Tidak bisa dikembalikan!')) return;
-    tampilkanPesan('info', 'Sedang menghapus...');
-    try {
-        const dataKirim = new URLSearchParams();
-        dataKirim.append('action', 'deleteAd');
-        dataKirim.append('id', idIklan);
-        dataKirim.append('secret_code', kodeKelola);
-        const res = await fetch(`${API_URL}?${dataKirim.toString()}`);
-        const hasil = await res.json();
-        if (hasil.success) {
-            tampilkanPesan('sukses', '✅ Iklan dihapus.');
-            setTimeout(() => window.location.href = 'index.html', 2500);
-        } else {
-            tampilkanPesan('error', '❌ Kode Kelola tidak cocok!');
-        }
-    } catch (err) {
-        tampilkanPesan('error', 'Gagal terhubung ke server.');
-    }
-});
-
-// PROSES GAMBAR KE BASE64
-const inputFoto = document.getElementById('inputFoto');
-const gambarPratinjau = document.getElementById('gambarPratinjau');
-const teksPratinjau = document.getElementById('teksPratinjau');
-
-inputFoto.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) {
-        gambarPratinjau.classList.add('hidden');
-        teksPratinjau.classList.remove('hidden');
-        gambarBase64 = "";
-        return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-        tampilkanPesan('error', 'Ukuran gambar maksimal 5MB!');
-        inputFoto.value = "";
-        return;
-    }
-    const pembaca = new FileReader();
-    pembaca.onload = function(e) {
-        gambarBase64 = e.target.result;
-        gambarPratinjau.src = e.target.result;
-        gambarPratinjau.classList.remove('hidden');
-        teksPratinjau.classList.add('hidden');
-    }
-    pembaca.readAsDataURL(file);
-});
-
-// HITUNG KARAKTER
-const inputDeskripsi = document.getElementById('inputDeskripsi');
-const jumlahKarakter = document.getElementById('jumlahKarakter');
-inputDeskripsi.addEventListener('input', function() {
-    const panjang = this.value.length;
-    jumlahKarakter.textContent = `${panjang} / 3000`;
-});
-
-function tampilkanPesan(jenis, teks) {
-    const kotak = document.getElementById('kotakPesan');
-    kotak.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700', 'bg-blue-50', 'text-blue-700');
-    if (jenis === 'error') kotak.classList.add('bg-red-50', 'text-red-700');
-    else if (jenis === 'sukses') kotak.classList.add('bg-green-50', 'text-green-700');
-    else kotak.classList.add('bg-blue-50', 'text-blue-700');
-    kotak.textContent = teks;
-}
-function sembunyikanPesan() {
-    document.getElementById('kotakPesan').classList.add('hidden');
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"Rewang Iklan",
+ "alternateName":"Iklan Baris Gratis Indonesia",
+ "url":"https://rewangiklan.my.id/",
+ "description":"Pasang iklan baris gratis Indonesia.",
+ "inLanguage":"id-ID",
+ "potentialAction":{
+   "@type":"SearchAction",
+   "target":"https://rewangiklan.my.id/?q={search_term_string}",
+   "query-input":"required name=search_term_string"
+ }
 }
 </script>
-</body>
+
+<!-- Organization -->
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Organization",
+ "name":"Rewang Iklan",
+ "url":"https://rewangiklan.my.id/",
+ "logo":"https://rewangiklan.my.id/image/iklanbaris3.png"
+}
+</script>
+
+    <script type="application/ld+json">
+{
+"@context":"https://schema.org",
+
+"@type":"CollectionPage",
+
+"name":"Rewang Iklan",
+
+"description":"Daftar iklan baris gratis Indonesia",
+
+"url":"https://rewangiklan.my.id/",
+
+"mainEntity":{
+
+"@type":"ItemList",
+
+"numberOfItems":"1000",
+
+"itemListOrder":"https://schema.org/ItemListOrderDescending"
+
+}
+}
+</script>
+
+</head> 
+  
+  <body>
+    <!-- =========================
+HEADER
+========================= -->
+
+    <header class="top-header">
+      <div class="logo-box">
+        <h1>REWANG IKLAN</h1>
+
+        <p>Iklan Baris Gratis, Tanpa Daftar Langsung Tayang!</p>
+      </div>
+
+      <div class="footer-banner" style="display:none;">  </div>
+
+      <a href="index.html" class="post-btn"> LIHAT IKLAN TERPASANG </a>
+    </header>
+
+    <!-- =========================
+MENU
+========================= -->
+
+    <nav class="main-menu">
+      <h2 style="color: white;"> FORM PASANG IKLAN BARIS GRATIS </h2>
+
+    </nav>
+
+
+    <!-- =========================
+LAYOUT
+========================= -->
+      <main>
+        <div class="form-page" >
+          <div class="form-card">
+            <form id="adForm">
+              <div class="form-layout">
+                <div class="upload-side">
+                  <label class="upload-title"> Foto Produk </label>
+
+                  <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    required
+                  />
+
+                  <p class="help">
+                    JPG/PNG otomatis diubah ke WebP dan dikompres.
+                  </p>
+
+                  <div id="previewBox" class="preview-box">
+                    <img id="previewImage" />
+                  </div>
+                </div>
+
+                <div class="data-side">
+                  <div class="form-group">
+                    <label> Judul Iklan </label>
+
+                    <input type="text" id="title" maxlength="80" required />
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label> Kategori </label>
+
+                      <select id="category" required>
+                        <option value="">Pilih Kategori</option>
+
+                        <option>Elektronik</option>
+                        <option>Kendaraan</option>
+                        <option>Properti</option>
+                        <option>Lowongan</option>
+                        <option>Hobi</option>
+                        <option>Jasa</option>
+                        <option>Hewan</option>
+                        <option>Lainnya</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label> Lokasi </label>
+
+                      <input type="text" id="location" required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label> Nomor Telepon / WhatsApp </label>
+
+                    <input
+                      type="text"
+                      id="whatsapp"
+                      placeholder="Contoh: 6281234567890"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label> Deskripsi Iklan </label>
+
+                    <textarea
+                      id="description"
+                      maxlength="500"
+                      required
+                    ></textarea>
+
+                    <div id="charCount" class="char-count">0 / 500</div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-btn">PASANG IKLAN</button>
+            </form>
+
+            <div id="statusBox" class="status-box"></div>
+          </div>
+
+        <script>
+
+          /* =========================
+          CONFIG
+          ========================= */
+
+          const API_URL =
+          "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+
+          /* =========================
+          CHAR COUNT
+          ========================= */
+
+          const desc =
+          document.getElementById(
+          "description"
+          );
+
+          const count =
+          document.getElementById(
+          "charCount"
+          );
+
+          desc.addEventListener(
+          "input",
+          ()=>{
+
+          count.textContent =
+          desc.value.length +
+          " / 500";
+
+          }
+          );
+
+          /* =========================
+          PREVIEW
+          ========================= */
+
+          let imageBase64 = "";
+
+          document
+          .getElementById(
+          "imageInput"
+          )
+          .addEventListener(
+          "change",
+          handleImage
+          );
+
+          async function handleImage(e){
+
+          const file =
+          e.target.files[0];
+
+          if(!file)
+          return;
+
+          const webp =
+          await convertToWebP(
+          file
+          );
+
+          imageBase64 =
+          webp;
+
+          document
+          .getElementById(
+          "previewImage"
+          )
+          .src = webp;
+
+          }
+
+          /* =========================
+          WEBP CONVERT
+          ========================= */
+
+          function convertToWebP(file){
+
+          return new Promise(
+          (resolve)=>{
+
+          const reader =
+          new FileReader();
+
+          reader.onload =
+          function(ev){
+
+          const img =
+          new Image();
+
+          img.onload =
+          function(){
+
+          const width = 200;
+          const height = 150;
+
+          const canvas =
+          document.createElement(
+          "canvas"
+          );
+
+          canvas.width =
+          width;
+
+          canvas.height =
+          height;
+
+          const ctx =
+          canvas.getContext(
+          "2d"
+          );
+
+          ctx.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
+          );
+
+          const data =
+          canvas.toDataURL(
+          "image/webp",
+          0.60
+          );
+
+          resolve(data);
+
+          };
+
+          img.src =
+          ev.target.result;
+
+          };
+
+          reader.readAsDataURL(
+          file
+          );
+
+          }
+          );
+
+          }
+
+          /* =========================
+          SUBMIT
+          ========================= */
+
+          document
+          .getElementById(
+          "adForm"
+          )
+          .addEventListener(
+          "submit",
+          submitAd
+          );
+
+          async function submitAd(e){
+
+          e.preventDefault();
+
+          const status =
+          document.getElementById(
+          "statusBox"
+          );
+
+          status.innerHTML =
+          "Mengirim iklan...";
+
+          const payload = {
+
+          title:
+          document.getElementById(
+          "title"
+          ).value,
+
+          category:
+          document.getElementById(
+          "category"
+          ).value,
+
+          location:
+          document.getElementById(
+          "location"
+          ).value,
+
+          whatsapp:
+          document.getElementById(
+          "whatsapp"
+          ).value,
+
+          description:
+          document.getElementById(
+          "description"
+          ).value,
+
+          image:
+          imageBase64,
+
+          date:
+          new Date().toISOString()
+
+          };
+
+          try{
+
+          const res =
+          await fetch(
+          API_URL,
+          {
+          method:"POST",
+          body:JSON.stringify(
+          payload
+          )
+          }
+          );
+
+          const result =
+          await res.json();
+
+          if(result.success){
+
+          alert(
+
+          "? IKLAN BERHASIL DIPASANG\n\n" +
+
+          "ID IKLAN:\n" +
+          result.id +
+
+          "\n\nKODE KELOLA:\n" +
+          result.secret_code +
+
+          "\n\nSimpan kode ini baik-baik."
+
+          );
+
+          }
+
+          if(result.success){
+
+          status.innerHTML =
+
+          `
+
+          <div style="
+          padding:15px;
+          background:#e8fff0;
+          border:2px solid #28a745;
+          line-height:1.8;
+          ">
+
+          <b>
+          ? Iklan berhasil dipasang
+          </b>
+
+          <br><br>
+
+          <b>ID Iklan:</b>
+
+          <br>
+
+          ${result.id}
+
+          <br><br>
+
+          <b>Kode Kelola:</b>
+
+          <br>
+
+          <span style="
+          font-size:22px;
+          font-weight:bold;
+          color:#d60000;
+          letter-spacing:2px;
+          ">
+
+          ${result.secret_code}
+
+          </span>
+
+          <br><br>
+
+          <b>
+          Simpan kode ini baik-baik.
+          </b>
+
+          <br>
+
+          Kode diperlukan untuk
+          mengedit atau menghapus iklan.
+
+          <br>
+
+          Kami tidak dapat
+          menampilkan kembali kode ini.
+
+          </div>
+
+          `;
+
+
+          imageBase64 = "";
+
+          }else{
+
+          status.innerHTML =
+
+          `
+
+          <div style="
+          padding:15px;
+          background:#fff2f2;
+          border:2px solid #dc3545;
+          ">
+
+          ? ${result.error}
+
+          </div>
+
+          `;
+
+          }
+
+          document
+          .getElementById(
+          "adForm"
+          )
+          .reset();
+
+          document
+          .getElementById(
+          "previewImage"
+          )
+          .src = "";
+
+          count.textContent =
+          "0 / 500";
+
+          }
+          catch(err){
+
+          status.innerHTML =
+          "Gagal mengirim iklan.";
+
+          console.error(
+          err
+          );
+
+          }
+
+          }
+        </script>
+      </main>
+
+
+    <!-- =========================
+FOOTER BANNER
+========================= -->
+    <div id="mobileAds"></div>
+
+    <div class="footer-banner"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
+     crossorigin="anonymous"></script>
+<!-- ptdwiprima_jika_AdSense1_1x1_as -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6458870303612779"
+     data-ad-slot="9722825270"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+    <!-- =========================
+FOOTER
+========================= -->
+
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h4>REWANG IKLAN</h4>
+
+          <p>Situs pasang iklan baris tanpa daftar iklan jual beli properti kendaraan elektronik lowongan kerja jasa hewan peliharaan dan berbagai kebutuhan lainnya di seluruh Indonesia langsung tayang tanpa bayar</p>
+        </div>
+
+        <div>
+          <h4>LINK</h4>
+
+          <ul>
+            <li>Iklan Update</li>
+
+            <li>Pasang Iklan</li>
+
+            <li>Kelola Iklan</li>
+            
+          </ul>
+        </div>
+
+        <div>
+          <h4>BANTUAN</h4>
+
+          <ul>
+            <li>Cara Pasang</li>
+
+            <li>Tips Aman</li>
+
+            <li>Kebijakan</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>KONTAK</h4>
+
+          <p>info@domain.com</p>
+
+          <p>WhatsApp: 0812-3456-7890</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>
