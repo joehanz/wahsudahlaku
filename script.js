@@ -376,3 +376,62 @@ function makeLinks(text){
     }
   );
 }
+
+
+// Isi lengkap panduan
+const TEKS_PANDUAN = `
+Banyak pedagang yang sudah beriklan berkali-kali di berbagai tempat tapi belum mendapatkan hasil yang diharapkan. Seringkali hal ini terjadi bukan karena barang atau jasanya kurang bagus, melainkan cara menyampaikan iklannya yang kurang tepat sasaran, kurang jelas, atau tidak membangun kepercayaan calon pembeli. Rewang Iklan hadir tidak hanya sebagai tempat memajang iklan, tapi juga sebagai teman belajar agar setiap iklan yang kamu pasang bisa membawa manfaat nyata bagi usahamu. Berikut adalah panduan mendalam yang kami susun khusus berdasarkan pengalaman ribuan iklan yang sudah tayang:
+
+<h4>1. Cara Membuat Judul Iklan yang Mudah Ditemukan & Bikin Orang Ingin Baca</h4>
+Judul adalah hal pertama yang dilihat orang saat menelusuri daftar iklan. Jika judulmu kurang jelas, terlalu panjang, atau tidak menyebutkan hal penting, besar kemungkinan orang akan langsung lewat begitu saja tanpa membaca deskripsinya. Buatlah judul yang singkat namun padat informasi: sebutkan nama barang atau jasa, keunggulan utama, dan lokasi jika penjualanmu bersifat lokal. Hindari kata-kata yang berlebihan atau tidak jujur seperti "paling murah sedunia" atau "pasti berhasil" tanpa bukti nyata. Contoh judul yang baik: "Jasa Servis AC Surabaya — Datang ke Lokasi & Bergaransi" — jauh lebih jelas dan menarik dibanding sekadar "Servis AC Murah". Gunakan juga kata kunci yang biasa dicari orang, misalnya jika kamu menjual makanan sehat, masukkan kata "sehat" atau "tanpa pengawet" di judul agar lebih mudah ditemukan lewat pencarian.
+
+<h4>2. Isi Deskripsi Harus Jujur, Lengkap, dan Menjawab Semua Pertanyaan Pembeli</h4>
+Saat menulis isi iklan, cobalah bayangkan dirimu adalah orang yang sedang mencari barang atau jasa seperti milikmu. Apa saja yang ingin kamu ketahui sebelum menghubungi penjual? Tuliskan semua hal tersebut secara terurut dan jelas. Sebutkan bahan atau komposisi barang, kondisi apakah baru atau bekas, ukuran, warna, cara pemakaian, keunggulan dibanding barang lain, serta alasan kenapa orang harus memilih barangmu. Jangan lupa jelaskan kapan barang tersedia, cara pengambilan atau pengiriman, serta cara pembayarannya. Yang paling penting adalah kejujuran: jika ada kekurangan, cacat kecil, atau syarat tertentu, sebutkan saja dengan terbuka. Hal ini justru akan membuat calon pembeli lebih percaya padamu, dan menghindari kesalahpahaman di kemudian hari.
+
+<h4>3. Tips Memilih & Mengunggah Foto Produk yang Membangun Kepercayaan</h4>
+Foto yang buram, terlalu gelap, atau hanya menyalin gambar dari internet tanpa izin adalah alasan utama orang ragu bertransaksi. Gunakanlah foto asli hasil jepretan sendiri di tempat yang cukup terang cahaya matahari, hindari menggunakan lampu kilat yang membuat bayangan keras. Tampilkan barang dari berbagai sisi: depan, samping, belakang, dan jika ada bagian yang istimewa, foto juga bagian tersebut. Jika kamu menjual makanan, pastikan tampilannya terlihat menggugah selera. Jika menjual jasa, tampilkan foto hasil pekerjaan yang sudah pernah kamu buat. Pastikan ukuran foto tidak terlalu besar agar halaman situs cepat terbuka di HP, tapi tetap terlihat jelas detailnya. Di Rewang Iklan, gambar otomatis disimpan dengan ukuran yang pas agar tidak membebani tampilan.
+
+<h4>4. Aturan Beriklan yang Sopan, Aman, dan Tidak Melanggar Ketentuan</h4>
+Rewang Iklan dibangun dengan semangat gotong royong dan saling membantu, jadi kita harus menjaga suasana yang baik bagi semua orang. Hindari penggunaan bahasa kasar, ujaran kebencian, persaingan yang tidak sehat dengan menjatuhkan pedagang lain, atau menjanjikan hal yang tidak mungkin dipenuhi. Dilarang juga beriklan barang atau jasa yang dilarang hukum, barang palsu, obat-obatan tanpa izin resmi, jasa penipuan, atau hal yang melanggar norma kesusilaan. Iklan yang baik adalah iklan yang tidak hanya menguntungkan penjual, tapi juga memberikan manfaat, keamanan, dan kepastian bagi calon pembeli. Iklan yang sopan dan jujur akan selalu lebih dihargai dan lebih cepat mendapatkan pelanggan.
+
+<h4>5. Cara Memperbarui Iklan Agar Tetap Terlihat & Mendapat Lebih Banyak Pembeli</h4>
+Jika dalam beberapa hari iklanmu belum banyak yang menghubungi, jangan langsung putus asa. Coba perbaiki sedikit bagian judul atau foto, lalu kirim ulang dengan deskripsi yang lebih menarik. Periksa juga apakah harga yang kamu tawarkan sudah sesuai dengan kualitas barang dan harga pasar di daerahmu. Jangan lupa untuk selalu membalas pesan calon pembeli dengan cepat, ramah, dan sabar — kesopananmu adalah iklan terbaik untuk usahamu sendiri. Jika kamu sudah menjual barangnya atau tidak lagi menerima pesanan, segera hapus iklan agar tidak menyesatkan orang lain. Dengan menjaga kualitas dan ketepatan informasi, iklanmu akan selalu dihargai oleh pengunjung Rewang Iklan.
+`;
+
+// Pengaturan potongan teks
+const AWAL_KARAKTER = 500;
+const TAMBAHAN_KARAKTER = 500;
+let batasTampil = AWAL_KARAKTER;
+
+// Tampilkan ringkasan saat halaman dibuka
+window.addEventListener('load', () => {
+  perbaruiTampilanPanduan();
+});
+
+function perbaruiTampilanPanduan() {
+  const wadah = document.getElementById("isi-panduan");
+  const tombolBaca = document.getElementById("btn-baca");
+  const tombolSedikit = document.getElementById("btn-sedikit");
+
+  if (batasTampil >= TEKS_PANDUAN.length) {
+    wadah.innerHTML = TEKS_PANDUAN;
+    tombolBaca.style.display = "none";
+    tombolSedikit.style.display = "inline-block";
+  } else {
+    let potongan = TEKS_PANDUAN.substring(0, batasTampil);
+    wadah.innerHTML = potongan + "...";
+    tombolBaca.style.display = "inline-block";
+    tombolSedikit.style.display = "none";
+  }
+}
+
+function tambahPanduan() {
+  batasTampil += TAMBAHAN_KARAKTER;
+  perbaruiTampilanPanduan();
+}
+
+function kecilkanPanduan() {
+  batasTampil = AWAL_KARAKTER;
+  perbaruiTampilanPanduan();
+  document.getElementById("isi-panduan").scrollIntoView({behavior:"smooth", block:"start"});
+}
