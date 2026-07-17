@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasang Iklan Gratis — Rewang Iklan</title>
+    <title id="pageTitle">Pasang Iklan Gratis — Rewang Iklan</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="description" content="Pasang iklan baris gratis tanpa daftar, langsung tayang. Isi form di bawah dan iklanmu akan muncul seketika.">
+    <meta name="description" content="Pasang iklan baris gratis tanpa daftar, langsung tayang. Atau edit iklan yang sudah kamu pasang.">
 </head>
 <body>
 
-<!-- HEADER & NAVIGASI SAMA PERSIS DENGAN HALAMAN LAIN -->
+<!-- HEADER & NAVIGASI -->
 <header class="header">
     <div class="container">
         <div class="logo">
@@ -19,8 +19,9 @@
             <a href="index.html">Beranda</a>
             <a href="index.html#iklan">Daftar Iklan</a>
             <a href="panduan.html">Panduan Beriklan</a>
+            <a href="iklan-saya.html">Kelola Iklan</a>
+            <a href="pasang.html" class="aktif">Pasang Iklan</a>
             <a href="#">Tentang Kami</a>
-            <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
         </nav>
         <div class="menu-toggle" id="mobileMenu">☰</div>
     </div>
@@ -30,12 +31,13 @@
     <div class="container">
         <div class="form-page">
             <div class="form-card">
-                <h2>📝 FORM PASANG IKLAN BARIS GRATIS</h2>
+                <h2 id="formHeading">📝 FORM PASANG IKLAN BARIS GRATIS</h2>
+
                 <form id="adForm">
                     <div class="form-layout">
                         <div class="upload-side">
                             <label class="upload-title"> Foto Produk / Layanan </label>
-                            <input type="file" id="imageInput" accept="image/*" required />
+                            <input type="file" id="imageInput" accept="image/*" />
                             <p class="help">JPG/PNG otomatis diubah ke WebP dan dikompres.</p>
                             <div id="previewBox" class="preview-box">
                                 <img id="previewImage" alt="Pratinjau Gambar" />
@@ -43,6 +45,11 @@
                         </div>
 
                         <div class="data-side">
+                            <div class="form-group" id="secretGroup" style="display:none;">
+                                <label> Kode Kelola Iklan </label>
+                                <input type="text" id="secretCode" placeholder="Masukkan kode kelola untuk konfirmasi" />
+                            </div>
+
                             <div class="form-group">
                                 <label> Judul Iklan </label>
                                 <input type="text" id="title" maxlength="80" required placeholder="Contoh: Jual Churros Enak Surabaya" />
@@ -83,7 +90,12 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn">PASANG IKLAN</button>
+                    <!-- TOMBOL BERUBAH OTOMATIS -->
+                    <button type="submit" id="submitBtn" class="submit-btn">PASANG IKLAN</button>
+                    <div id="editButtons" style="display:flex; gap:10px; margin-top:10px;">
+                        <button type="button" id="saveEditBtn" class="submit-btn" style="flex:1;">SIMPAN PERUBAHAN</button>
+                        <button type="button" id="deleteBtn" class="submit-btn" style="flex:1; background:#dc3545;">HAPUS IKLAN</button>
+                    </div>
                 </form>
 
                 <div id="statusBox" class="status-box"></div>
@@ -105,7 +117,7 @@
 </script>
 </div>
 
-<!-- FOOTER SAMA PERSIS DENGAN HALAMAN LAIN -->
+<!-- FOOTER -->
 <footer class="footer">
     <div class="container">
         <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
@@ -113,43 +125,91 @@
 </footer>
 
 <script>
-// FUNGSI MENU SAMA DENGAN HALAMAN LAIN
+// FUNGSI MENU
 const menuToggle = document.getElementById('mobileMenu');
 const navMenu = document.querySelector('.nav-menu');
-
-menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+document.addEventListener('click', e => {
+    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
 });
 
-document.addEventListener('click', (e) => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-    }
-});
-
-/* =========================
-CONFIG API & PENYIMPANAN LOKAL
-========================= */
+// KONFIGURASI
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 const STORAGE_KEY = "rewang_iklan_history";
+const params = new URLSearchParams(location.search);
+const editId = params.get("id");
+let currentAd = null;
+let imageBase64 = "";
 
-/* =========================
-HITUNG KARAKTER
-========================= */
+// ELEMEN UTAMA
+const pageTitle = document.getElementById("pageTitle");
+const formHeading = document.getElementById("formHeading");
+const secretGroup = document.getElementById("secretGroup");
+const submitBtn = document.getElementById("submitBtn");
+const editButtons = document.getElementById("editButtons");
+const adForm = document.getElementById("adForm");
+const statusBox = document.getElementById("statusBox");
 const desc = document.getElementById("description");
 const count = document.getElementById("charCount");
 
-desc.addEventListener("input", () => {
-    count.textContent = desc.value.length + " / 500";
-});
+// ======================
+// DETEKSI MODE: PASANG ATAU EDIT
+// ======================
+if (editId) {
+    // MODE EDIT: UBAH JUDUL & TAMPILAN
+    pageTitle.textContent = "Edit Iklan — Rewang Iklan";
+    formHeading.textContent = "✏️ EDIT IKLAN SAYA";
+    secretGroup.style.display = "block";
+    submitBtn.style.display = "none";
+    editButtons.style.display = "flex";
+    adForm.querySelector("#imageInput").required = false;
 
-/* =========================
-PREVIEW & KONVERSI GAMBAR
-========================= */
-let imageBase64 = "";
+    // MUAT DATA IKLAN OTOMATIS
+    muatDataIklan(editId);
+} else {
+    // MODE PASANG BARU: TAMPILAN BIASA
+    pageTitle.textContent = "Pasang Iklan Gratis — Rewang Iklan";
+    formHeading.textContent = "📝 FORM PASANG IKLAN BARIS GRATIS";
+    secretGroup.style.display = "none";
+    submitBtn.style.display = "block";
+    editButtons.style.display = "none";
+}
 
+// ======================
+// MUAT DATA IKLAN KE FORM
+// ======================
+async function muatDataIklan(id) {
+    statusBox.innerHTML = "<p>⏳ Memuat data iklan...</p>";
+    try {
+        const res = await fetch(API_URL + "?action=getAd&id=" + encodeURIComponent(id));
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || "Iklan tidak ditemukan");
+
+        currentAd = data.ad;
+        document.getElementById("title").value = currentAd.title;
+        document.getElementById("category").value = currentAd.category;
+        document.getElementById("location").value = currentAd.location;
+        document.getElementById("whatsapp").value = currentAd.whatsapp;
+        document.getElementById("description").value = currentAd.description;
+        count.textContent = currentAd.description.length + " / 500";
+        document.getElementById("previewImage").src = currentAd.image;
+        imageBase64 = currentAd.image;
+
+        statusBox.innerHTML = "<p style='color:green;'>✅ Data iklan dimuat. Masukkan kode kelola untuk mengubah.</p>";
+    } catch (err) {
+        statusBox.innerHTML = `<p style='color:red;'>❌ ${err.message}</p>`;
+    }
+}
+
+// ======================
+// FUNGSI UMUM: HITUNG KARAKTER
+// ======================
+desc.addEventListener("input", () => count.textContent = desc.value.length + " / 500");
+
+// ======================
+// FUNGSI UMUM: PREVIEW & KONVERSI GAMBAR
+// ======================
 document.getElementById("imageInput").addEventListener("change", handleImage);
-
 async function handleImage(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -157,22 +217,17 @@ async function handleImage(e) {
     imageBase64 = webp;
     document.getElementById("previewImage").src = webp;
 }
-
 function convertToWebP(file) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         const reader = new FileReader();
-        reader.onload = function(ev) {
+        reader.onload = ev => {
             const img = new Image();
-            img.onload = function() {
-                const width = 200;
-                const height = 150;
+            img.onload = () => {
                 const canvas = document.createElement("canvas");
-                canvas.width = width;
-                canvas.height = height;
+                canvas.width = 600; canvas.height = 450;
                 const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, width, height);
-                const data = canvas.toDataURL("image/webp", 0.60);
-                resolve(data);
+                ctx.drawImage(img, 0, 0, 600, 450);
+                resolve(canvas.toDataURL("image/webp", 0.75));
             };
             img.src = ev.target.result;
         };
@@ -180,89 +235,17 @@ function convertToWebP(file) {
     });
 }
 
-/* =========================
-1. CEK BATAS MAKSIMAL 3 IKLAN DALAM 24 JAM
-========================= */
-function cekBatasIklan() {
-    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    const sekarang = new Date();
-    const batasWaktu = 24 * 60 * 60 * 1000; // 24 jam
-
-    // Hitung iklan yang dikirim dalam 24 jam terakhir
-    const iklanHariIni = riwayat.filter(tanggal => {
-        return (sekarang - new Date(tanggal)) < batasWaktu;
-    });
-
-    if (iklanHariIni.length >= 3) {
-        alert("⚠️ PERINGATAN: Anda sudah memasang 3 iklan dalam 24 jam terakhir.\nSilakan coba lagi besok ya!");
-        return false;
-    }
-    return true;
-}
-
-/* =========================
-2. CEK KEMIRIPAN DENGAN IKLAN SEBELUMNYA (≥80% = DITOLAK)
-========================= */
-function cekKemiripan() {
-    const judulBaru = document.getElementById("title").value.toLowerCase().trim();
-    const deskripsiBaru = document.getElementById("description").value.toLowerCase().trim();
-    const teksBaru = (judulBaru + " " + deskripsiBaru).replace(/\s+/g, " ");
-
-    // Ambil daftar iklan yang pernah dikirim dari penyimpanan lokal
-    const iklanSebelumnya = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
-
-    for (let lama of iklanSebelumnya) {
-        const persen = hitungPersenMirip(teksBaru, lama);
-        if (persen >= 0.80) { // 80% mirip
-            alert(`⚠️ PERINGATAN: Iklan ini sekitar ${Math.round(persen*100)}% mirip dengan iklan yang sudah Anda pasang sebelumnya.\n\nSilakan ubah judul atau deskripsinya agar berbeda, jangan mengirim iklan yang sama berulang kali ya!`);
-            return false;
-        }
-    }
-    return true;
-}
-
-// Hitung persentase kesamaan kata
-function hitungPersenMirip(a, b) {
-    const kataA = a.split(" ");
-    const kataB = b.split(" ");
-    let sama = 0;
-    kataA.forEach(kata => {
-        if (kataB.includes(kata)) sama++;
-    });
-    return sama / Math.max(kataA.length, kataB.length);
-}
-
-/* =========================
-3. SIMPAN KE RIWAYAT SETELAH BERHASIL
-========================= */
-function simpanKeRiwayat(judul, deskripsi) {
-    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    const teksRiwayat = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
-
-    // Simpan waktu pengiriman
-    riwayat.push(new Date().toISOString());
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(riwayat));
-
-    // Simpan teks iklan untuk cek kemiripan nanti
-    teksRiwayat.push((judul + " " + deskripsi).toLowerCase().trim().replace(/\s+/g, " "));
-    localStorage.setItem(STORAGE_KEY + "_teks", JSON.stringify(teksRiwayat));
-}
-
-/* =========================
-KIRIM FORM KE SERVER (DENGAN PERATURAN)
-========================= */
-document.getElementById("adForm").addEventListener("submit", submitAd);
-
-async function submitAd(e) {
+// ======================
+// MODE PASANG BARU: KIRIM IKLAN
+// ======================
+adForm.addEventListener("submit", async e => {
     e.preventDefault();
-    const status = document.getElementById("statusBox");
+    if (editId) return; // JALANKAN HANYA JIKA MODE PASANG
 
-    // ✅ JALANKAN SEMUA PERATURAN SEBELUM DIKIRIM
     if (!cekBatasIklan()) return;
     if (!cekKemiripan()) return;
 
-    status.innerHTML = "Mengirim iklan ke server...";
-
+    statusBox.innerHTML = "⏳ Mengirim iklan...";
     const payload = {
         title: document.getElementById("title").value,
         category: document.getElementById("category").value,
@@ -274,47 +257,108 @@ async function submitAd(e) {
     };
 
     try {
-        const res = await fetch(API_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        });
-
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
         const result = await res.json();
-
         if (result.success) {
-            alert("✅ IKLAN BERHASIL DIPASANG\n\nID IKLAN:\n" + result.id + "\n\nKODE KELOLA:\n" + result.secret_code + "\n\nSimpan kode ini baik-baik.");
-
-            status.innerHTML = `
-            <div style="padding:15px; background:#e8fff0; border:2px solid #28a745; line-height:1.8;">
-                <b>✅ Iklan berhasil dipasang</b><br><br>
-                <b>ID Iklan:</b><br>${result.id}<br><br>
-                <b>Kode Kelola:</b><br>
-                <span style="font-size:22px; font-weight:bold; color:#d60000; letter-spacing:2px;">${result.secret_code}</span>
-                <br><br>
-                <b>Simpan kode ini baik-baik.</b><br>
-                Kode diperlukan untuk mengedit atau menghapus iklan.<br>
-                Kami tidak dapat menampilkan kembali kode ini.
-            </div>`;
-
-            // ✅ Simpan iklan ke riwayat karena berhasil terkirim
+            alert(`✅ IKLAN BERHASIL DIPASANG!\nID: ${result.id}\nKode Kelola: ${result.secret_code}`);
             simpanKeRiwayat(payload.title, payload.description);
-            imageBase64 = "";
+            adForm.reset(); document.getElementById("previewImage").src = ""; count.textContent = "0 / 500"; imageBase64 = "";
         } else {
-            status.innerHTML = `
-            <div style="padding:15px; background:#fff2f2; border:2px solid #dc3545;">
-                ⚠️ ${result.error}
-            </div>`;
+            alert("❌ " + result.error);
         }
-
-        // Reset form
-        document.getElementById("adForm").reset();
-        document.getElementById("previewImage").src = "";
-        count.textContent = "0 / 500";
-
     } catch (err) {
-        status.innerHTML = "❌ Gagal mengirim iklan. Coba lagi nanti.";
-        console.error(err);
+        alert("❌ Gagal terhubung ke server");
     }
+});
+
+// ======================
+// MODE EDIT: SIMPAN PERUBAHAN
+// ======================
+document.getElementById("saveEditBtn").addEventListener("click", async () => {
+    const secret = document.getElementById("secretCode").value.trim();
+    if (!secret) return alert("⚠️ Masukkan Kode Kelola terlebih dahulu!");
+
+    statusBox.innerHTML = "⏳ Memverifikasi & menyimpan...";
+    const payload = {
+        id: editId,
+        secret_code: secret,
+        title: document.getElementById("title").value,
+        category: document.getElementById("category").value,
+        location: document.getElementById("location").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        description: document.getElementById("description").value,
+        image: imageBase64
+    };
+
+    try {
+        const res = await fetch(API_URL + "?action=updateAd", { method: "POST", body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.success) {
+            alert("✅ Iklan berhasil diperbarui!");
+            window.location.href = "iklan.html?id=" + editId;
+        } else {
+            alert("❌ " + (data.error || "Kode kelola tidak sesuai!"));
+        }
+    } catch (err) {
+        alert("❌ Gagal terhubung ke server");
+    }
+});
+
+// ======================
+// MODE EDIT: HAPUS IKLAN
+// ======================
+document.getElementById("deleteBtn").addEventListener("click", async () => {
+    const secret = document.getElementById("secretCode").value.trim();
+    if (!secret) return alert("⚠️ Masukkan Kode Kelola terlebih dahulu!");
+    if (!confirm("⚠️ Yakin ingin menghapus iklan ini? Tindakan ini tidak bisa dibatalkan!")) return;
+
+    statusBox.innerHTML = "⏳ Memverifikasi & menghapus...";
+    try {
+        const res = await fetch(API_URL + "?action=deleteAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
+        const data = await res.json();
+        if (data.success) {
+            alert("✅ Iklan berhasil dihapus!");
+            window.location.href = "index.html#iklan";
+        } else {
+            alert("❌ " + (data.error || "Kode kelola tidak sesuai!"));
+        }
+    } catch (err) {
+        alert("❌ Gagal terhubung ke server");
+    }
+});
+
+// ======================
+// FUNGSI PEMBATASAN (KHUSUS PASANG BARU)
+// ======================
+function cekBatasIklan() {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const sekarang = new Date();
+    const batas24jam = 24 * 60 * 60 * 1000;
+    const jumlah = riwayat.filter(t => (sekarang - new Date(t)) < batas24jam).length;
+    if (jumlah >= 3) { alert("⚠️ Maksimal 3 iklan dalam 24 jam!"); return false; }
+    return true;
+}
+function cekKemiripan() {
+    const teksBaru = (document.getElementById("title").value + " " + document.getElementById("description").value).toLowerCase().trim();
+    const lama = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+    for (let t of lama) {
+        const persen = hitungPersenMirip(teksBaru, t);
+        if (persen >= 0.8) { alert(`⚠️ Iklan mirip ${Math.round(persen*100)}% dengan yang lama! Ubah dulu ya.`); return false; }
+    }
+    return true;
+}
+function hitungPersenMirip(a, b) {
+    const ka = a.split(" "), kb = b.split(" ");
+    let sama = 0; ka.forEach(k => { if (kb.includes(k)) sama++ });
+    return sama / Math.max(ka.length, kb.length);
+}
+function simpanKeRiwayat(judul, deskripsi) {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const teks = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+    riwayat.push(new Date().toISOString());
+    teks.push((judul + " " + deskripsi).toLowerCase().trim());
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(riwayat));
+    localStorage.setItem(STORAGE_KEY + "_teks", JSON.stringify(teks));
 }
 </script>
 
