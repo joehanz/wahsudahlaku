@@ -76,7 +76,6 @@
                 <input type="text" id="inputWa" required placeholder="Contoh: 6281234567890" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
             </div>
 
-            <!-- DESKRIPSI SUDAH 3000 KARAKTER -->
             <div>
                 <label for="inputDeskripsi" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Iklan *</label>
                 <textarea id="inputDeskripsi" maxlength="3000" required rows="5" placeholder="Jelaskan detail barang atau jasa Anda..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"></textarea>
@@ -108,6 +107,7 @@ lucide.createIcons();
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 let idIklan = null;
+let gambarBase64 = "";
 
 const parameterUrl = new URLSearchParams(window.location.search);
 idIklan = parameterUrl.get('kelola');
@@ -118,6 +118,7 @@ if (idIklan) {
     ambilDataIklan();
 }
 
+// === AMBIL DATA IKLAN UNTUK EDIT ===
 async function ambilDataIklan() {
     tampilkanPesan('info', 'Sedang memuat data iklan...');
     try {
@@ -148,10 +149,55 @@ async function ambilDataIklan() {
     }
 }
 
+// === KIRIM IKLAN BARU ===
+document.getElementById('formIklan').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const judul = document.getElementById('inputJudul').value.trim();
+    const kategori = document.getElementById('inputKategori').value;
+    const lokasi = document.getElementById('inputLokasi').value.trim();
+    const wa = document.getElementById('inputWa').value.trim();
+    const deskripsi = document.getElementById('inputDeskripsi').value.trim();
+
+    if (!judul || !kategori || !lokasi || !wa || !deskripsi) {
+        tampilkanPesan('error', 'Lengkapi semua isian yang bertanda *!');
+        return;
+    }
+
+    tampilkanPesan('info', 'Sedang mengirim iklan...');
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: judul,
+                category: kategori,
+                location: lokasi,
+                whatsapp: wa,
+                description: deskripsi,
+                image: gambarBase64
+            })
+        });
+
+        const hasil = await res.json();
+        if (hasil.success) {
+            tampilkanPesan('sukses', `✅ Iklan berhasil terpasang!\nSimpan Kode Kelola Anda: ${hasil.secret_code}`);
+            setTimeout(() => window.location.href = 'index.html', 6000);
+        } else {
+            tampilkanPesan('error', `❌ ${hasil.error || "Gagal memasang iklan"}`);
+        }
+    } catch (err) {
+        tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
+        console.error(err);
+    }
+});
+
+// === EDIT IKLAN ===
 document.getElementById('btnEdit').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
-        tampilkanPesan('error', 'Harap masukkan Kode Kelola yang Anda dapatkan saat pertama kali memasang iklan!');
+        tampilkanPesan('error', 'Harap masukkan Kode Kelola Anda!');
         return;
     }
     tampilkanPesan('info', 'Sedang menyimpan perubahan...');
@@ -172,20 +218,21 @@ document.getElementById('btnEdit').addEventListener('click', async function() {
             tampilkanPesan('sukses', '✅ Perubahan berhasil disimpan!');
             setTimeout(() => window.location.href = 'index.html', 2500);
         } else {
-            tampilkanPesan('error', '❌ Kode Kelola tidak cocok! Silakan periksa kembali kode Anda.');
+            tampilkanPesan('error', '❌ Kode Kelola tidak cocok!');
         }
     } catch (err) {
         tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
     }
 });
 
+// === HAPUS IKLAN ===
 document.getElementById('btnHapus').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
-        tampilkanPesan('error', 'Harap masukkan Kode Kelola yang Anda dapatkan saat pertama kali memasang iklan!');
+        tampilkanPesan('error', 'Harap masukkan Kode Kelola Anda!');
         return;
     }
-    const yakin = confirm('⚠️ Peringatan: Iklan akan dihapus secara permanen dan tidak bisa dikembalikan. Yakin ingin melanjutkan?');
+    const yakin = confirm('⚠️ Iklan akan dihapus permanen! Yakin lanjut?');
     if (!yakin) return;
     tampilkanPesan('info', 'Sedang menghapus iklan...');
     try {
@@ -199,25 +246,34 @@ document.getElementById('btnHapus').addEventListener('click', async function() {
             tampilkanPesan('sukses', '✅ Iklan berhasil dihapus.');
             setTimeout(() => window.location.href = 'index.html', 2500);
         } else {
-            tampilkanPesan('error', '❌ Kode Kelola tidak cocok! Silakan periksa kembali kode Anda.');
+            tampilkanPesan('error', '❌ Kode Kelola tidak cocok!');
         }
     } catch (err) {
         tampilkanPesan('error', 'Gagal terhubung ke server, coba lagi nanti.');
     }
 });
 
+// === PRATINJAU & UBAH GAMBAR KE BASE64 ===
 const inputFoto = document.getElementById('inputFoto');
 const gambarPratinjau = document.getElementById('gambarPratinjau');
 const teksPratinjau = document.getElementById('teksPratinjau');
+
 inputFoto.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) {
         gambarPratinjau.classList.add('hidden');
         teksPratinjau.classList.remove('hidden');
+        gambarBase64 = "";
+        return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+        tampilkanPesan('error', 'Ukuran gambar maksimal 5MB!');
+        inputFoto.value = "";
         return;
     }
     const pembaca = new FileReader();
     pembaca.onload = function(e) {
+        gambarBase64 = e.target.result;
         gambarPratinjau.src = e.target.result;
         gambarPratinjau.classList.remove('hidden');
         teksPratinjau.classList.add('hidden');
@@ -225,7 +281,7 @@ inputFoto.addEventListener('change', function(e) {
     pembaca.readAsDataURL(file);
 });
 
-// HITUNG KARAKTER SUDAH DIUBAH KE 3000
+// === HITUNG KARAKTER ===
 const inputDeskripsi = document.getElementById('inputDeskripsi');
 const jumlahKarakter = document.getElementById('jumlahKarakter');
 inputDeskripsi.addEventListener('input', function() {
