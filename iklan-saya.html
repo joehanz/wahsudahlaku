@@ -1,58 +1,49 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <script>
-    (function() {
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                        || window.innerWidth < 768;
-        if (isMobile && !window.location.pathname.includes('/mobile.html')) {
-            window.location.href = 'https://rewangiklan.my.id/mobile.html';
-        }
-    })();
-    </script>
 
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-        
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Detail Iklan - Rewang Iklan</title>
-    <meta name="description" content="Lihat detail lengkap iklan, hubungi penjual, dan dapatkan informasi terperinci di Rewang Iklan.">
-    <meta name="robots" content="index,follow">
+    <title>Iklan Saya | Rewang Iklan</title>
+    <meta name="description" content="Pasang iklan baris gratis di Rewang Iklan. Jual beli properti, kendaraan, elektronik, lowongan kerja, jasa, hewan peliharaan, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
+    <meta name="robots" content="noindex,nofollow">
     <meta name="author" content="Rewang Iklan">
-    <meta name="theme-color" content="#2b3a55">
+    <meta name="theme-color" content="#000000">
     <link rel="canonical" href="https://rewangiklan.my.id/iklan-saya.html">
     <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
     <meta name="google-adsense-account" content="ca-pub-6458870303612779">
 
-    <!-- Open Graph / Tampilan Saat Berbagi Link -->
-    <meta property="og:type" content="article">
+<!-- Open Graph -->
+
+    <meta property="og:type" content="website">
     <meta property="og:site_name" content="Rewang Iklan">
     <meta property="og:locale" content="id_ID">
-    <meta property="og:title" content="Detail Iklan - Rewang Iklan">
-    <meta property="og:description" content="Lihat detail lengkap iklan dan hubungi penjual secara langsung.">
-    <meta property="og:url" content="https://rewangiklan.my.id/iklan-saya.html">
-    <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta property="og:image:type" content="image/webp">
+    <meta property="og:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
+    <meta property="og:description" content="Pasang iklan gratis dan temukan properti, kendaraan, elektronik, lowongan kerja, jasa, dan berbagai kebutuhan lainnya di seluruh Indonesia.">
+    <meta property="og:url" content="https://rewangiklan.my.id/">
+    <meta property="og:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:secure_url" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Detail Iklan - Rewang Iklan">
+    <meta property="og:image:alt" content="Rewang Iklan">
 
-    <!-- Twitter / X -->
+<!-- Twitter -->
+
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Detail Iklan - Rewang Iklan">
-    <meta name="twitter:description" content="Informasi lengkap dan kontak penjual iklan.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta name="twitter:image:alt" content="Detail Iklan - Rewang Iklan">
+    <meta name="twitter:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
+    <meta name="twitter:description" content="Pasang iklan gratis dan temukan berbagai produk serta jasa dari seluruh Indonesia.">
+    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta name="twitter:image:alt" content="Rewang Iklan">
 
-    <!-- Ikon / Favicon Situs -->
-    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">  
+<!-- Icon -->
+
+    <link rel="icon" type="image/webp" href="https://rewangiklan.my.id/image/iklanbaris.webp">  
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    
+<!-- Bonus I -->
 
-    <!-- Bonus Meta Aplikasi -->
     <meta name="application-name" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -60,203 +51,569 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     
+<!-- Bonus II -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Schema.org Khusus Halaman Detail Iklan -->
-    <script type="application/ld+json">
-    {
-     "@context":"https://schema.org",
-     "@type":"WebPage",
-     "name":"Detail Iklan - Rewang Iklan",
-     "description":"Halaman detail informasi lengkap iklan di Rewang Iklan.",
-     "url":"https://rewangiklan.my.id/iklan-saya.html",
-     "inLanguage":"id-ID"
-    }
-    </script>
+<!-- Website Schema -->
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"Rewang Iklan",
+ "alternateName":"Iklan Baris Gratis Indonesia",
+ "url":"https://rewangiklan.my.id/",
+ "description":"Pasang iklan baris gratis Indonesia.",
+ "inLanguage":"id-ID",
+ "potentialAction":{
+   "@type":"SearchAction",
+   "target":"https://rewangiklan.my.id/?q={search_term_string}",
+   "query-input":"required name=search_term_string"
+ }
+}
+</script>
+
+<!-- Organization -->
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Organization",
+ "name":"Rewang Iklan",
+ "url":"https://rewangiklan.my.id/",
+ "logo":"https://rewangiklan.my.id/image/iklanbaris3.png"
+}
+</script>
 
     <script type="application/ld+json">
-    {
-     "@context":"https://schema.org",
-     "@type":"Organization",
-     "name":"Rewang Iklan",
-     "url":"https://rewangiklan.my.id/",
-     "logo":"https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp"
-    }
-    </script>
+{
+"@context":"https://schema.org",
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0F172A',
-                        secondary: '#1E293B',
-                        accent: '#2563EB',
-                        light: '#F8FAFC',
-                        muted: '#94A3B8'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    fontSize: {
-                        'base': '1rem',
-                        'sm': '0.9rem',
-                        'lg': '1.1rem',
-                        'xl': '1.35rem',
-                        '2xl': '1.8rem',
-                        '3xl': '2.4rem',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-white text-primary font-sans">
+"@type":"CollectionPage",
 
-    <!-- Header: HANYA LOGO + JUDUL + PANAH KEMBALI KE INDEX -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center gap-2.5">
-                <a href="index.html" class="flex items-center gap-2.5">
-                    <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
-                    <span class="text-2xl font-semibold">Rewang Iklan</span>
-                </a>
-            </div>
-            <!-- Judul Tengah -->
-            <center class="text-2xl font-bold !mb-0">Detail Iklan</center>
-            <!-- Tombol Panah Kembali ke Halaman Asal Grid -->
-            <div class="flex items-center gap-4">
-                <button class="p-2.5 rounded-full hover:bg-gray-50 transition-colors" onclick="window.location.href='index.html'">
-                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
+"name":"Rewang Iklan",
+
+"description":"Daftar iklan baris gratis Indonesia",
+
+"url":"https://rewangiklan.my.id/",
+
+"mainEntity":{
+
+"@type":"ItemList",
+
+"numberOfItems":"1000",
+
+"itemListOrder":"https://schema.org/ItemListOrderDescending"
+
+}
+}
+</script>
+
+</head> 
+  
+  <body>
+    <!-- =========================
+HEADER
+========================= -->
+
+    <header class="top-header">
+      <div class="logo-box">
+        <h1>REWANG IKLAN</h1>
+
+        <p>Iklan Baris Gratis, Tanpa Daftar Langsung Tayang!</p>
+      </div>
+
+      <div class="footer-banner">BANNER IKLAN 468x60</div>
+
+      <a href="index.html" class="post-btn"> LIHAT IKLAN TERPASANG </a>
     </header>
 
-    <!-- KONTEN UTAMA + TOMBOL DI BAWAH DESKRIPSI -->
-    <main class="max-w-3xl mx-auto px-6 py-12">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="w-full h-80 bg-gray-100 bg-cover bg-center" id="detailImg"></div>
-            <div class="p-8">
-                <h2 class="text-2xl font-bold mb-4" id="detailTitle">Sedang memuat...</h2>
-                <p class="text-gray-600 mb-2">Kategori: <span id="detailCat">-</span></p>
-                <p class="text-gray-600 mb-2">📍 <span id="detailLoc">-</span></p>
-                <p class="text-gray-600 mb-6">👁️ Dilihat <span id="detailViews">0</span> kali</p>
-                <div class="text-gray-700 leading-relaxed mb-8 whitespace-pre-line" id="detailDesc">Mengambil data dari server...</div>
-                
-                <!-- DUA TOMBOL DI BAWAH DESKRIPSI: WA DAN KELOLA -->
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 bg-accent hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnWa">💬 Hubungi via WhatsApp</button>
-                    <button class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors" id="btnKelola">⚙️ Edit / Hapus Iklan</button>
-                </div>
+    <!-- =========================
+MENU
+========================= -->
+
+    <nav class="main-menu">
+      <h2 style="color: white;">KELOLA IKLAN SAYA</h2>
+    </nav>
+
+    <!-- =========================
+LAYOUT
+========================= -->
+
+    <main>
+      <div class="form-page">
+        <div class="form-card">
+          <div style="padding:25px;">
+            <div class="form-group">
+              <label> ID Iklan </label>
+
+              <input type="text" id="adId" placeholder="Contoh: IKL000123" />
             </div>
+
+            <div class="form-group">
+              <label> Kode Kelola </label>
+
+              <input
+                type="text"
+                id="secretCode"
+                placeholder="Contoh: Q8M7X2KP"
+              />
+            </div>
+
+            <button id="checkBtn" class="submit-btn">TAMPILKAN IKLAN</button>
+
+            <div
+              id="resultBox"
+              class="status-box"
+              style="margin-top:20px;"
+            ></div>
+          </div>
         </div>
+      </div>
+
+      <script src="iklan-saya.js"></script>
     </main>
 
-    <!-- Footer SAMA PERSIS INDEX.HTML -->
-    <footer class="bg-primary text-white mt-12">
-        <div class="max-w-7xl mx-auto px-6 py-14">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div>
-                    <div class="flex items-center gap-2.5 mb-5">
-                        <i data-lucide="layout-grid" class="w-8 h-8 text-accent"></i>
-                        <span class="text-2xl font-bold">Rewang Iklan</span>
-                    </div>
-                    <p class="text-gray-300 text-base leading-relaxed">Portal iklan baris terpercaya. Tempat mudah menjual, mencari, dan menawarkan barang serta jasa dengan aman dan cepat.</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-xl mb-5">Tautan Cepat</h4>
-                    <ul class="space-y-3 text-gray-300 text-base">
-                        <li><a href="index.html" class="hover:text-accent transition-colors">Beranda</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Cara Pasang Iklan</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Syarat & Ketentuan</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-xl mb-5">Hubungi Kami</h4>
-                    <ul class="space-y-3.5 text-gray-300 text-base">
-                        <li class="flex items-center gap-2.5"><i data-lucide="map-pin" class="w-4 h-4"></i> Surabaya, Jawa Timur</li>
-                        <li class="flex items-center gap-2.5"><i data-lucide="mail" class="w-4 h-4"></i> info@rewangiklan.my.id</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-12 pt-7 text-center text-gray-400 text-base">
-                © 2026 Rewang Iklan. Semua Hak Dilindungi.
-            </div>
+    <!-- =========================
+FOOTER BANNER
+========================= -->
+    <div id="mobileAds"></div>
+
+    <div class="footer-banner"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
+     crossorigin="anonymous"></script>
+<!-- ptdwiprima_jika_AdSense1_1x1_as -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6458870303612779"
+     data-ad-slot="9722825270"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+    <!-- =========================
+FOOTER
+========================= -->
+
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h4>REWANG IKLAN</h4>
+
+          <p>Situs pasang iklan baris tanpa daftar iklan jual beli properti kendaraan elektronik lowongan kerja jasa hewan peliharaan dan berbagai kebutuhan lainnya di seluruh Indonesia langsung tayang tanpa bayar</p>
         </div>
+
+        <div>
+          <h4>LINK</h4>
+
+          <ul>
+            <li>Iklan Update</li>
+
+            <li>Pasang Iklan</li>
+
+            <li>Kelola Iklan</li>
+            
+          </ul>
+        </div>
+
+        <div>
+          <h4>BANTUAN</h4>
+
+          <ul>
+            <li>Cara Pasang</li>
+
+            <li>Tips Aman</li>
+
+            <li>Kebijakan</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>KONTAK</h4>
+
+          <p>info@domain.com</p>
+
+          <p>WhatsApp: 0812-3456-7890</p>
+        </div>
+      </div>
     </footer>
 
+    <script src="script.js"></script>
+
     <script>
-                // === SESUAI 100% DENGAN SKRIP .GS KAMU ===
-        const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
-        let idIklanSekarang = null;
+        const API_URL =
+"https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 
-        async function mulaiMuat() {
-            // 1. Ambil ID dari alamat link
-            const linkParams = new URLSearchParams(window.location.search);
-            idIklanSekarang = linkParams.get('id');
+const btn =
+document.getElementById(
+"checkBtn"
+);
 
-            if (!idIklanSekarang) {
-                document.getElementById('detailDesc').textContent = 'Link tidak lengkap, tidak ada ID iklan.';
-                return;
-            }
+const resultBox =
+document.getElementById(
+"resultBox"
+);
 
-            try {
-                // 2. PANGGIL FUNGSI getDetailById DI SKRIP KAMU (OTOMATIS TAMBAH VIEWS)
-                const respon = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklanSekarang)}`);
-                const hasil = await respon.json();
+btn.addEventListener(
+"click",
+async ()=>{
 
-                if (!hasil.success) {
-                    document.getElementById('detailDesc').textContent = hasil.error || 'Iklan tidak ditemukan.';
-                    return;
-                }
+const adId =
+document
+.getElementById("adId")
+.value
+.trim();
 
-                const dataIklan = hasil.ad;
+const secretCode =
+document
+.getElementById("secretCode")
+.value
+.trim();
 
-                // 3. Tampilkan semua data (views sudah bertambah otomatis)
-                document.getElementById('detailImg').style.backgroundImage = `url('${dataIklan.image || 'https://rewangiklan.my.id/image/no-image.webp'}')`;
-                document.getElementById('detailTitle').textContent = dataIklan.title || 'Tanpa Judul';
-                document.getElementById('detailCat').textContent = dataIklan.category || 'Lainnya';
-                document.getElementById('detailLoc').textContent = dataIklan.location || 'Lokasi tidak diketahui';
-                document.getElementById('detailViews').textContent = dataIklan.views || '0';
-                document.getElementById('detailDesc').textContent = dataIklan.description || 'Tidak ada deskripsi tambahan.';
+if(
+!adId ||
+!secretCode
+){
 
-                // 4. TOMBOL WA DENGAN LINK LENGKAP IKLAN
-                const tombolWA = document.getElementById('btnWa');
-                const linkIklanLengkap = window.location.href;
-                if (dataIklan.whatsapp) {
-                    tombolWA.onclick = () => {
-                        const pesan = encodeURIComponent(
-`Halo, saya tertarik dengan iklan:
-📌 ${dataIklan.title}
-🔗 Link: ${linkIklanLengkap}
+resultBox.innerHTML =
+`
+<div style="
+padding:15px;
+background:#fff3cd;
+border:1px solid #ffc107;
+">
+Masukkan ID Iklan dan Kode Kelola.
+</div>
+`;
 
-Boleh info lebih lanjut?`
-                        );
-                        window.open(`https://wa.me/${dataIklan.whatsapp}?text=${pesan}`, '_blank');
-                    };
-                }
+return;
 
-                // 5. TOMBOL EDIT/HAPUS KE pasang.html
-                const tombolKelola = document.getElementById('btnKelola');
-                tombolKelola.onclick = () => {
-                    window.location.href = `pasang.html?kelola=${encodeURIComponent(idIklanSekarang)}`;
-                };
+}
 
-            } catch (salah) {
-                console.error('Error:', salah);
-                document.getElementById('detailDesc').textContent = 'Gagal terhubung ke server, coba muat ulang.';
-            }
+resultBox.innerHTML =
+"Memeriksa...";
 
-            lucide.createIcons();
-        }
+try{
 
-        document.addEventListener('DOMContentLoaded', mulaiMuat);
+const res =
+await fetch(
+
+API_URL +
+"?action=getAd" +
+"&id=" +
+encodeURIComponent(adId) +
+"&secret_code=" +
+encodeURIComponent(secretCode)
+
+);
+
+const data =
+await res.json();
+
+if(!data.success){
+
+resultBox.innerHTML =
+`
+<div style="
+padding:15px;
+background:#f8d7da;
+border:1px solid #dc3545;
+">
+${data.error}
+</div>
+`;
+
+return;
+
+}
+
+const ad =
+data.ad;
+
+resultBox.innerHTML =
+`
+<div style="
+padding:20px;
+border:1px solid #ddd;
+border-radius:8px;
+">
+
+<img
+src="${ad.image}"
+style="
+width:100%;
+max-width:300px;
+display:block;
+margin-bottom:15px;
+border-radius:8px;
+">
+
+<h3>${ad.title}</h3>
+
+<p>${ad.description}</p>
+
+<p>
+<b>Kategori:</b>
+${ad.category}
+</p>
+
+<p>
+<b>Lokasi:</b>
+${ad.location}
+</p>
+
+<button
+id="editBtn"
+class="submit-btn"
+>
+EDIT IKLAN
+</button>
+
+<button
+id="deleteBtn"
+class="submit-btn"
+style="
+margin-top:10px;
+background:#dc3545;
+"
+>
+HAPUS IKLAN
+</button>
+
+</div>
+`;
+
+const deleteBtn =
+document.getElementById(
+"deleteBtn"
+);
+
+const editBtn =
+document.getElementById(
+"editBtn"
+);
+
+editBtn.addEventListener(
+"click",
+()=>{
+
+resultBox.innerHTML =
+
+`
+<div style="
+padding:20px;
+border:1px solid #ddd;
+border-radius:8px;
+">
+
+<h3>Edit Iklan</h3>
+
+<input
+id="editTitle"
+value="${ad.title}"
+style="
+width:100%;
+padding:10px;
+margin-bottom:10px;
+">
+
+<input
+id="editCategory"
+value="${ad.category}"
+style="
+width:100%;
+padding:10px;
+margin-bottom:10px;
+">
+
+<input
+id="editLocation"
+value="${ad.location}"
+style="
+width:100%;
+padding:10px;
+margin-bottom:10px;
+">
+
+<textarea
+id="editDescription"
+style="
+width:100%;
+height:120px;
+padding:10px;
+margin-bottom:10px;
+"
+>${ad.description}</textarea>
+
+<button
+id="saveEditBtn"
+class="submit-btn"
+>
+SIMPAN PERUBAHAN
+</button>
+
+</div>
+`;
+
+const saveBtn =
+document.getElementById(
+"saveEditBtn"
+);
+
+saveBtn.addEventListener(
+"click",
+async ()=>{
+
+const title =
+document.getElementById(
+"editTitle"
+).value;
+
+const category =
+document.getElementById(
+"editCategory"
+).value;
+
+const location =
+document.getElementById(
+"editLocation"
+).value;
+
+const description =
+document.getElementById(
+"editDescription"
+).value;
+
+const res =
+await fetch(
+
+API_URL +
+"?action=updateAd" +
+"&id=" +
+encodeURIComponent(ad.id) +
+"&secret_code=" +
+encodeURIComponent(secretCode) +
+"&title=" +
+encodeURIComponent(title) +
+"&category=" +
+encodeURIComponent(category) +
+"&location=" +
+encodeURIComponent(location) +
+"&description=" +
+encodeURIComponent(description)
+
+);
+
+const data =
+await res.json();
+
+if(!data.success){
+
+alert(
+data.error ||
+"Gagal menyimpan"
+);
+
+return;
+
+}
+
+alert(
+"Iklan berhasil diperbarui"
+);
+
+});
+
+}
+);
+
+deleteBtn.addEventListener(
+"click",
+async ()=>{
+
+const ok =
+confirm(
+"Yakin ingin menghapus iklan ini?"
+);
+
+if(!ok)
+return;
+
+try{
+
+const res =
+await fetch(
+
+API_URL +
+"?action=deleteAd" +
+"&id=" +
+encodeURIComponent(ad.id) +
+"&secret_code=" +
+encodeURIComponent(secretCode)
+
+);
+
+const data =
+await res.json();
+
+if(!data.success){
+
+alert(
+data.error ||
+"Gagal menghapus iklan"
+);
+
+return;
+
+}
+
+resultBox.innerHTML =
+`
+<div style="
+padding:20px;
+background:#d4edda;
+border:1px solid #28a745;
+border-radius:8px;
+">
+? Iklan berhasil dihapus
+</div>
+`;
+
+}
+catch(err){
+
+alert(
+"Gagal terhubung ke server"
+);
+
+}
+
+}
+);
+
+}
+catch(err){
+
+resultBox.innerHTML =
+`
+<div style="
+padding:15px;
+background:#f8d7da;
+border:1px solid #dc3545;
+">
+Gagal terhubung ke server.
+</div>
+`;
+
+}
+
+}
+);
+
     </script>
-</body>
+      
+  </body>
 </html>
