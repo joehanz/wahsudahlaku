@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewang Iklan - Pasang Iklan Gratis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --utama: #2563eb;
+            --gelap: #1e293b;
+            --terang: #f8fafc;
+            --abu: #94a3b8;
+            --sukses: #10b981;
+            --peringatan: #f59e0b;
+            --error: #ef4444;
+            --bayangan: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--gelap);
+            line-height: 1.6;
+        }
+
+        /* Navigasi */
+        nav {
+            background: white;
+            box-shadow: var(--bayangan);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--utama);
+            text-decoration: none;
+        }
+
+        .nav-tombol {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Tombol Umum */
+        .tombol {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .tombol-utama {
+            background: var(--utama);
+            color: white;
+        }
+
+        .tombol-utama:hover {
+            background: #1d4ed8;
+        }
+
+        .tombol-kedua {
+            background: white;
+            border: 1px solid var(--utama);
+            color: var(--utama);
+        }
+
+        .tombol-kedua:hover {
+            background: #eff6ff;
+        }
+
+        .tombol-hapus {
+            background: var(--error);
+            color: white;
+        }
+
+        .tombol-hapus:hover {
+            background: #dc2626;
+        }
+
+        /* Kontainer Utama */
+        .kontainer {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Halaman Beranda */
+        .halaman {
+            display: none;
+        }
+
+        .halaman.aktif {
+            display: block;
+        }
+
+        .judul-halaman {
+            margin-bottom: 1.5rem;
+            color: var(--gelap);
+            font-size: 1.75rem;
+        }
+
+        /* Grid Iklan */
+        .grid-iklan {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .kartu-iklan {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--bayangan);
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .kartu-iklan:hover {
+            transform: translateY(-5px);
+        }
+
+        .gambar-iklan {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        .isi-kartu {
+            padding: 1.25rem;
+        }
+
+        .judul-iklan {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--gelap);
+        }
+
+        .kategori {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #dbeafe;
+            color: var(--utama);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .lokasi {
+            color: var(--abu);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--abu);
+            padding-top: 0.75rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Halaman Detail */
+        .detail-konten {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--bayangan);
+            overflow: hidden;
+        }
+
+        .detail-gambar {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            background: #f8fafc;
+        }
+
+        .detail-isi {
+            padding: 2rem;
+        }
+
+        .detail-judul {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-deskripsi {
+            margin: 1.5rem 0;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .info-kontak {
+            background: #f0fdf4;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-kontak h4 {
+            margin-bottom: 0.5rem;
+            color: var(--sukses);
+        }
+
+        .tombol-wa {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25d366;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .tombol-wa:hover {
+            background: #128c7e;
+        }
+
+        /* Formulir */
+        .form-kotak {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--bayangan);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .grup-form {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gelap);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--utama);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .pratinjau-gambar {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+        }
+
+        /* Pesan */
+        .pesan {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .pesan.sukses {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .pesan.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .grid-iklan {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-isi {
+                padding: 1.25rem;
+            }
+
+            .detail-judul {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="tampilkanHalaman('beranda')">Rewang Iklan</a>
+            <div class="nav-tombol">
+                <button class="tombol tombol-utama" onclick="tampilkanHalaman('pasang')">Pasang Iklan Baru</button>
+                <button class="tombol tombol-kedua" onclick="tampilkanHalaman('saya')">Iklan Saya</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="kontainer">
+        <!-- Halaman Beranda (Daftar Iklan) -->
+        <div id="halaman-beranda" class="halaman aktif">
+            <h2 class="judul-halaman">Iklan Terbaru</h2>
+            <div id="daftar-iklan" class="grid-iklan">
+                <!-- Data iklan akan dimuat di sini -->
+                <p style="grid-column: 1/-1; text-align: center; color: var(--abu);">Memuat data iklan...</p>
+            </div>
+        </div>
+
+        <!-- Halaman Detail Iklan -->
+        <div id="halaman-detail" class="halaman">
+            <div id="isi-detail"></div>
+        </div>
+
+        <!-- Halaman Pasang Iklan -->
+        <div id="halaman-pasang" class="halaman">
+            <div class="form-kotak">
+                <h2 class="judul-halaman">Pasang Iklan Baru</h2>
+                <div id="pesan-form" class="pesan"></div>
+
+                <form id="form-iklan">
+                    <div class="grup-form">
+                        <label>Judul Iklan *</label>
+                        <input type="text" name="title" required placeholder="Contoh: Jual Sepeda MTB Bekas">
+                    </div>
+
+                    <div class="grup-form">
+                        <label>Kategori *</label>
+                        <select name="category" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="Jual Beli">Jual Beli</option>
+                            <option value="Jasa">Jasa</option>
+                            <option value="Lowongan Kerja">Lowongan Kerja</option>
+                            <option value="Sewa">Sewa</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="grup-form">
+                        <label>Lokasi *</label>
+                        <input type="text" name="location" required placeholder="Contoh: Surabaya, Jawa Timur">
+                    </div>
+
+                    <div class="grup-form">
+                        <label>Nomor WhatsApp *</label>
+                        <input type="tel" name="whatsapp" required placeholder="08123456789">
+                    </div>
+
+                    <div class="grup-form">
+                        <label>Deskripsi Lengkap *</label>
+                        <textarea name="description" required placeholder="Jelaskan detail barang atau jasa yang ditawarkan..."></textarea>
+                    </div>
+
+                    <div class="grup-form">
+                        <label>Gambar Iklan</label>
+                        <input type="file" id="gambar-input" accept="image/*">
+                        <img id="pratinjau-gambar" class="pratinjau-gambar" alt="Pratinjau">
+                    </div>
+
+                    <button type="submit" class="tombol tombol-utama" style="width: 100%; font-size: 1.1rem;">Kirim Iklan</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Halaman Iklan Saya -->
+        <div id="halaman-saya" class="halaman">
+            <div class="form-kotak">
+                <h2 class="judul-halaman">Kelola Iklan Saya</h2>
+                <p>Masukkan ID Iklan dan Kode Kelola untuk melihat, mengedit, atau menghapus iklan.</p>
+                <br>
+                <div class="grup-form">
+                    <label>ID Iklan</label>
+                    <input type="text" id="cari-id" placeholder="Contoh: IKL000001">
+                </div>
+                <div class="grup-form">
+                    <label>Kode Kelola</label>
+                    <input type="text" id="cari-secret" placeholder="Kode 8 karakter">
+                </div>
+                <button class="tombol tombol-utama" onclick="cariIklanSaya()">Cari Iklan</button>
+                <div id="hasil-kelola" style="margin-top: 1.5rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== KONFIGURASI =====
+        // Ganti dengan alamat Web App milikmu nanti
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz.../exec";
+        const GAMBAR_DEFAULT = "https://rewangiklan.my.id/image/no-image.webp";
+
+        // ===== NAVIGASI HALAMAN =====
+        function tampilkanHalaman(nama) {
+            document.querySelectorAll('.halaman').forEach(h => h.classList.remove('aktif'));
+            document.getElementById(`halaman-${nama}`).classList.add('aktif');
+            
+            if (nama === 'beranda') muatDaftarIklan();
+            if (nama === 'saya') document.getElementById('hasil-kelola').innerHTML = '';
+        }
+
+        // ===== MUAT DAFTAR IKLAN =====
+        async function muatDaftarIklan() {
+            const daftar = document.getElementById('daftar-iklan');
+            try {
+                const res = await fetch(WEB_APP_URL);
+                const data = await res.json();
+
+                if (data.length === 0) {
+                    daftar.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Belum ada iklan yang dipasang.</p>';
+                    return;
+                }
+
+                daftar.innerHTML = data.map(iklan => `
+                    <div class="kartu-iklan" onclick="bukaDetail('${iklan.id}')">
+                        <img src="${iklan.image || GAMBAR_DEFAULT}" alt="${iklan.title}" class="gambar-iklan" loading="lazy">
+                        <div class="isi-kartu">
+                            <span class="kategori">${iklan.category}</span>
+                            <h3 class="judul-iklan">${iklan.title}</h3>
+                            <p class="lokasi">📍 ${iklan.location}</p>
+                            <div class="meta">
+                                <span>👁️ ${iklan.views || 0} dilihat</span>
+                                <span>${new Date(iklan.date).toLocaleDateString('id-ID')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                daftar.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--error);">Gagal memuat data: ${err.message}</p>`;
+            }
+        }
+
+        // ===== BUKA DETAIL IKLAN =====
+        async function bukaDetail(id) {
+            tampilkanHalaman('detail');
+            const konten = document.getElementById('isi-detail');
+            konten.innerHTML = '<p style="text-align:center;">Memuat detail iklan...</p>';
+
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=detail&id=${id}`);
+                const hasil = await res.json();
+
+                if (!hasil.success) throw new Error(hasil.error);
+                const i = hasil.ad;
+
+                konten.innerHTML = `
+                    <div class="detail-konten">
+                        <img src="${i.image || GAMBAR_DEFAULT}" alt="${i.title}" class="detail-gambar">
+                        <div class="detail-isi">
+                            <h1 class="detail-judul">${i.title}</h1>
+                            <span class="kategori">${i.category}</span>
+                            <p class="lokasi">📍 ${i.location}</p>
+                            <p style="color:var(--abu);">👁️ ${i.views} kali dilihat • Dipasang ${new Date(i.date).toLocaleDateString('id-ID')}</p>
+                            
+                            <div class="detail-deskripsi">${i.description.replace(/\n/g, '<br>')}</div>
+
+                            <div class="info-kontak">
+                                <h4>Ingin menghubungi pemasang iklan?</h4>
+                                <p>Klik tombol di bawah untuk langsung menghubungi lewat WhatsApp:</p>
+                                <a href="https://wa.me/${i.whatsapp}" target="_blank" class="tombol-wa">💬 Hubungi via WhatsApp</a>
+                            </div>
+
+                            <button class="tombol tombol-kedua" onclick="tampilkanHalaman('beranda')" style="margin-top: 1rem;">← Kembali ke Daftar Iklan</button>
+                        </div>
+                    </div>
+                `;
+
+            } catch (err) {
+                konten.innerHTML = `<div class="form-kotak"><p style="color:var(--error);">${err.message}</p></div>`;
+            }
+        }
+
+        // ===== PRATINJAU GAMBAR =====
+        const gambarInput = document.getElementById('gambar-input');
+        const pratinjau = document.getElementById('pratinjau-gambar');
+        let gambarBase64 = "";
+
+        gambarInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = ev => {
+                pratinjau.src = ev.target.result;
+                pratinjau.style.display = 'block';
+                gambarBase64 = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ===== KIRIM FORM IKLAN =====
+        document.getElementById('form-iklan').addEventListener('submit', async e => {
+            e.preventDefault();
+            const pesan = document.getElementById('pesan-form');
+            pesan.style.display = 'none';
+
+            try {
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+                data.image = gambarBase64;
+
+                const res = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const hasil = await res.json();
+
+                if (!hasil.success) throw new Error(hasil.error);
+
+                pesan.className = 'pesan sukses';
+                pesan.innerHTML = `✅ Iklan berhasil dipasang!<br><strong>ID Iklan:</strong> ${hasil.id}<br><strong>Kode Kelola:</strong> ${hasil.secret_code}<br><br>Simpan ID dan Kode Kelola ini untuk mengedit atau menghapus iklan nanti.`;
+                pesan.style.display = 'block';
+                e.target.reset();
+                pratinjau.style.display = 'none';
+                gambarBase64 = "";
+
+            } catch (err) {
+                pesan.className = 'pesan error';
+                pesan.textContent = `❌ ${err.message}`;
+                pesan.style.display = 'block';
+            }
+        });
+
+        // ===== CARI IKLAN SAYA =====
+        async function cariIklanSaya() {
+            const id = document.getElementById('cari-id').value.trim();
+            const secret = document.getElementById('cari-secret').value.trim();
+            const hasil = document.getElementById('hasil-kelola');
+
+            if (!id || !secret) {
+                hasil.innerHTML = '<p style="color:var(--error);">Isi ID dan Kode Kelola terlebih dahulu</p>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=getAd&id=${id}&secret_code=${secret}`);
+                const data = await res.json();
+
+                if (!data.success) throw new Error(data.error);
+                const i = data.ad;
+
+                hasil.innerHTML = `
+                    <hr style="margin:1rem 0;">
+                    <h4>${i.title}</h4>
+                    <p>Status: <strong>${i.status}</strong> | ${i.views} dilihat</p>
+                    <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+                        <button class="tombol tombol-utama" onclick="bukaDetail('${i.id}')">Lihat Iklan</button>
+                        <button class="tombol tombol-hapus" onclick="hapusIklan('${i.id}','${secret}')">Hapus Iklan</button>
+                    </div>
+                `;
+
+            } catch (err) {
+                hasil.innerHTML = `<p style="color:var(--error);">${err.message}</p>`;
+            }
+        }
+
+        // ===== HAPUS IKLAN =====
+        async function hapusIklan(id, secret) {
+            if (!confirm('Yakin ingin menghapus iklan ini? Tindakan ini tidak bisa dibatalkan.')) return;
+            try {
+                await fetch(`${WEB_APP_URL}?action=deleteAd&id=${id}&secret_code=${secret}`);
+                alert('✅ Iklan telah ditandai dihapus');
+                tampilkanHalaman('beranda');
+            } catch (err) {
+                alert(`❌ Gagal hapus: ${err.message}`);
+            }
+        }
+
+        // ===== MULAI =====
+        document.addEventListener('DOMContentLoaded', muatDaftarIklan);
+    </script>
+</body>
+</html>
