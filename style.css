@@ -104,59 +104,71 @@ white-space:nowrap;
 /* =========================
 MENU
 ========================= */
-/* Styling dasar untuk pembungkus menu */
+/* =========================
+MENU (DENGAN DROPDOWN)
+========================= */
+
 .main-menu {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  padding: 10px;
-  background-color: #222; /* Sesuaikan warna latar menu Anda */
+  justify-content: center;
+  background: #000;
+  /* overflow: auto; HAPUS/KOMENTARI INI agar dropdown ke bawah tidak terpotong */
+  flex-wrap: wrap; /* Membuat menu turun rapi jika layar handphone terlalu kecil */
 }
 
-/* Container untuk item yang punya dropdown */
+/* Container untuk item yang mempunyai dropdown */
 .nav-item-dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Tombol utama kategori */
-.dropdown-toggle {
-  color: white;
+/* Mengambil gaya tombol utama dari a lama Anda */
+.main-menu a.dropdown-toggle {
+  color: #fff;
+  padding: 14px 22px;
+  white-space: nowrap;
+  font-size: 14px;
   text-decoration: none;
-  font-size: 16px;
-  padding: 8px 12px;
   display: block;
   cursor: pointer;
 }
 
-/* Kotak isi sub-kategori (tersembunyi secara default) */
+.main-menu a.dropdown-toggle:hover,
+.nav-item-dropdown.show .dropdown-toggle {
+  background: #222; /* Efek hover hitam abu-abu khas web Anda */
+}
+
+/* Kotak isi sub-kategori yang muncul saat diklik */
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #ffffff;
+  background-color: #111; /* Hitam sedikit terang agar kontras */
   min-width: 200px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  z-index: 1000;
-  border-radius: 4px;
-  margin-top: 5px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+  z-index: 9999; /* Memastikan sub-menu berada di lapisan paling atas */
+  border: 1px solid #333;
+  border-top: none;
+  left: 0;
 }
 
-/* Link di dalam sub-kategori */
+/* Gaya link di dalam sub-kategori dropdown */
 .dropdown-menu a {
-  color: #333 !important;
-  padding: 10px 15px;
+  color: #ccc !important;
+  padding: 12px 16px;
   text-decoration: none;
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   text-align: left;
+  white-space: nowrap;
 }
 
-/* Efek hover di dalam sub-kategori */
+/* Efek hover untuk list di dalam sub-kategori */
 .dropdown-menu a:hover {
-  background-color: #f1f1f1;
+  background-color: #333 !important;
+  color: #fff !important;
 }
 
-/* Class pembantu untuk memunculkan dropdown lewat JavaScript */
+/* Trigger class yang ditambahkan oleh JavaScript */
 .nav-item-dropdown.show .dropdown-menu {
   display: block;
 }
