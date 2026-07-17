@@ -349,8 +349,17 @@ ad.category;
 document.getElementById("adLocation").textContent =
 ad.location;
 
-document.getElementById("adDescription").textContent =
-ad.description;
+// GANTI DENGAN KODE INI:
+const rawDescription = ad.description || "";
+// Regex untuk mendeteksi url link otomatis
+const urlRegex = /(https?:\/\/[^\s]+)/g; 
+const formattedDescription = rawDescription.replace(urlRegex, function(url) {
+  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+});
+
+const descEl = document.getElementById("adDescription");
+descEl.innerHTML = formattedDescription; // Menggunakan innerHTML agar tag <a> aktif
+descEl.style.whiteSpace = "pre-wrap";    // Tetap mempertahankan spasi & enter dari spreadsheet
 
 document.getElementById("adViews").textContent =
 ad.views;
