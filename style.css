@@ -104,23 +104,61 @@ white-space:nowrap;
 /* =========================
 MENU
 ========================= */
-
-.main-menu{
-display:flex;
-justify-content:center;
-background:#000;
-overflow:auto;
+/* Styling dasar untuk pembungkus menu */
+.main-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 10px;
+  background-color: #222; /* Sesuaikan warna latar menu Anda */
 }
 
-.main-menu a{
-color:#fff;
-padding:14px 22px;
-white-space:nowrap;
-font-size:14px;
+/* Container untuk item yang punya dropdown */
+.nav-item-dropdown {
+  position: relative;
+  display: inline-block;
 }
 
-.main-menu a:hover{
-background:#222;
+/* Tombol utama kategori */
+.dropdown-toggle {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  display: block;
+  cursor: pointer;
+}
+
+/* Kotak isi sub-kategori (tersembunyi secara default) */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1000;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+/* Link di dalam sub-kategori */
+.dropdown-menu a {
+  color: #333 !important;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* Efek hover di dalam sub-kategori */
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Class pembantu untuk memunculkan dropdown lewat JavaScript */
+.nav-item-dropdown.show .dropdown-menu {
+  display: block;
 }
 
 /* =========================
