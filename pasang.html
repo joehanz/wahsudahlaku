@@ -105,7 +105,7 @@
 <script>
 lucide.createIcons();
 
-// === SUDAH SESUAI PENUH DENGAN .GS KAMU ===
+// === URL API SUDAH SESUAI MILIK KAMU ===
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 let idIklan = null;
 let gambarBase64 = "";
@@ -150,7 +150,7 @@ async function ambilDataIklan() {
     }
 }
 
-// === KIRIM IKLAN BARU - FORMAT SESUAI .GS KAMU ===
+// === KIRIM IKLAN BARU - 100% COCOK DENGAN .GS KAMU ===
 document.getElementById('formIklan').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -163,7 +163,6 @@ document.getElementById('formIklan').addEventListener('submit', async function(e
     tampilkanPesan('info', 'Sedang mengirim iklan...');
 
     try {
-        // Format persis seperti yang diterima doPost di .gs kamu
         const res = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -190,7 +189,7 @@ document.getElementById('formIklan').addEventListener('submit', async function(e
     }
 });
 
-// === EDIT - PAKAI FORMAT URLSearchParams SESUAI .GS ===
+// === EDIT IKLAN ===
 document.getElementById('btnEdit').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
@@ -222,14 +221,14 @@ document.getElementById('btnEdit').addEventListener('click', async function() {
     }
 });
 
-// === HAPUS - SESUAI .GS ===
+// === HAPUS IKLAN ===
 document.getElementById('btnHapus').addEventListener('click', async function() {
     const kodeKelola = document.getElementById('inputKode').value.trim();
     if (!kodeKelola) {
         tampilkanPesan('error', 'Masukkan Kode Kelola Anda!');
         return;
     }
-    if (!confirm('⚠️ Hapus permanen?')) return;
+    if (!confirm('⚠️ Hapus permanen? Tidak bisa dikembalikan!')) return;
     tampilkanPesan('info', 'Sedang menghapus...');
     try {
         const dataKirim = new URLSearchParams();
@@ -249,7 +248,7 @@ document.getElementById('btnHapus').addEventListener('click', async function() {
     }
 });
 
-// === UBAH GAMBAR KE BASE64 SEPERTI DIHARAPKAN .GS ===
+// === PROSES GAMBAR KE BASE64 ===
 const inputFoto = document.getElementById('inputFoto');
 const gambarPratinjau = document.getElementById('gambarPratinjau');
 const teksPratinjau = document.getElementById('teksPratinjau');
