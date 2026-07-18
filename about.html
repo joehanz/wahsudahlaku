@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Beriklan — Rewang Iklan</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan.">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+    <h2 style="display:flex; align-items:center; gap:8px; margin:0; font-size:22px; font-weight:700;">
+        <img src="/image/icon%20tembus%20rewang%20iklan.gif" 
+             alt="Logo Rewang Iklan" 
+             style="width:30px; height:30px; object-fit:contain; display:block; flex-shrink:0;">
+        REWANG IKLAN
+    </h2>
+</div>
+        <nav class="nav-menu">
+            <a href="index.html" class="aktif">Beranda</a>
+            <a href="about.html">Tentang Kami</a>
+            <a href="blog.html">Blog</a>
+            <a href="privacy.html">Kebijakan Privasi</a>
+            <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
+        </nav>
+        <div class="menu-toggle" id="mobileMenu">☰</div>
+    </div>
+</header>
+
+<section class="content-wrapper">
+    <div class="container">
+        <div class="col-panduan" style="max-width:900px; margin:0 auto;">
+            <h3 style="font-size:24px; color:#222; margin-bottom:15px;">Tentang Kami</h3>
+            <p class="intro-panduan" style="line-height:1.8; color:#444; margin-bottom:15px;">
+                <strong>Rewang Iklan</strong> adalah situs layanan <strong>pasang iklan baris gratis</strong> yang hadir khusus untuk masyarakat Indonesia sebagai wadah berbagi dan saling membantu. Kami hadir untuk memudahkan Anda menjual barang, menawarkan jasa, mencari kebutuhan, atau mempromosikan usaha dengan cara yang paling sederhana, tanpa biaya sepeser pun, tanpa perlu mendaftar akun, dan tanpa verifikasi yang rumit.
+            </p>
+            <p style="line-height:1.8; color:#444; margin-bottom:15px;">
+                Nama "Rewang" diambil dari nilai budaya gotong royong: saling bantu memenuhi kebutuhan satu sama lain. Kami percaya bahwa setiap orang berhak mendapatkan tempat untuk memajang iklan secara adil, tanpa harus terhalang biaya atau syarat yang menyulitkan. Berbeda dengan platform lain yang sering kali membebankan biaya tersembunyi atau mengharuskan proses pendaftaran yang panjang, Rewang Iklan memberikan kemudahan penuh: cukup isi data iklan, lalu langsung tayang untuk dilihat ribuan pengunjung.
+            </p>
+            <p style="line-height:1.8; color:#444; margin-bottom:15px;">
+                Kami melayani semua jenis kategori iklan, mulai dari kendaraan seperti mobil dan motor bekas, properti rumah dan tanah, barang elektronik serta gadget, lowongan pekerjaan dan peluang usaha, berbagai jenis jasa, perlengkapan rumah tangga, hewan peliharaan, hingga kebutuhan sehari-hari lainnya. Seluruh iklan yang masuk akan kami pantau dan periksa kebenarannya secara berkala, demi menjaga keamanan dan kenyamanan Anda saat bertransaksi.
+            </p>
+            <p style="line-height:1.8; color:#444; margin-bottom:15px;">
+                Misi utama kami adalah membuka akses beriklan bagi semua kalangan, baik pedagang besar, pelaku usaha kecil menengah, maupun perorangan yang ingin menjual barang pribadi. Kami berkomitmen membangun ekosistem jual beli lokal yang jujur, aman, dan terpercaya di seluruh wilayah Indonesia, dari Sabang sampai Merauke.
+            </p>
+            <p style="line-height:1.8; color:#444;">
+                Ke depannya, kami akan terus mengembangkan fitur dan layanan Rewang Iklan agar semakin mudah digunakan, menjangkau lebih banyak orang, dan benar-benar menjadi teman setia yang membantu memenuhi segala kebutuhan Anda.
+            </p>
+        </div>
+    </div>
+</section>
+    <div class="container" style="max-width:1100px; margin:20px auto;">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
+    </div>
+</footer>
+
+<script>
+// Ambil data panduan dari file JSON
+fetch('panduan.json')
+.then(res => res.json())
+.then(data => {
+    const wadah = document.getElementById('daftar-panduan');
+    wadah.innerHTML = data.map(bagian => `
+        <div class="isi-panduan">
+            <h4>${bagian.judul}</h4>
+            <p>${bagian.isi}</p>
+        </div>
+    `).join('');
+})
+.catch(err => {
+    document.getElementById('daftar-panduan').innerHTML = `<p style="color:red;">Gagal memuat panduan.</p>`;
+    console.error(err);
+});
+
+// Fungsi menu
+const menuToggle = document.getElementById('mobileMenu');
+const navMenu = document.querySelector('.nav-menu');
+menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+document.addEventListener('click', e => {
+    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
+});
+</script>
+
+</body>
+</html>
