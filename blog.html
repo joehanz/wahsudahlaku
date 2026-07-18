@@ -123,7 +123,7 @@ function tampilkanDaftarBlog() {
     }).join('');
 }
 
-// BUKA ARTIKEL DI MODAL & UBAH URL DENGAN AMAN
+// BUKA ARTIKEL & UBAH URL DENGAN BENAR
 function bukaArtikel(slug) {
     const artikel = dataBlog.find(a => a.slug === slug);
     if (!artikel) return;
@@ -134,13 +134,12 @@ function bukaArtikel(slug) {
     modalBlog.style.display = 'block';
     document.body.style.overflow = 'hidden';
 
-    // ✅ PERBAIKAN: Tambah slug di akhir jalur yang ada, tidak menimpa link lain
-    const jalurDasar = window.location.pathname;
-    const urlBaru = jalurDasar.endsWith('/') ? jalurDasar + slug : jalurDasar + '/' + slug;
+    // ✅ Tambah slug di akhir URL dengan benar
+    const urlBaru = `blog.html/${slug}`;
     history.pushState({slug: slug}, '', urlBaru);
 }
 
-// TUTUP MODAL & KEMBALIKAN URL KE SEMULA
+// TUTUP MODAL & KEMBALIKAN URL BERSIH (TIDAK NUMPUK)
 tutupModal.addEventListener('click', tutupArtikel);
 modalBlog.addEventListener('click', e => {
     if (e.target === modalBlog) tutupArtikel();
@@ -149,7 +148,7 @@ modalBlog.addEventListener('click', e => {
 function tutupArtikel() {
     modalBlog.style.display = 'none';
     document.body.style.overflow = 'auto';
-    // ✅ Kembalikan ke jalur dasar blog.html saja
+    // ✅ Kembali ke URL dasar yang BENAR: blog.html saja, tidak ada tambahan
     history.pushState({}, '', 'blog.html');
 }
 
