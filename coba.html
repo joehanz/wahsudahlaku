@@ -1,352 +1,257 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id-ID">
 <head>
+    <script>
+    (function(){const e=!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&window.innerWidth>=768;e&&!window.location.pathname.endsWith("/index.html")&&window.location.pathname!=="/"&&(window.location.href="https://rewangiklan.my.id/index.html")})();
+    window.addEventListener("resize",()=>{const e=window.innerWidth>=768;e&&!window.location.pathname.endsWith("/index.html")&&window.location.pathname!=="/"&&(window.location.href="https://rewangiklan.my.id/index.html")});
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Iklan | Rewang Iklan</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="description" content="Lihat detail lengkap iklan di Rewang Iklan — tempat pasang iklan baris gratis tanpa daftar.">
-    <style>
-        /* GAYA KHUSUS FLYER SEPERTI GAMBAR */
-        .flyer-wrapper {
-            max-width: 420px;
-            margin: 30px auto;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            background: #111;
-            color: #fff;
-            font-family: Arial, Helvetica, sans-serif;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .flyer-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9));
-            z-index: 1;
-        }
-
-        .flyer-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(2px) brightness(0.6);
-            z-index: 0;
-        }
-
-        .flyer-content {
-            position: relative;
-            z-index: 2;
-            padding: 30px 25px;
-            text-align: center;
-        }
-
-        .flyer-logo {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 20px;
-            border: 2px solid #fff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .flyer-badge {
-            display: inline-block;
-            background: #e63946;
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .flyer-title {
-            font-size: 32px;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .flyer-meta-top {
-            font-size: 15px;
-            color: #ddd;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .flyer-tags {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            background: rgba(255,255,255,0.2);
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .flyer-desc {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #eee;
-            text-align: justify;
-            margin-bottom: 30px;
-            white-space: pre-wrap;
-        }
-
-        .flyer-btn-main {
-            display: block;
-            width: 100%;
-            background: #e63946;
-            color: #fff;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .flyer-btn-secondary {
-            background: transparent;
-            color: #ccc;
-            border: none;
-            font-size: 15px;
-            margin-bottom: 25px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .flyer-footer {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .share-buttons img {
-            width: 32px;
-            height: 32px;
-        }
-
-        #loadingBox, #errorBox {
-            text-align: center;
-            padding: 60px 20px;
-            color: #fff;
-            background: #111;
-            border-radius: 12px;
-            max-width: 420px;
-            margin: 30px auto;
-        }
-    </style>
+    <title>Rewang Iklan - Mobile</title>
+    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff}
+.feed-container{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;padding-bottom:70px;-ms-overflow-style:none;scrollbar-width:none}
+.feed-container::-webkit-scrollbar{display:none}
+.ad-card{width:100%;height:100vh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column}
+.ad-image{width:100%;height:25%;min-height:320px;object-fit:cover}
+.ad-title{position:absolute;top:38%;left:50%;transform:translateX(-50%);font-size:2.2rem;width:92%;text-align:center;text-shadow:0 2px 8px #000}
+.side-actions{position:absolute;right:16px;top:52%;display:flex;flex-direction:column;gap:32px}
+.side-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.side-btn i{width:26px;height:26px;color:#fff;filter:drop-shadow(0 2px 4px #000)}
+.side-btn span{font-size:10px;color:#fff}
+.detail-overlay,.ad-form-overlay{position:fixed;top:0;right:0;width:100%;height:100%;background:#111827;transform:translateX(100%);transition:.3s;z-index:100;overflow-y:auto;padding:20px;padding-bottom:90px}
+.detail-overlay.show,.ad-form-overlay.show{transform:translateX(0)}
+.detail-close,.form-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:#1F2937;border:none;border-radius:50%;color:#fff;cursor:pointer}
+.detail-main-img{width:100%;height:240px;background-size:cover;background-position:center;margin-top:50px}
+.detail-content{padding:16px}
+.btn-wa,.btn-manage,.btn-kirim,.btn-edit,.btn-hapus{width:100%;padding:14px;border:none;border-radius:10px;font-weight:600;margin:8px 0;cursor:pointer}
+.btn-wa{background:#25D366;color:#fff}
+.btn-manage,.btn-kirim{background:#2563EB;color:#fff}
+.btn-edit{background:#10B981;color:#fff;display:none}
+.btn-hapus{background:#EF4444;color:#fff;display:none}
+.form-group{margin-bottom:14px;display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:14px;color:#CBD5E1}
+.form-group input,.form-group select,.form-group textarea{padding:12px;background:#1F2937;border:1px solid #374151;border-radius:8px;color:#fff}
+.preview-box{width:100%;height:160px;background:#1F2937;border-radius:8px;display:flex;align-items:center;justify-content:center;margin:8px 0}
+.preview-box img{max-width:100%;max-height:100%;display:none}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,#000,transparent);display:flex;justify-content:space-around;align-items:center;z-index:9}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:#94A3B8;cursor:pointer}
+.nav-item.active{color:#fff}
+.search-bar{position:fixed;top:16px;left:16px;right:16px;background:rgba(17,24,39,.95);backdrop-filter:blur(10px);border-radius:12px;padding:12px;display:flex;gap:10px;transform:translateY(-120%);opacity:0;transition:.3s;z-index:50}
+.search-bar.show{transform:translateY(0);opacity:1}
+.search-bar input{flex:1;background:transparent;border:none;outline:none;color:#fff}
+.status-box{padding:12px;border-radius:8px;margin-top:12px;display:none}
+.empty-state{width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#94A3B8}
+.load-more-wrapper{padding:30px;display:flex;justify-content:center}
+.load-more-btn{padding:12px 28px;background:#2563EB;color:#fff;border:none;border-radius:999px;cursor:pointer}
+</style>
 </head>
 <body>
-
-<!-- HEADER & NAVIGASI TETAP SAMA DENGAN HALAMAN LAIN -->
-<header class="header">
-    <div class="container">
-        <div class="logo">
-            <h2>🟢 REWANG IKLAN</h2>
-        </div>
-        <nav class="nav-menu">
-            <a href="index.html">Beranda</a>
-            <a href="index.html#iklan">Daftar Iklan</a>
-            <a href="panduan.html">Panduan Beriklan</a>
-            <a href="pasang.html">Pasang Iklan</a>
-            <a href="#">Tentang Kami</a>
-        </nav>
-        <div class="menu-toggle" id="mobileMenu">☰</div>
-    </div>
-</header>
-
-<section class="content-wrapper" style="background:#222; min-height:calc(100vh - 200px); padding:20px 0;">
-    <div class="container">
-
-        <div id="loadingBox">
-            <h3>Memuat Iklan...</h3>
-        </div>
-
-        <div id="errorBox" style="display:none;">
-            <h2>Iklan Tidak Ditemukan</h2>
-            <p>Kemungkinan iklan sudah dihapus atau tidak aktif.</p>
-            <a href="index.html" class="flyer-btn-main" style="max-width:300px; margin:20px auto 0;">Kembali</a>
-        </div>
-
-        <!-- KOTAK FLYER PERSIS SEPERTI GAMBAR -->
-        <div id="flyerContainer" class="flyer-wrapper" style="display:none;">
-            <img id="adImageBg" class="flyer-bg" src="https://rewangiklan.my.id/image/no-image.webp" alt="">
-            <div class="flyer-bg"></div>
-
-            <div class="flyer-content">
-                <div class="flyer-logo">
-                    REWANG<br>IKLAN
-                </div>
-
-                <div class="flyer-badge">INFO IKLAN TERBARU!</div>
-
-                <h1 id="adTitle" class="flyer-title">Memuat Judul...</h1>
-
-                <div class="flyer-meta-top">
-                    <span id="adCategory">Kategori</span> • <span id="adDate">2026</span>
-                </div>
-
-                <div class="flyer-tags">
-                    <span class="tag" id="adCategory2">Kategori</span>
-                    <span class="tag" id="adLocation">Lokasi</span>
-                    <span class="tag" id="adStatus">Status</span>
-                </div>
-
-                <div id="adDescription" class="flyer-desc">
-                    Sedang memuat deskripsi iklan...
-                </div>
-
-                <a id="waButton" href="#" target="_blank" class="flyer-btn-main">
-                    ▶ HUBUNGI PENJUAL
-                </a>
-
-                <a href="index.html" class="flyer-btn-secondary">Lihat Iklan Lainnya</a>
-
-                <div class="share-buttons">
-                    <a id="waShare" target="_blank" href="#">
-                        <img src="https://raw.githubusercontent.com/joehanz/rewangiklan/refs/heads/main/image/imageedit_6_3837043012.png" alt="Bagikan WA">
-                    </a>
-                    <a id="fbShare" target="_blank" href="#">
-                        <img src="https://raw.githubusercontent.com/joehanz/rewangiklan/refs/heads/main/image/imageedit_4_4931406454.png" alt="Bagikan FB">
-                    </a>
-                </div>
-
-                <div class="flyer-footer">
-                    REWANGIKLAN.MY.ID
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- FOOTER TETAP SAMA -->
-<footer class="footer">
-    <div class="container">
-        <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
-    </div>
-</footer>
+<div class="search-bar" id="searchBar">
+  <i data-lucide="search"></i>
+  <input type="text" id="searchInput" placeholder="Cari iklan...">
+  <button class="search-clear" id="searchClear" style="display:none;background:none;border:none;color:#fff;cursor:pointer"><i data-lucide="x"></i></button>
+</div>
+<div class="feed-container" id="feedContainer">
+  <div class="empty-state"><i data-lucide="loader-2"></i><p>Memuat iklan...</p></div>
+</div>
+<div class="detail-overlay" id="detailOverlay">
+  <button class="detail-close" onclick="tutupDetailIklan()"><i data-lucide="x"></i></button>
+  <div class="detail-main-img" id="detailImg"></div>
+  <div class="detail-content">
+    <h2 id="detailTitle" style="font-size:20px;margin-bottom:8px"></h2>
+    <p style="color:#94A3B8;margin-bottom:6px">Kategori: <span id="detailCat"></span></p>
+    <p style="color:#94A3B8;margin-bottom:6px">📍 <span id="detailLoc"></span></p>
+    <p style="color:#94A3B8;margin-bottom:12px">👁️ Dilihat <span id="detailViews"></span> kali</p>
+    <p id="detailDesc" style="line-height:1.6;color:#E2E8F0"></p>
+    <button class="btn-wa" id="btnWa">💬 Hubungi WhatsApp</button>
+    <button class="btn-manage" onclick="bukaEditIklan()">⚙️ Kelola Iklan</button>
+  </div>
+</div>
+<div class="ad-form-overlay" id="adFormOverlay">
+  <button class="form-close" onclick="tutupFormIklan()"><i data-lucide="x"></i></button>
+  <div style="padding:60px 20px 16px;border-bottom:1px solid #374151"><h4 id="formTitle">Pasang Iklan Baru</h4></div>
+  <div style="padding:20px">
+    <form id="adForm">
+      <div class="form-group">
+        <label>Foto Iklan</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <div class="preview-box"><img id="previewImage"></div>
+      </div>
+      <div class="form-group">
+        <label>Judul Iklan</label>
+        <input type="text" id="title" maxlength="80" required>
+      </div>
+      <div class="form-group">
+        <label>Kategori</label>
+        <select id="category" required>
+          <option value="">Pilih Kategori</option>
+          <optgroup label="Kendaraan">
+            <option>Mobil Baru</option><option>Mobil Bekas</option><option>Motor Baru</option><option>Motor Bekas</option>
+          </optgroup>
+          <optgroup label="Properti">
+            <option>Rumah Dijual</option><option>Rumah Disewa</option><option>Apartemen</option><option>Tanah & Kavling</option>
+          </optgroup>
+          <optgroup label="Lainnya">
+            <option>Elektronik</option><option>Lowongan Kerja</option><option>Jasa</option><option>Lainnya</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group"><label>Lokasi</label><input type="text" id="location" required></div>
+      <div class="form-group"><label>Nomor WA (628xxx)</label><input type="text" id="whatsapp" required></div>
+      <div class="form-group">
+        <label>Deskripsi</label>
+        <textarea id="description" maxlength="500" required style="min-height:100px"></textarea>
+        <span id="charCount" style="font-size:12px;color:#94A3B8;text-align:right;display:block">0/500</span>
+      </div>
+      <div class="form-group" id="secretGroup" style="display:none">
+        <label>Kode Kelola</label>
+        <input type="text" id="secretCode" placeholder="Kode saat pasang iklan">
+      </div>
+      <button type="submit" class="btn-kirim" id="btnKirim">✅ Pasang Iklan</button>
+      <button type="button" class="btn-edit" id="btnEdit">✏️ Simpan Perubahan</button>
+      <button type="button" class="btn-hapus" id="btnHapus">🗑️ Hapus Iklan</button>
+      <div id="statusBox" class="status-box"></div>
+    </form>
+  </div>
+</div>
+<nav class="bottom-nav">
+  <div class="nav-item" id="navSearch"><i data-lucide="search"></i><span>Cari</span></div>
+  <div class="nav-item" id="navAdd" onclick="bukaFormIklan()"><i data-lucide="plus-circle"></i><span>Pasang</span></div>
+  <div class="nav-item" id="navTop"><i data-lucide="arrow-up-to-line"></i><span>Ke Atas</span></div>
+</nav>
 
 <script>
-// FUNGSI MENU
-const menuToggle = document.getElementById('mobileMenu');
-const navMenu = document.querySelector('.nav-menu');
-menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-document.addEventListener('click', e => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
-});
-
-// API & DATA UTUH TIDAK DIUBAH
+lucide.createIcons();
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+let allAds=[], displayAds=[], activeAd=null, editMode=false, imageBase64="";
+const feedContainer=document.getElementById("feedContainer"), searchBar=document.getElementById("searchBar"), searchInput=document.getElementById("searchInput"), detailOverlay=document.getElementById("detailOverlay"), adFormOverlay=document.getElementById("adFormOverlay");
 
-const params = new URLSearchParams(location.search);
-const id = params.get("id");
-
-if (!id) {
-    document.getElementById("loadingBox").style.display = "none";
-    document.getElementById("errorBox").style.display = "block";
-    throw new Error("ID kosong");
-}
-
-fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
-.then(r => r.json())
-.then(res => {
-    document.getElementById("loadingBox").style.display = "none";
-    if (!res.success) {
-        document.getElementById("errorBox").style.display = "block";
-        return;
-    }
-
-    const ad = res.ad;
-    document.getElementById("flyerContainer").style.display = "block";
-
-    // Isi data ke flyer
-    document.getElementById("adImageBg").src = ad.image;
-    document.getElementById("adTitle").textContent = ad.title;
-    document.getElementById("adCategory").textContent = ad.category;
-    document.getElementById("adCategory2").textContent = ad.category;
-    document.getElementById("adLocation").textContent = ad.location;
-    document.getElementById("adStatus").textContent = ad.status || "Aktif";
-
-    // Format tanggal
-    const t = new Date(ad.date);
-    document.getElementById("adDate").textContent = t.getFullYear();
-
-    // Deskripsi dengan link otomatis
-    const rawDescription = ad.description || "";
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const formattedDescription = rawDescription.replace(urlRegex, url => {
-        return '<a href="' + url + '" target="_blank" style="color:#ffd700; font-weight:bold;">' + url + '</a>';
-    });
-    document.getElementById("adDescription").innerHTML = formattedDescription;
-
-    // Link WhatsApp
-    document.getElementById("waButton").href = "https://wa.me/" + ad.whatsapp + "?text=" + encodeURIComponent("Saya tertarik dengan iklan: " + ad.title);
-
-    // SEO
-    updateSEO(ad);
-})
-.catch(err => {
-    console.log(err);
-    document.getElementById("loadingBox").style.display = "none";
-    document.getElementById("errorBox").style.display = "block";
+// Gambar ke WebP
+document.getElementById("imageInput").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    const img=new Image();img.onload=()=>{
+      const c=document.createElement("canvas");c.width=600;c.height=450;c.getContext("2d").drawImage(img,0,0,600,450);
+      imageBase64=c.toDataURL("image/webp",0.75);document.getElementById("previewImage").src=imageBase64;document.getElementById("previewImage").style.display="block";
+    };img.src=ev.target.result;
+  };r.readAsDataURL(f);
 });
 
-// BAGIKAN SOSIAL
-document.addEventListener("DOMContentLoaded", () => {
-    const id = new URLSearchParams(location.search).get("id");
-    const wa = document.getElementById("waShare");
-    const fb = document.getElementById("fbShare");
-    if (!id || !wa || !fb) return;
-    const shareUrl = `https://rewangiklan.my.id/share.html?id=${id}`;
-    wa.setAttribute("href", "https://wa.me/?text=" + encodeURIComponent(shareUrl));
-    fb.setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl));
+// Batas iklan
+function cekBatas(){
+  const d=JSON.parse(localStorage.getItem("iklan_log")||"[]"),n=new Date();
+  return d.filter(t=>n-new Date(t)<86400000).length<3||(alert("Maks 3 iklan/24 jam!"),false);
+}
+
+// Muat iklan
+async function ambilData(){
+  try{
+    const res=await fetch(API_URL),d=await res.json();
+    allAds=d.filter(i=>i.status==="aktif").reverse();displayAds=[...allAds];tampilkanAwal();
+  }catch{feedContainer.innerHTML=`<div class="empty-state"><i data-lucide="alert-triangle"></i><p>Gagal memuat</p></div>`;lucide.createIcons({context:feedContainer});}
+}
+function tampilkanAwal(){
+  feedContainer.innerHTML="";displayAds.forEach(iklan=>{
+    const kartu=document.createElement("div");kartu.className="ad-card";
+    kartu.innerHTML=`<img src="${iklan.image||'https://picsum.photos/id/1040/800/1400'}" class="ad-image" loading="lazy"><h3 class="ad-title">${iklan.title||"Tanpa Judul"}</h3>
+    <div class="side-actions"><div class="side-btn" onclick="bukaDetail('${iklan.id}')"><i data-lucide="eye"></i><span>Detail</span></div>
+    <div class="side-btn" onclick="bagikan('${iklan.id}')"><i data-lucide="share-2"></i><span>Bagikan</span></div></div>`;
+    feedContainer.appendChild(kartu);
+  });lucide.createIcons();if(displayAds[0])activeAd=displayAds[0];
+}
+
+// Detail & Form
+async function bukaDetail(id){
+  activeAd=allAds.find(i=>i.id===id);
+  document.getElementById("detailImg").style.backgroundImage=`url(${activeAd.image})`;
+  document.getElementById("detailTitle").textContent=activeAd.title;
+  document.getElementById("detailCat").textContent=activeAd.category;
+  document.getElementById("detailLoc").textContent=activeAd.location;
+  document.getElementById("detailViews").textContent=activeAd.views||0;
+  document.getElementById("detailDesc").textContent=activeAd.description;
+  document.getElementById("btnWa").onclick=()=>window.open(`https://wa.me/${activeAd.whatsapp.replace(/\D/g,"")}?text=Halo tertarik iklan ${encodeURIComponent(activeAd.title)}`);
+  detailOverlay.classList.add("show");
+}
+function tutupDetailIklan(){detailOverlay.classList.remove("show");}
+function bukaFormIklan(){
+  editMode=false;document.getElementById("formTitle").textContent="Pasang Iklan Baru";
+  document.getElementById("btnKirim").style.display="block";document.getElementById("btnEdit").style.display="none";document.getElementById("btnHapus").style.display="none";
+  document.getElementById("secretGroup").style.display="none";adFormOverlay.classList.add("show");
+}
+function tutupFormIklan(){adFormOverlay.classList.remove("show");}
+async function bukaEditIklan(){
+  tutupDetailIklan();editMode=true;document.getElementById("formTitle").textContent="Edit Iklan";
+  document.getElementById("btnKirim").style.display="none";document.getElementById("btnEdit").classList.add("show");document.getElementById("btnHapus").classList.add("show");
+  document.getElementById("secretGroup").style.display="flex";
+  document.getElementById("title").value=activeAd.title;document.getElementById("category").value=activeAd.category;
+  document.getElementById("location").value=activeAd.location;document.getElementById("whatsapp").value=activeAd.whatsapp;
+  document.getElementById("description").value=activeAd.description;imageBase64=activeAd.image||"";
+  adFormOverlay.classList.add("show");
+}
+
+// Kirim & Edit
+document.getElementById("adForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(editMode)return;if(!cekBatas())return;
+  const st=document.getElementById("statusBox");st.style.display="block";st.style.background="#EFF6FF";st.textContent="Mengirim...";
+  try{
+    const res=await fetch(API_URL,{method:"POST",body:JSON.stringify({
+      title:document.getElementById("title").value,category:document.getElementById("category").value,
+      location:document.getElementById("location").value,whatsapp:document.getElementById("whatsapp").value,
+      description:document.getElementById("description").value,image:imageBase64
+    })});
+    const h=await res.json();
+    if(h.success){
+      st.style.background="#D1FAE5";st.innerHTML=`✅ Berhasil! Kode kelola: <strong>${h.secret_code}</strong>`;
+      localStorage.setItem("iklan_log",JSON.stringify([...JSON.parse(localStorage.getItem("iklan_log")||"[]"),new Date().toISOString()]));
+      setTimeout(()=>{tutupFormIklan();ambilData();},3000);
+    }else{st.style.background="#FEE2E2";st.textContent="❌ "+h.error;}
+  }catch{st.style.background="#FEE2E2";st.textContent="❌ Gagal hubung server";}
 });
 
-// SEO UTUH
-function updateSEO(ad) {
-    document.title = ad.title + " | Rewang Iklan";
-    const desc = ad.description.length > 155 ? ad.description.substring(0,155) + "..." : ad.description;
-    setMeta("description", desc);
-}
-function setMeta(name, content) {
-    let tag = document.querySelector('meta[name="'+name+'"]');
-    if (tag) tag.setAttribute("content", content);
-}
+document.getElementById("btnEdit").addEventListener("click",async()=>{
+  const k=document.getElementById("secretCode").value.trim(),st=document.getElementById("statusBox");
+  if(!k){st.style.display="block";st.style.background="#FEE2E2";st.textContent="Masukkan kode kelola!";return;}
+  st.style.display="block";st.textContent="Menyimpan...";
+  try{
+    const res=await fetch(`${API_URL}?action=updateAd`,{method:"POST",body:JSON.stringify({
+      id:activeAd.id,secret_code:k,title:document.getElementById("title").value,
+      category:document.getElementById("category").value,location:document.getElementById("location").value,
+      whatsapp:document.getElementById("whatsapp").value,description:document.getElementById("description").value,image:imageBase64
+    })});
+    const h=await res.json();
+    if(h.success){st.textContent="✅ Tersimpan!";setTimeout(()=>{tutupFormIklan();ambilData();},2000);}
+    else st.textContent="❌ "+(h.error||"Kode salah");
+  }catch{st.textContent="❌ Gagal hubung server";}
+});
+
+document.getElementById("btnHapus").addEventListener("click",async()=>{
+  if(!confirm("Hapus permanen?"))return;
+  const k=document.getElementById("secretCode").value.trim(),st=document.getElementById("statusBox");
+  if(!k){st.style.display="block";st.textContent="Masukkan kode kelola!";return;}
+  try{
+    const res=await fetch(`${API_URL}?action=deleteAd`,{method:"POST",body:JSON.stringify({id:activeAd.id,secret_code:k})});
+    const h=await res.json();
+    if(h.success){st.textContent="✅ Terhapus!";setTimeout(()=>{tutupFormIklan();ambilData();},2000);}
+    else st.textContent="❌ "+(h.error||"Kode salah");
+  }catch{st.textContent="❌ Gagal hubung server";}
+});
+
+// Cari & Navigasi
+document.getElementById("navSearch").addEventListener("click",()=>{searchBar.classList.toggle("show");searchInput.focus()});
+searchInput.addEventListener("input",()=>{
+  const k=searchInput.value.toLowerCase();
+  displayAds=k?allAds.filter(i=>(i.title+i.category+i.location+i.description).toLowerCase().includes(k)):[...allAds];
+  tampilkanAwal();
+});
+document.getElementById("navTop").addEventListener("click",()=>feedContainer.scrollTo({top:0,behavior:"smooth"}));
+function bagikan(id){navigator.share?.({url:`https://rewangiklan.my.id/iklan-saya.html?id=${id}`})||navigator.clipboard.writeText(`https://rewangiklan.my.id/iklan-saya.html?id=${id}`).then(()=>alert("Tautan disalin"));}
+
+document.getElementById("description").addEventListener("input",e=>{document.getElementById("charCount").textContent=`${e.target.value.length}/500`});
+document.addEventListener("DOMContentLoaded",ambilData);
 </script>
-
 </body>
 </html>
