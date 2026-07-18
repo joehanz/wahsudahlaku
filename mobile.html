@@ -1,43 +1,101 @@
 <!DOCTYPE html>
 <html lang="id-ID">
 <head>
-    <script>
-    (function(){const e=!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)&&window.innerWidth>=768;e&&!window.location.pathname.endsWith("/index.html")&&window.location.pathname!=="/"&&(window.location.href="https://rewangiklan.my.id/index.html")})();
-    window.addEventListener("resize",()=>{const e=window.innerWidth>=768;e&&!window.location.pathname.endsWith("/index.html")&&window.location.pathname!=="/"&&(window.location.href="https://rewangiklan.my.id/index.html")});
-    </script>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rewang Iklan - Tampilan Mobile</title>
-    <meta name="description" content="Rewang Iklan - Tampilan khusus HP.">
-    <meta name="robots" content="index,follow">
-    <meta name="author" content="Rewang Iklan">
-    <meta name="theme-color" content="#0F172A">
-    <link rel="canonical" href="https://rewangiklan.my.id/mobile.html">
-    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
-    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Rewang Iklan">
-    <meta property="og:locale" content="id_ID">
-    <meta property="og:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
-    <meta property="og:description" content="Pasang iklan lewat HP lebih cepat.">
-    <meta property="og:url" content="https://rewangiklan.my.id/mobile.html">
-    <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
-    <meta property="og:image:type" content="image/webp">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
-    <meta name="twitter:description" content="Pasang iklan baris gratis lewat HP.">
-    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Rewang Iklan","url":"https://rewangiklan.my.id/mobile.html","description":"Tampilan khusus ponsel pasang cari iklan baris gratis.","inLanguage":"id-ID"}</script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>
+
+    <!-- ==========================================
+     1. PERFORMANCE & CACHE CONTROL
+     ========================================== -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="UTF-8">
+
+<!-- ==========================================
+     2. DEVICE OPTIMIZATION & REDIRECT SCRIPT
+     ========================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script>
+    (function() {
+        // Fungsi untuk mengecek apakah user mengakses menggunakan PC / Desktop
+        function checkDeviceAndRedirect() {
+            const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isLargeScreen = window.innerWidth >= 768;
+            const isNotIndex = !window.location.pathname.endsWith("/index.html") && window.location.pathname !== "/";
+
+            // Jika dia pakai PC dan layarnya lebar, kembalikan ke versi desktop (index.html)
+            if (isDesktop && isLargeScreen && isNotIndex) {
+                window.location.href = "https://rewangiklan.my.id/index.html";
+            }
+        }
+
+        // Jalankan langsung saat halaman dimuat
+        checkDeviceAndRedirect();
+
+        // Jalankan kembali jika user mengubah ukuran browser (resize)
+        window.addEventListener("resize", checkDeviceAndRedirect);
+    })();
+</script>
+
+<!-- ==========================================
+     3. SEO METADATA
+     ========================================== -->
+<title>Rewang Iklan - Tampilan Mobile</title>
+<meta name="description" content="Rewang Iklan - Tampilan khusus HP.">
+<meta name="robots" content="index,follow">
+<meta name="author" content="Rewang Iklan">
+<meta name="theme-color" content="#0F172A">
+<link rel="canonical" href="https://rewangiklan.my.id/mobile.html">
+
+<!-- Verifikasi Pihak Ketiga -->
+<meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
+<meta name="google-adsense-account" content="ca-pub-6458870303612779">
+
+<!-- ==========================================
+     4. OPEN GRAPH / FACEBOOK METADATA
+     ========================================== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rewang Iklan">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
+<meta property="og:description" content="Pasang iklan lewat HP lebih cepat.">
+<meta property="og:url" content="https://rewangiklan.my.id/mobile.html">
+<meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
+<meta property="og:image:type" content="image/webp">
+
+<!-- ==========================================
+     5. TWITTER METADATA
+     ========================================== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
+<meta name="twitter:description" content="Pasang iklan baris gratis lewat HP.">
+
+<!-- ==========================================
+     6. PWA & ICONS SPECIFIC
+     ========================================== -->
+<link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/icon-rewangiklan.webp">
+<link rel="manifest" href="manifest.json">
+<meta name="format-detection" content="telephone=no">
+
+<!-- Apple / iOS Specific -->
+<meta name="apple-mobile-web-app-title" content="Rewang Iklan">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- ==========================================
+     7. STRUCTURED DATA & THIRD PARTY LIBRARIES
+     ========================================== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Rewang Iklan",
+  "url": "https://rewangiklan.my.id/mobile.html",
+  "description": "Tampilan khusus ponsel pasang cari iklan baris gratis.",
+  "inLanguage": "id-ID"
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>    
 
     <style>
         /* ==========================================
