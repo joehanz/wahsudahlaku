@@ -2,14 +2,75 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog & Panduan — Rewang Iklan</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Blog & Panduan Beriklan Efektif | Rewang Iklan</title>
+    <meta name="description" content="Kumpulan artikel, tips, dan panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan — situs pasang iklan baris gratis Indonesia.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="author" content="Rewang Iklan">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://rewangiklan.my.id/blog.html">
+    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
+    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
+
+<!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Rewang Iklan">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:title" content="Blog & Panduan Beriklan Efektif | Rewang Iklan">
+    <meta property="og:description" content="Pelajari cara membuat iklan yang cepat dilihat dan disukai pembeli di Rewang Iklan.">
+    <meta property="og:url" content="https://rewangiklan.my.id/blog.html">
+    <meta property="og:image" content="/image/template-iklan-dual-view.webp">
+    <meta property="og:image:secure_url" content="/image/template-iklan-dual-view.webp">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Blog Rewang Iklan">
+
+<!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog & Panduan Beriklan Efektif | Rewang Iklan">
+    <meta name="twitter:description" content="Tips dan trik beriklan gratis di Rewang Iklan.">
+    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta name="twitter:image:alt" content="Blog Rewang Iklan">
+
+<!-- Icon & Aset -->
+    <link rel="icon" type="image/webp" href="/image/icon%20tembus%20rewang%20iklan.gif">  
     <link rel="stylesheet" href="style.css">
-    <meta name="description" content="Artikel, tips, dan panduan lengkap beriklan efektif di Rewang Iklan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Schema Halaman Blog -->
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Blog",
+ "name":"Blog & Panduan Rewang Iklan",
+ "url":"https://rewangiklan.my.id/blog.html",
+ "description":"Kumpulan artikel panduan beriklan efektif di Rewang Iklan.",
+ "publisher":{
+  "@type":"Organization",
+  "name":"Rewang Iklan",
+  "logo":"/image/template-iklan-dual-view.webp"
+ }
+}
+</script>
+
+<!-- Bing Verification & SEO Tambahan -->
+<meta name="msvalidate.01" content="6394587EECD7827672FB889C884B3545" />
+<meta name="keywords" content="panduan beriklan, tips pasang iklan, cara jual cepat, blog rewang iklan, iklan baris gratis">
+<link rel="alternate" hreflang="id" href="https://rewangiklan.my.id/blog.html">
+<link rel="alternate" hreflang="x-default" href="https://rewangiklan.my.id/blog.html">
+
+<!-- Detektor Perangkat: Arahkan HP ke mobile.html -->
+<script>
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    window.location.href = "mobile.html";
+}
+</script>
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header Khusus Desktop -->
 <header class="header">
     <div class="container">
         <div class="logo">
@@ -27,7 +88,7 @@
             <a href="privacy.html">Kebijakan Privasi</a>
             <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
         </nav>
-        <div class="menu-toggle" id="mobileMenu">☰</div>
+        <!-- TOMBOL MENU BURGER DIHAPUS -->
     </div>
 </header>
 
@@ -35,10 +96,12 @@
     <div class="container">
         <div class="col-panduan" style="max-width:900px; margin:0 auto;">
             <h3>📚 Blog & Panduan Beriklan</h3>
-            <p class="intro-panduan">Kumpulan artikel, tips, dan panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan.</p>
+            <p class="intro-panduan" style="line-height:1.8; color:#444; margin-bottom:25px;">
+                Kumpulan artikel, tips, dan panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan.
+            </p>
 
             <div id="daftar-blog" style="margin-top:25px;">
-                <p style="text-align:center;">Memuat artikel...</p>
+                <p style="text-align:center; padding:30px;">Memuat artikel...</p>
             </div>
         </div>
     </div>
@@ -54,6 +117,7 @@
     </div>
 </div>
 
+<!-- Iklan AdSense -->
 <div class="container" style="max-width:1100px; margin:20px auto;">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
      crossorigin="anonymous"></script>
@@ -74,13 +138,7 @@
 </footer>
 
 <script>
-// FUNGSI MENU
-const menuToggle = document.getElementById('mobileMenu');
-const navMenu = document.querySelector('.nav-menu');
-menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-document.addEventListener('click', e => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
-});
+// KODE FITUR MENU MOBILE DIHAPUS TOTAL
 
 // ELEMEN MODAL
 const modalBlog = document.getElementById('modalBlog');
@@ -98,11 +156,11 @@ fetch('blog.json')
     tampilkanDaftarBlog();
 })
 .catch(err => {
-    document.getElementById('daftar-blog').innerHTML = `<p style="color:red; text-align:center;">Gagal memuat artikel.</p>`;
-    console.error(err);
+    document.getElementById('daftar-blog').innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat artikel.</p>`;
+    console.error("Error ambil blog:", err);
 });
 
-// TAMPILKAN DAFTAR DENGAN CUPLIKAN 350 KARAKTER
+// TAMPILKAN DAFTAR DENGAN CUPLIKAN
 function tampilkanDaftarBlog() {
     const wadah = document.getElementById('daftar-blog');
     wadah.innerHTML = dataBlog.map(artikel => {
@@ -122,7 +180,7 @@ function tampilkanDaftarBlog() {
     }).join('');
 }
 
-// BUKA ARTIKEL DI MODAL (TANPA UBAH URL)
+// BUKA ARTIKEL DI MODAL
 function bukaArtikel(slug) {
     const artikel = dataBlog.find(a => a.slug === slug);
     if (!artikel) return;
