@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Pasang Iklan Baris Gratis Indonesia | Rewang Iklan</title>
@@ -13,7 +13,6 @@
     <meta name="google-adsense-account" content="ca-pub-6458870303612779">
 
 <!-- Open Graph -->
-
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Rewang Iklan">
     <meta property="og:locale" content="id_ID">
@@ -28,35 +27,19 @@
     <meta property="og:image:alt" content="Rewang Iklan">
 
 <!-- Twitter -->
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Pasang Iklan Baris Gratis Indonesia | Rewang Iklan">
     <meta name="twitter:description" content="Pasang iklan gratis dan temukan berbagai produk serta jasa dari seluruh Indonesia.">
     <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
     <meta name="twitter:image:alt" content="Rewang Iklan">
 
-<!-- Icon -->
-
+<!-- Icon & Aset -->
     <link rel="icon" type="image/webp" href="/image/icon%20tembus%20rewang%20iklan.gif">  
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-
-<!-- Bonus I -->
-
-    <meta name="application-name" content="Rewang Iklan">
-    <meta name="apple-mobile-web-app-title" content="Rewang Iklan">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-<!-- Bonus II -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <!-- Website Schema -->
-
 <script type="application/ld+json">
 {
  "@context":"https://schema.org",
@@ -75,7 +58,6 @@
 </script>
 
 <!-- Organization -->
-
 <script type="application/ld+json">
 {
  "@context":"https://schema.org",
@@ -86,73 +68,48 @@
 }
 </script>
 
-    <script type="application/ld+json">
+<!-- Collection Page -->
+<script type="application/ld+json">
 {
 "@context":"https://schema.org",
-
 "@type":"CollectionPage",
-
 "name":"Rewang Iklan",
-
 "description":"Daftar iklan baris gratis Indonesia",
-
 "url":"https://rewangiklan.my.id/",
-
 "mainEntity":{
-
 "@type":"ItemList",
-
 "numberOfItems":"1000",
-
 "itemListOrder":"https://schema.org/ItemListOrderDescending"
-
 }
 }
 </script>
 
-    <!-- Bing Webmaster Tools Verification -->
+<!-- Bing Verification & SEO Tambahan -->
 <meta name="msvalidate.01" content="6394587EECD7827672FB889C884B3545" />
-
-<!-- Meta Keywords (masih relevan di Bing) -->
 <meta name="keywords" content="iklan gratis, iklan baris, jual beli, rewang iklan, pasang iklan Indonesia">
-
-<!-- Hreflang untuk target bahasa/negara -->
 <link rel="alternate" hreflang="id" href="https://rewangiklan.my.id/">
 <link rel="alternate" hreflang="x-default" href="https://rewangiklan.my.id/">
 
-<!-- Optional: Schema Product/Offer (untuk iklan individual) -->
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "Product",
- "name": "Contoh Produk Iklan",
- "description": "Deskripsi singkat produk iklan.",
- "image": "/image/template-iklan-dual-view.webp",
- "offers": {
-   "@type": "Offer",
-   "url": "https://rewangiklan.my.id/page-2",
-   "priceCurrency": "IDR",
-   "price": "100000",
-   "availability": "https://schema.org/InStock"
- }
+<!-- Detektor Perangkat: Arahkan HP ke mobile.html -->
+<script>
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    window.location.href = "mobile.html";
 }
 </script>
-
-
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header Khusus Desktop -->
 <header class="header">
     <div class="container">
         <div class="logo">
-    <h2 style="display:flex; align-items:center; gap:8px; margin:0; font-size:22px; font-weight:700;">
-        <img src="/image/icon%20tembus%20rewang%20iklan.gif" 
-             alt="Logo Rewang Iklan" 
-             style="width:30px; height:30px; object-fit:contain; display:block; flex-shrink:0;">
-        REWANG IKLAN
-    </h2>
-</div>
+            <h2 style="display:flex; align-items:center; gap:8px; margin:0; font-size:22px; font-weight:700;">
+                <img src="/image/icon%20tembus%20rewang%20iklan.gif" 
+                     alt="Logo Rewang Iklan" 
+                     style="width:30px; height:30px; object-fit:contain; display:block; flex-shrink:0;">
+                REWANG IKLAN
+            </h2>
+        </div>
         <nav class="nav-menu">
             <a href="index.html" class="aktif">Beranda</a>
             <a href="about.html">Tentang Kami</a>
@@ -160,7 +117,7 @@
             <a href="privacy.html">Kebijakan Privasi</a>
             <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
         </nav>
-        <div class="menu-toggle" id="mobileMenu">☰</div>
+        <!-- TOMBOL MENU BURGER DIHAPUS -->
     </div>
 </header>
 
@@ -183,7 +140,6 @@
                 <p style="text-align:center; padding:30px;">Memuat iklan dari server...</p>
             </div>
 
-            <!-- Tombol ke Panduan -->
             <div style="text-align:center; margin-top:40px; padding:20px; background:#fff; border-radius:8px;">
                 <h4>📚 Ingin Iklanmu Cepat Dilihat Pembeli?</h4>
                 <p style="margin:10px 0 20px;">Baca panduan lengkap cara membuat iklan yang menarik dan disukai pembeli.</p>
@@ -201,6 +157,5 @@
 </footer>
 
 <script src="script.js"></script>
-    
 </body>
 </html>
