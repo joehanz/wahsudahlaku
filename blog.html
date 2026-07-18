@@ -48,8 +48,7 @@
 <div id="modalBlog" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; overflow-y:auto;">
     <div style="position:relative; max-width:900px; margin:40px auto; background:#fff; border-radius:8px; padding:30px; box-shadow:0 0 20px rgba(0,0,0,0.3);">
         <button id="tutupModal" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; color:#666; background:none; border:none; cursor:pointer; line-height:1;">×</button>
-        <div id="infoPenulis" style="font-size:14px; color:#888; margin-bottom:15px;">✍️ Admin | 📅 09 Juli 2026</div>
-        <h2 id="judulModal" style="font-size:26px; color:#222; margin-bottom:20px;">Judul Artikel</h2>
+        <h2 id="judulModal" style="font-size:26px; color:#222; margin-bottom:20px; padding-right:30px;">Judul Artikel</h2>
         <div id="isiModal" style="line-height:1.8; color:#444; white-space:pre-wrap;"></div>
     </div>
 </div>
@@ -84,7 +83,6 @@ document.addEventListener('click', e => {
 
 // ELEMEN MODAL
 const modalBlog = document.getElementById('modalBlog');
-const infoPenulis = document.getElementById('infoPenulis');
 const judulModal = document.getElementById('judulModal');
 const isiModal = document.getElementById('isiModal');
 const tutupModal = document.getElementById('tutupModal');
@@ -96,6 +94,7 @@ fetch('blog.json')
 .then(data => {
     dataBlog = data;
     tampilkanDaftarBlog();
+    cekArtikelDariURL();
 })
 .catch(err => {
     document.getElementById('daftar-blog').innerHTML = `<p style="color:red; text-align:center;">Gagal memuat artikel.</p>`;
@@ -111,9 +110,6 @@ function tampilkanDaftarBlog() {
             : artikel.isi;
         return `
             <div style="background:#fff; padding:25px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:20px;">
-                <div style="font-size:14px; color:#888; margin-bottom:8px;">
-                    ✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}
-                </div>
                 <h4 style="font-size:20px; color:#222; margin-bottom:12px;">${artikel.judul}</h4>
                 <p style="line-height:1.7; color:#555; margin-bottom:15px;">${cuplikan}</p>
                 <button onclick="bukaArtikel('${artikel.slug}')" style="background:#2e7d32; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:500;">Baca Selengkapnya →</button>
@@ -122,16 +118,18 @@ function tampilkanDaftarBlog() {
     }).join('');
 }
 
-// BUKA ARTIKEL DI MODAL (TANPA UBAH URL)
+// BUKA ARTIKEL DI MODAL & UBAH URL
 function bukaArtikel(slug) {
     const artikel = dataBlog.find(a => a.slug === slug);
     if (!artikel) return;
 
-    infoPenulis.textContent = `✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}`;
     judulModal.textContent = artikel.judul;
     isiModal.textContent = artikel.isi;
     modalBlog.style.display = 'block';
     document.body.style.overflow = 'hidden';
+
+    // UBAH URL SEPERTI blog.html/judul-artikel
+    history.pushState({slug: slug}, '', `blog.html/${slug}`);
 }
 
 // TUTUP MODAL
@@ -143,7 +141,22 @@ modalBlog.addEventListener('click', e => {
 function tutupArtikel() {
     modalBlog.style.display = 'none';
     document.body.style.overflow = 'auto';
+    // KEMBALIKAN URL KE blog.html
+    history.pushState({}, '', 'blog.html');
 }
+
+// CEK JIKA ADA SLUG DI URL SAAT HALAMAN DIBUKA
+function cekArtikelDariURL() {
+    const bagianURL = window.location.pathname.split('/').pop();
+    if (bagianURL && bagianURL !== 'blog.html') {
+        bukaArtikel(bagianURL);
+    }
+}
+
+// TANGANI TOMBOL KEMBALI BROWSER
+window.addEventListener('popstate', e => {
+    if (!e.state?.slug) tutupArtikel();
+});
 </script>
 
 </body>
