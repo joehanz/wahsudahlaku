@@ -30,7 +30,7 @@
     <div class="container">
         <div class="col-panduan" style="max-width:900px; margin:0 auto;">
 
-            <!-- ✅ BREADCRUMB BERTINGKAT BARU -->
+            <!-- ✅ BREADCRUMB BERTINGKAT -->
             <div class="breadcrumb" style="padding:10px 0; margin-bottom:20px;">
                 <a href="index.html" style="color:#2e7d32; text-decoration:none;">Beranda</a>
                 <span style="margin:0 8px; color:#666;">›</span>
@@ -61,39 +61,35 @@
 
                     <div class="flex-item" style="flex:1 1 350px;">
                         <div class="detail-content" style="padding:10px 0;">
-                            <div class="detail-meta" style="margin-bottom:20px;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Status</b>
-                                    <p id="adStatus" style="margin:5px 0 0 0; color:#555;">-</p>
+                            <!-- ✅ INFO DENGAN IKON FLAT, RAPI TIDAK NUMPUK -->
+                            <div class="detail-meta" style="margin-bottom:25px;">
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">✅</span>
+                                    <span style="color:#555;">Status: <strong id="adStatus" style="color:#2e7d32;">-</strong></span>
                                 </div>
-                                <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Kategori Lengkap</b>
-                                    <p id="adCategory2" style="margin:5px 0 0 0; color:#555;">-</p>
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">📂</span>
+                                    <span style="color:#555;">Kategori: <strong id="adCategory2">-</strong></span>
                                 </div>
-                                <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Lokasi</b>
-                                    <p id="adLocation" style="margin:5px 0 0 0; color:#555;">-</p>
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">📍</span>
+                                    <span style="color:#555;">Lokasi: <strong id="adLocation">-</strong></span>
                                 </div>
-                                <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Tanggal Tayang</b>
-                                    <p id="adDate" style="margin:5px 0 0 0; color:#555;">-</p>
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">📅</span>
+                                    <span style="color:#555;">Tanggal Tayang: <strong id="adDate">-</strong></span>
                                 </div>
-                                <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Dilihat</b>
-                                    <p id="adViews" style="margin:5px 0 0 0; color:#555;">0 kali</p>
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">👁️</span>
+                                    <span style="color:#555;">Dilihat: <strong id="adViews">0 kali</strong></span>
                                 </div>
-                                <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
-                                <div style="margin-bottom:12px;">
-                                    <b>Nomor WhatsApp</b>
-                                    <p id="adPhone" style="margin:5px 0 0 0; color:#555;">-</p>
+                                <div style="display:flex; align-items:center; gap:10px; padding:7px 0;">
+                                    <span style="font-size:18px;">💬</span>
+                                    <span style="color:#555;">WhatsApp: <strong id="adPhone">-</strong></span>
                                 </div>
                             </div>
 
-                            <div class="share-buttons" style="display:flex; gap:15px; padding:15px 0; border-top:1px solid #eee;">
+                            <div class="share-buttons" style="display:flex; gap:15px; padding-top:15px; border-top:1px solid #eee;">
                                 <a class="share-wa" target="_blank" id="waShare" href="#" style="display:flex; align-items:center; gap:8px; padding:10px 15px; background:#25d366; color:white; border-radius:5px; text-decoration:none;">
                                     <img src="https://raw.githubusercontent.com/joehanz/rewangiklan/refs/heads/main/image/imageedit_6_3837043012.png" style="width:20px; height:20px;">
                                     Bagikan WA
@@ -254,23 +250,21 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     const subKategoriNama = ad.category || "Lainnya";
     const kategoriUtamaNama = petaKategoriUtama[subKategoriNama] || subKategoriNama;
 
-    // Tautan kategori utama (buka semua iklan di kategori itu)
     const linkKategoriUtama = document.getElementById("linkKategoriUtama");
     linkKategoriUtama.textContent = kategoriUtamaNama;
     linkKategoriUtama.href = `index.html#iklan?cari=${encodeURIComponent(kategoriUtamaNama)}`;
-
-    // Tampilkan subkategori
     document.getElementById("subKategori").textContent = subKategoriNama;
 
-    // ✅ Link kelola otomatis dengan ID iklan
+    // ✅ Link kelola otomatis
     document.getElementById("kelolaBtn").href = `pasang.html?id=${ad.id}`;
 
-    // Isi semua data iklan
+    // ✅ Isi data iklan
     document.getElementById("adImage").src = ad.image;
     document.getElementById("adImage").alt = ad.title;
     document.getElementById("adTitle").textContent = ad.title;
     document.getElementById("adCategory2").textContent = subKategoriNama;
     document.getElementById("adLocation").textContent = ad.location;
+    document.getElementById("adStatus").textContent = ad.status || "Aktif";
 
     // Ubah link di deskripsi jadi bisa diklik
     const rawDescription = ad.description || "";
@@ -284,7 +278,6 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
 
     document.getElementById("adViews").textContent = ad.views + " kali";
     document.getElementById("adPhone").textContent = ad.whatsapp || "-";
-    document.getElementById("adStatus").textContent = ad.status || "-";
 
     // Format tanggal
     const t = new Date(ad.date);
