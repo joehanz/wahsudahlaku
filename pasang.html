@@ -2,32 +2,77 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Pasang Iklan Gratis — Rewang Iklan</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title id="pageTitle">Pasang Iklan Baris Gratis Tanpa Daftar | Rewang Iklan</title>
+    <meta name="description" content="Pasang iklan baris gratis tanpa perlu daftar akun, langsung tayang. Bisa juga edit atau hapus iklan kapan saja di Rewang Iklan.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="author" content="Rewang Iklan">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://rewangiklan.my.id/pasang.html">
+    <meta name="google-site-verification" content="tw4lMqeQpPnFaLgzP9kkFU64PxgiGxePrDuMbpWDaio">
+    <meta name="google-adsense-account" content="ca-pub-6458870303612779">
+
+<!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Rewang Iklan">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:title" content="Pasang Iklan Baris Gratis Tanpa Daftar | Rewang Iklan">
+    <meta property="og:description" content="Tempat pasang iklan gratis, cepat, tanpa syarat rumit.">
+    <meta property="og:url" content="https://rewangiklan.my.id/pasang.html">
+    <meta property="og:image" content="/image/template-iklan-dual-view.webp">
+    <meta property="og:image:secure_url" content="/image/template-iklan-dual-view.webp">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Pasang Iklan Rewang Iklan">
+
+<!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pasang Iklan Baris Gratis Tanpa Daftar | Rewang Iklan">
+    <meta name="twitter:description" content="Pasang iklan gratis langsung tayang.">
+    <meta name="twitter:image" content="https://rewangiklan.my.id/image/iklanbaris3.png">
+    <meta name="twitter:image:alt" content="Pasang Iklan Rewang Iklan">
+
+<!-- Icon & Aset -->
+    <link rel="icon" type="image/webp" href="/image/icon%20tembus%20rewang%20iklan.gif">  
     <link rel="stylesheet" href="style.css">
-    <meta name="description" content="Pasang iklan baris gratis tanpa daftar, langsung tayang. Atau edit iklan yang sudah kamu pasang.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Bing Verification & SEO Tambahan -->
+<meta name="msvalidate.01" content="6394587EECD7827672FB889C884B3545" />
+<meta name="keywords" content="pasang iklan gratis, iklan baris gratis, jual beli tanpa daftar, pasang iklan rewang iklan">
+<link rel="alternate" hreflang="id" href="https://rewangiklan.my.id/pasang.html">
+<link rel="alternate" hreflang="x-default" href="https://rewangiklan.my.id/pasang.html">
+
+<!-- Detektor Perangkat: Arahkan HP ke mobile.html -->
+<script>
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    window.location.href = "mobile.html";
+}
+</script>
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header Khusus Desktop -->
 <header class="header">
     <div class="container">
         <div class="logo">
-    <h2 style="display:flex; align-items:center; gap:8px; margin:0; font-size:22px; font-weight:700;">
-        <img src="/image/icon%20tembus%20rewang%20iklan.gif" 
-             alt="Logo Rewang Iklan" 
-             style="width:30px; height:30px; object-fit:contain; display:block; flex-shrink:0;">
-        REWANG IKLAN
-    </h2>
-</div>
+            <h2 style="display:flex; align-items:center; gap:8px; margin:0; font-size:22px; font-weight:700;">
+                <img src="/image/icon%20tembus%20rewang%20iklan.gif" 
+                     alt="Logo Rewang Iklan" 
+                     style="width:30px; height:30px; object-fit:contain; display:block; flex-shrink:0;">
+                REWANG IKLAN
+            </h2>
+        </div>
         <nav class="nav-menu">
-            <a href="index.html" class="aktif">Beranda</a>
-            <a href="blog.html">Blog</a>
+            <a href="index.html">Beranda</a>
             <a href="about.html">Tentang Kami</a>
+            <a href="blog.html">Blog</a>
             <a href="privacy.html">Kebijakan Privasi</a>
-            <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
+            <a href="pasang.html" class="aktif">Pasang Iklan Gratis</a>
         </nav>
-        <div class="menu-toggle" id="mobileMenu">☰</div>
+        <!-- TOMBOL MENU BURGER DIHAPUS -->
     </div>
 </header>
 
@@ -160,7 +205,6 @@
                         </div>
                     </div>
 
-                    <!-- TOMBOL BERUBAH OTOMATIS -->
                     <button type="submit" id="submitBtn" class="submit-btn">PASANG IKLAN</button>
                     <div id="editButtons" style="display:none; gap:10px; margin-top:10px;">
                         <button type="button" id="saveEditBtn" class="submit-btn" style="flex:1;">SIMPAN PERUBAHAN</button>
@@ -174,15 +218,12 @@
     </div>
 </section>
 
-<!-- Iklan AdSense -->
 <div class="container" style="max-width:1100px; margin:20px auto;">
-
-    <!-- Tombol ke Panduan -->
-            <div style="text-align:center; margin-top:40px; padding:20px; background:#fff; border-radius:8px;">
-                <h4>📚 Ingin Iklanmu Cepat Dilihat Pembeli?</h4>
-                <p style="margin:10px 0 20px;">Baca panduan lengkap cara membuat iklan yang menarik dan disukai pembeli.</p>
-                <a href="panduan.html" class="btn-detail" style="font-size:16px;">Buka Panduan Beriklan</a>
-            </div>
+    <div style="text-align:center; margin-top:40px; padding:20px; background:#fff; border-radius:8px;">
+        <h4>📚 Ingin Iklanmu Cepat Dilihat Pembeli?</h4>
+        <p style="margin:10px 0 20px;">Baca panduan lengkap cara membuat iklan yang menarik dan disukai pembeli.</p>
+        <a href="panduan.html" class="btn-detail" style="font-size:16px;">Buka Panduan Beriklan</a>
+    </div>
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
      crossorigin="anonymous"></script>
@@ -195,7 +236,6 @@
 </script>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
     <div class="container">
         <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
@@ -203,13 +243,7 @@
 </footer>
 
 <script>
-// FUNGSI MENU
-const menuToggle = document.getElementById('mobileMenu');
-const navMenu = document.querySelector('.nav-menu');
-menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-document.addEventListener('click', e => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
-});
+// KODE MENU MOBILE DIHAPUS TOTAL
 
 // KONFIGURASI
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
@@ -230,11 +264,8 @@ const statusBox = document.getElementById("statusBox");
 const desc = document.getElementById("description");
 const count = document.getElementById("charCount");
 
-// ======================
 // DETEKSI MODE: PASANG ATAU EDIT
-// ======================
 if (editId) {
-    // MODE EDIT: UBAH JUDUL & TAMPILAN
     pageTitle.textContent = "Edit Iklan — Rewang Iklan";
     formHeading.textContent = "✏️ EDIT IKLAN SAYA";
     secretGroup.style.display = "block";
@@ -242,11 +273,8 @@ if (editId) {
     editButtons.style.display = "flex";
     adForm.querySelector("#imageInput").required = false;
     statusBox.innerHTML = `<div style="padding:15px; background:#e7f3ff; border:1px solid #0d6efd;">✅ Data iklan dimuat. Masukkan <strong>Kode Kelola</strong> terlebih dahulu sebelum menyimpan atau menghapus.</div>`;
-
-    // ✅ MUTLAK WAJIB: MUNCULKAN DATA IKLAN KE FORM SAAT HALAMAN TERBUKA
     muatDataIklan(editId);
 } else {
-    // MODE PASANG BARU: TAMPILAN BIASA
     pageTitle.textContent = "Pasang Iklan Gratis — Rewang Iklan";
     formHeading.textContent = "📝 FORM PASANG IKLAN BARIS GRATIS";
     secretGroup.style.display = "none";
@@ -254,18 +282,14 @@ if (editId) {
     editButtons.style.display = "none";
 }
 
-// ======================
-// ✅ FUNGSI MEMUAT DATA KE FORM (DIPANGGIL OTOMATIS DI ATAS)
-// ======================
+// FUNGSI MEMUAT DATA KE FORM
 async function muatDataIklan(id) {
     try {
-        // Ambil data iklan saja dulu untuk ditampilkan di form
         const res = await fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id));
         const data = await res.json();
         if (!data.success) throw new Error(data.error || "Iklan tidak ditemukan");
 
         currentAd = data.ad;
-        // Isi SEMUA kolom form otomatis
         document.getElementById("title").value = currentAd.title;
         document.getElementById("category").value = currentAd.category;
         document.getElementById("location").value = currentAd.location;
@@ -273,21 +297,17 @@ async function muatDataIklan(id) {
         document.getElementById("description").value = currentAd.description;
         count.textContent = currentAd.description.length + " / 500";
         document.getElementById("previewImage").src = currentAd.image;
-        imageBase64 = currentAd.image; // Simpan foto lama jika tidak diganti
+        imageBase64 = currentAd.image;
 
     } catch (err) {
         statusBox.innerHTML = `<div style="padding:15px; background:#f8d7da; border:1px solid #dc3545;">❌ ${err.message}</div>`;
     }
 }
 
-// ======================
-// FUNGSI UMUM: HITUNG KARAKTER
-// ======================
+// HITUNG KARAKTER
 desc.addEventListener("input", () => count.textContent = desc.value.length + " / 500");
 
-// ======================
-// FUNGSI UMUM: PREVIEW & KONVERSI GAMBAR
-// ======================
+// PREVIEW & KONVERSI GAMBAR
 document.getElementById("imageInput").addEventListener("change", handleImage);
 async function handleImage(e) {
     const file = e.target.files[0];
@@ -314,12 +334,10 @@ function convertToWebP(file) {
     });
 }
 
-// ======================
-// MODE PASANG BARU: KIRIM IKLAN
-// ======================
+// MODE PASANG BARU
 adForm.addEventListener("submit", async e => {
     e.preventDefault();
-    if (editId) return; // JALANKAN HANYA JIKA MODE PASANG
+    if (editId) return;
 
     if (!cekBatasIklan()) return;
     if (!cekKemiripan()) return;
@@ -350,21 +368,17 @@ adForm.addEventListener("submit", async e => {
     }
 });
 
-// ======================
-// MODE EDIT: SIMPAN PERUBAHAN
-// ======================
+// MODE EDIT: SIMPAN
 document.getElementById("saveEditBtn").addEventListener("click", async () => {
     const secret = document.getElementById("secretCode").value.trim();
     if (!secret) return alert("⚠️ Masukkan Kode Kelola terlebih dahulu!");
 
     statusBox.innerHTML = "⏳ Memverifikasi & menyimpan...";
     try {
-        // Cek kode kelola hanya saat tombol diklik
         const cekRes = await fetch(API_URL + "?action=getAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const cekData = await cekRes.json();
         if (!cekData.success) throw new Error(cekData.error || "ID Iklan atau Kode Kelola tidak valid!");
 
-        // Kirim perubahan
         const payload = {
             id: editId,
             secret_code: secret,
@@ -373,7 +387,7 @@ document.getElementById("saveEditBtn").addEventListener("click", async () => {
             location: document.getElementById("location").value,
             whatsapp: document.getElementById("whatsapp").value,
             description: document.getElementById("description").value,
-            image: imageBase64 // Pakai foto baru jika diganti, foto lama jika tidak
+            image: imageBase64
         };
 
         const res = await fetch(API_URL + "?action=updateAd", { method: "POST", body: JSON.stringify(payload) });
@@ -389,9 +403,7 @@ document.getElementById("saveEditBtn").addEventListener("click", async () => {
     }
 });
 
-// ======================
-// MODE EDIT: HAPUS IKLAN
-// ======================
+// MODE EDIT: HAPUS
 document.getElementById("deleteBtn").addEventListener("click", async () => {
     const secret = document.getElementById("secretCode").value.trim();
     if (!secret) return alert("⚠️ Masukkan Kode Kelola terlebih dahulu!");
@@ -399,12 +411,10 @@ document.getElementById("deleteBtn").addEventListener("click", async () => {
 
     statusBox.innerHTML = "⏳ Memverifikasi & menghapus...";
     try {
-        // Cek kode kelola hanya saat tombol diklik
         const cekRes = await fetch(API_URL + "?action=getAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const cekData = await cekRes.json();
         if (!cekData.success) throw new Error(cekData.error || "ID Iklan atau Kode Kelola tidak valid!");
 
-        // Hapus iklan
         const res = await fetch(API_URL + "?action=deleteAd&id=" + encodeURIComponent(editId) + "&secret_code=" + encodeURIComponent(secret));
         const data = await res.json();
         if (data.success) {
@@ -418,9 +428,7 @@ document.getElementById("deleteBtn").addEventListener("click", async () => {
     }
 });
 
-// ======================
-// FUNGSI PEMBATASAN (KHUSUS PASANG BARU)
-// ======================
+// FUNGSI PEMBATASAN
 function cekBatasIklan() {
     const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     const sekarang = new Date();
