@@ -1,8 +1,10 @@
 lucide.createIcons();
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
+const STORAGE_KEY = "rewang_iklan_history";
 const ITEM_PER_PAGE = 26;
 let allAds = [], displayAds = [], currentDisplayCount = 0, activeAd = null, editMode = false, deferredPrompt;
+let imageBase64 = "";
 
 const feedContainer = document.getElementById("feedContainer");
 const searchBar = document.getElementById("searchBar");
@@ -20,8 +22,123 @@ const btnHapus = document.getElementById("btnHapus");
 const previewImage = document.getElementById("previewImage");
 const secretGroup = document.getElementById("secretGroup");
 const charCount = document.getElementById("charCount");
+const imageInput = document.getElementById("imageInput");
+const statusBox = document.getElementById("statusBox");
 const installIcon = navInstall?.querySelector("i");
 const installText = navInstall?.querySelector("span");
+
+// === PERBAIKI DAFTAR KATEGORI SAMA DENGAN VERSI DESKTOP ===
+document.getElementById("category").innerHTML = `
+    <option value="">Pilih Kategori</option>
+    <optgroup label="🚗 Kendaraan">
+        <option value="Mobil Baru">Mobil Baru</option>
+        <option value="Mobil Bekas">Mobil Bekas</option>
+        <option value="Motor Baru">Motor Baru</option>
+        <option value="Motor Bekas">Motor Bekas</option>
+        <option value="Sepeda & Aksesoris">Sepeda & Aksesoris</option>
+        <option value="Kendaraan Komersial">Kendaraan Komersial</option>
+        <option value="Alat Berat & Mesin">Alat Berat & Mesin</option>
+        <option value="Suku Cadang Kendaraan">Suku Cadang Kendaraan</option>
+        <option value="Sewa Kendaraan">Sewa Kendaraan</option>
+    </optgroup>
+    <optgroup label="🏠 Properti">
+        <option value="Rumah Dijual">Rumah Dijual</option>
+        <option value="Rumah Disewa">Rumah Disewa</option>
+        <option value="Apartemen & Kondominium">Apartemen & Kondominium</option>
+        <option value="Tanah & Kavling">Tanah & Kavling</option>
+        <option value="Ruko & Toko & Kantor">Ruko & Toko & Kantor</option>
+        <option value="Gudang & Tempat Usaha">Gudang & Tempat Usaha</option>
+        <option value="Kos-kosan & Penginapan">Kos-kosan & Penginapan</option>
+        <option value="Kontrakan">Kontrakan</option>
+    </optgroup>
+    <optgroup label="📱 Elektronik & Gadget">
+        <option value="HP & Smartphone">HP & Smartphone</option>
+        <option value="Laptop & Komputer">Laptop & Komputer</option>
+        <option value="Tablet & Aksesoris">Tablet & Aksesoris</option>
+        <option value="Kamera & Fotografi">Kamera & Fotografi</option>
+        <option value="TV & Audio Video">TV & Audio Video</option>
+        <option value="Konsol & Game">Konsol & Game</option>
+        <option value="Peralatan Rumah Tangga Elektronik">Peralatan Rumah Tangga Elektronik</option>
+    </optgroup>
+    <optgroup label="💼 Lowongan & Bisnis">
+        <option value="Lowongan Kerja">Lowongan Kerja</option>
+        <option value="Lowongan Freelance">Lowongan Freelance</option>
+        <option value="Peluang Usaha & Waralaba">Peluang Usaha & Waralaba</option>
+        <option value="Mitra Bisnis">Mitra Bisnis</option>
+        <option value="Toko & Usaha Dijual">Toko & Usaha Dijual</option>
+        <option value="Jasa Keuangan & Asuransi">Jasa Keuangan & Asuransi</option>
+    </optgroup>
+    <optgroup label="🛠️ Jasa & Layanan">
+        <option value="Jasa Bangunan & Renovasi">Jasa Bangunan & Renovasi</option>
+        <option value="Jasa Kebersihan">Jasa Kebersihan</option>
+        <option value="Jasa Kursus & Pendidikan">Jasa Kursus & Pendidikan</option>
+        <option value="Jasa Desain & Percetakan">Jasa Desain & Percetakan</option>
+        <option value="Jasa Transportasi & Kirim">Jasa Transportasi & Kirim</option>
+        <option value="Jasa Pernikahan & Acara">Jasa Pernikahan & Acara</option>
+        <option value="Jasa Kesehatan & Kecantikan">Jasa Kesehatan & Kecantikan</option>
+        <option value="Jasa Lainnya">Jasa Lainnya</option>
+    </optgroup>
+    <optgroup label="🛒 Barang & Rumah Tangga">
+        <option value="Pakaian & Sepatu">Pakaian & Sepatu</option>
+        <option value="Perlengkapan Anak & Bayi">Perlengkapan Anak & Bayi</option>
+        <option value="Perabotan & Furnitur">Perabotan & Furnitur</option>
+        <option value="Barang Antik & Koleksi">Barang Antik & Koleksi</option>
+        <option value="Buku & Alat Tulis">Buku & Alat Tulis</option>
+        <option value="Alat Olahraga & Hobi">Alat Olahraga & Hobi</option>
+    </optgroup>
+    <optgroup label="🐾 Hewan & Tanaman">
+        <option value="Hewan Peliharaan">Hewan Peliharaan</option>
+        <option value="Hewan Ternak & Unggas">Hewan Ternak & Unggas</option>
+        <option value="Perlengkapan Hewan">Perlengkapan Hewan</option>
+        <option value="Tanaman Hias & Bibit">Tanaman Hias & Bibit</option>
+        <option value="Pertanian & Perkebunan">Pertanian & Perkebunan</option>
+    </optgroup>
+    <optgroup label="🍜 Kuliner & Makanan">
+        <option value="Makanan & Minuman">Makanan & Minuman</option>
+        <option value="Bahan Baku & Bumbu">Bahan Baku & Bumbu</option>
+        <option value="Katering & Pesan Makanan">Katering & Pesan Makanan</option>
+        <option value="Usaha Kuliner Dijual">Usaha Kuliner Dijual</option>
+    </optgroup>
+    <optgroup label="📦 Lainnya">
+        <option value="Barang Lainnya">Barang Lainnya</option>
+        <option value="Permintaan Pembelian">Permintaan Pembelian</option>
+        <option value="Informasi Umum">Informasi Umum</option>
+    </optgroup>
+`;
+
+// === FUNGSI PREVIEW & KONVERSI GAMBAR KE WEBP ===
+imageInput.addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+        previewImage.src = "";
+        previewImage.style.display = "none";
+        imageBase64 = editMode ? activeAd.image : "";
+        return;
+    }
+    const webpData = await convertToWebP(file);
+    imageBase64 = webpData;
+    previewImage.src = webpData;
+    previewImage.style.display = "block";
+});
+
+function convertToWebP(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = 600;
+                canvas.height = 450;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, 600, 450);
+                resolve(canvas.toDataURL("image/webp", 0.75));
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 
 // === PWA INSTAL ===
 window.addEventListener("beforeinstallprompt", e => {
@@ -50,7 +167,7 @@ window.addEventListener("appinstalled", () => {
     if (installText) installText.textContent = "Beranda";
 });
 
-// === FUNGSI HITUNG PENGUNJUNG (SESUAI SKRIP .GS) ===
+// === FUNGSI HITUNG PENGUNJUNG ===
 async function tambahPengunjung(idIklan) {
     try {
         await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(idIklan)}`);
@@ -153,18 +270,13 @@ function muatLagi() {
 // === DETAIL IKLAN ===
 async function bukaDetailIklanSaya() {
     if (!activeAd) return alert("Data tidak ditemukan");
-
-    // Tambah pengunjung otomatis
     await tambahPengunjung(activeAd.id);
-
-    // Ambil data terbaru biar angka tidak macet
     try {
         const res = await fetch(`${API_URL}?action=detail&id=${encodeURIComponent(activeAd.id)}`);
         const hasil = await res.json();
         if (hasil.success) activeAd.views = hasil.ad.views;
     } catch {}
 
-    // Tampilkan data
     document.getElementById("detailImg").style.backgroundImage = `url(${activeAd.image || "https://picsum.photos/id/1040/800/1400"})`;
     document.getElementById("detailTitle").textContent = activeAd.title || "Tanpa Judul";
     document.getElementById("detailCat").textContent = activeAd.category || "Lainnya";
@@ -183,16 +295,18 @@ function tutupDetailIklan() {
     detailOverlay.classList.remove("show");
 }
 
-// === FORM EDIT & PASANG ===
+// === BUKA FORM ===
 async function bukaEditIklan() {
     tutupDetailIklan();
     if (!activeAd) return;
     editMode = true;
-    formTitle.textContent = "Edit Iklan";
+    formTitle.textContent = "✏️ Edit Iklan";
     btnKirim.style.display = "none";
     btnEdit.classList.add("show");
     btnHapus.classList.add("show");
     secretGroup.style.display = "flex";
+    statusBox.style.display = "none";
+    imageBase64 = activeAd.image || "";
     document.getElementById("title").value = activeAd.title || "";
     document.getElementById("category").value = activeAd.category || "";
     document.getElementById("location").value = activeAd.location || "";
@@ -211,11 +325,13 @@ async function bukaEditIklan() {
 
 function bukaFormIklan() {
     editMode = false;
-    formTitle.textContent = "Pasang Iklan Baru";
+    formTitle.textContent = "📝 Pasang Iklan Baru";
     btnKirim.style.display = "block";
     btnEdit.classList.remove("show");
     btnHapus.classList.remove("show");
     secretGroup.style.display = "none";
+    statusBox.style.display = "none";
+    imageBase64 = "";
     document.getElementById("adForm").reset();
     charCount.textContent = "0 / 3000";
     previewImage.src = "";
@@ -225,95 +341,184 @@ function bukaFormIklan() {
 
 function tutupFormIklan() {
     adFormOverlay.classList.remove("show");
+    statusBox.style.display = "none";
+    imageBase64 = "";
+    editMode = false;
 }
 
 document.getElementById("description").addEventListener("input", function () {
     charCount.textContent = `${this.value.length} / 3000`;
 });
 
+// === FUNGSI PEMBATASAN & RIWAYAT ===
+function cekBatasIklan() {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const sekarang = new Date();
+    const batas24jam = 24 * 60 * 60 * 1000;
+    const jumlah = riwayat.filter(t => (sekarang - new Date(t)) < batas24jam).length;
+    if (jumlah >= 3) { alert("⚠️ Maksimal 3 iklan dalam 24 jam!"); return false; }
+    return true;
+}
+
+function cekKemiripan() {
+    const teksBaru = (document.getElementById("title").value + " " + document.getElementById("description").value).toLowerCase().trim();
+    const lama = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+    for (let t of lama) {
+        const persen = hitungPersenMirip(teksBaru, t);
+        if (persen >= 0.8) { alert(`⚠️ Iklan mirip ${Math.round(persen*100)}% dengan yang lama! Ubah dulu ya.`); return false; }
+    }
+    return true;
+}
+
+function hitungPersenMirip(a, b) {
+    const ka = a.split(" "), kb = b.split(" ");
+    let sama = 0; ka.forEach(k => { if (kb.includes(k)) sama++ });
+    return sama / Math.max(ka.length, kb.length);
+}
+
+function simpanKeRiwayat(judul, deskripsi) {
+    const riwayat = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const teks = JSON.parse(localStorage.getItem(STORAGE_KEY + "_teks") || "[]");
+    riwayat.push(new Date().toISOString());
+    teks.push((judul + " " + deskripsi).toLowerCase().trim());
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(riwayat));
+    localStorage.setItem(STORAGE_KEY + "_teks", JSON.stringify(teks));
+}
+
+// === KIRIM IKLAN BARU ===
+document.getElementById("adForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (editMode) return;
+    if (!cekBatasIklan()) return;
+    if (!cekKemiripan()) return;
+
+    statusBox.style.display = "block";
+    statusBox.style.background = "#FFF3CD";
+    statusBox.style.color = "#856404";
+    statusBox.textContent = "⏳ Mengirim iklan...";
+
+    const payload = {
+        title: document.getElementById("title").value.trim(),
+        category: document.getElementById("category").value,
+        location: document.getElementById("location").value.trim(),
+        whatsapp: document.getElementById("whatsapp").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        image: imageBase64,
+        date: new Date().toISOString()
+    };
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+        const hasil = await res.json();
+        if (hasil.success) {
+            statusBox.style.background = "#D1FAE5";
+            statusBox.style.color = "#065F46";
+            statusBox.innerHTML = `✅ IKLAN BERHASIL DIPASANG!<br>ID: ${hasil.id}<br>Kode Kelola: ${hasil.secret_code}`;
+            simpanKeRiwayat(payload.title, payload.description);
+            setTimeout(() => { tutupFormIklan(); ambilDataIklan(); }, 3000);
+        } else {
+            statusBox.style.background = "#FEE2E2";
+            statusBox.style.color = "#991B1B";
+            statusBox.textContent = "❌ " + hasil.error;
+        }
+    } catch {
+        statusBox.style.background = "#FEE2E2";
+        statusBox.style.color = "#991B1B";
+        statusBox.textContent = "❌ Gagal terhubung ke server";
+    }
+});
+
 // === SIMPAN PERUBAHAN ===
 document.getElementById("btnEdit").addEventListener("click", async () => {
     const kode = document.getElementById("secretCode").value.trim();
-    const statusBox = document.getElementById("statusBox");
     if (!kode) {
         statusBox.style.display = "block";
         statusBox.style.background = "#FEE2E2";
         statusBox.style.color = "#991B1B";
-        statusBox.textContent = "Masukkan Kode Kelola!";
+        statusBox.textContent = "⚠️ Masukkan Kode Kelola!";
         return;
     }
     statusBox.style.display = "block";
     statusBox.style.background = "#EFF6FF";
     statusBox.style.color = "#1E40AF";
-    statusBox.textContent = "Menyimpan...";
+    statusBox.textContent = "⏳ Memverifikasi & menyimpan...";
     try {
-        const data = new URLSearchParams();
-        data.append("action", "updateAd");
-        data.append("id", activeAd.id);
-        data.append("secret_code", kode);
-        data.append("title", document.getElementById("title").value.trim());
-        data.append("category", document.getElementById("category").value);
-        data.append("location", document.getElementById("location").value.trim());
-        data.append("whatsapp", document.getElementById("whatsapp").value.trim());
-        data.append("description", document.getElementById("description").value.trim());
+        const cekRes = await fetch(`${API_URL}?action=getAd&id=${encodeURIComponent(activeAd.id)}&secret_code=${encodeURIComponent(kode)}`);
+        const cekData = await cekRes.json();
+        if (!cekData.success) throw new Error(cekData.error || "Kode kelola tidak cocok!");
 
-        const res = await fetch(`${API_URL}?${data.toString()}`);
+        const payload = {
+            id: activeAd.id,
+            secret_code: kode,
+            title: document.getElementById("title").value.trim(),
+            category: document.getElementById("category").value,
+            location: document.getElementById("location").value.trim(),
+            whatsapp: document.getElementById("whatsapp").value.trim(),
+            description: document.getElementById("description").value.trim(),
+            image: imageBase64 || activeAd.image
+        };
+
+        const res = await fetch(`${API_URL}?action=updateAd`, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
         const hasil = await res.json();
         if (hasil.success) {
             statusBox.style.background = "#D1FAE5";
             statusBox.style.color = "#065F46";
-            statusBox.textContent = "✅ Tersimpan!";
+            statusBox.textContent = "✅ Perubahan tersimpan!";
             setTimeout(() => { tutupFormIklan(); ambilDataIklan(); }, 2000);
         } else {
             statusBox.style.background = "#FEE2E2";
             statusBox.style.color = "#991B1B";
-            statusBox.textContent = "❌ Kode tidak cocok!";
+            statusBox.textContent = "❌ " + (hasil.error || "Gagal menyimpan!");
         }
-    } catch {
+    } catch (err) {
         statusBox.style.background = "#FEE2E2";
         statusBox.style.color = "#991B1B";
-        statusBox.textContent = "❌ Gagal hubung server";
+        statusBox.textContent = "❌ " + err.message;
     }
 });
 
 // === HAPUS IKLAN ===
 document.getElementById("btnHapus").addEventListener("click", async () => {
     const kode = document.getElementById("secretCode").value.trim();
-    const statusBox = document.getElementById("statusBox");
     if (!kode) {
         statusBox.style.display = "block";
         statusBox.style.background = "#FEE2E2";
         statusBox.style.color = "#991B1B";
-        statusBox.textContent = "Masukkan Kode Kelola!";
+        statusBox.textContent = "⚠️ Masukkan Kode Kelola!";
         return;
     }
     if (!confirm("⚠️ Hapus permanen? Tidak bisa dikembalikan!")) return;
     statusBox.style.display = "block";
     statusBox.style.background = "#EFF6FF";
     statusBox.style.color = "#1E40AF";
-    statusBox.textContent = "Menghapus...";
+    statusBox.textContent = "⏳ Menghapus iklan...";
     try {
-        const data = new URLSearchParams();
-        data.append("action", "deleteAd");
-        data.append("id", activeAd.id);
-        data.append("secret_code", kode);
+        const cekRes = await fetch(`${API_URL}?action=getAd&id=${encodeURIComponent(activeAd.id)}&secret_code=${encodeURIComponent(kode)}`);
+        const cekData = await cekRes.json();
+        if (!cekData.success) throw new Error(cekData.error || "Kode kelola tidak cocok!");
 
-        const res = await fetch(`${API_URL}?${data.toString()}`);
+        const res = await fetch(`${API_URL}?action=deleteAd&id=${encodeURIComponent(activeAd.id)}&secret_code=${encodeURIComponent(kode)}`);
         const hasil = await res.json();
         if (hasil.success) {
             statusBox.style.background = "#D1FAE5";
             statusBox.style.color = "#065F46";
-            statusBox.textContent = "✅ Terhapus!";
+            statusBox.textContent = "✅ Iklan berhasil dihapus!";
             setTimeout(() => { tutupFormIklan(); ambilDataIklan(); }, 2000);
         } else {
             statusBox.style.background = "#FEE2E2";
             statusBox.style.color = "#991B1B";
-            statusBox.textContent = "❌ Kode tidak cocok!";
+            statusBox.textContent = "❌ " + (hasil.error || "Gagal menghapus!");
         }
-    } catch {
+    } catch (err) {
         statusBox.style.background = "#FEE2E2";
         statusBox.style.color = "#991B1B";
-        statusBox.textContent = "❌ Gagal hubung server";
+        statusBox.textContent = "❌ " + err.message;
     }
 });
 
