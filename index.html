@@ -64,18 +64,7 @@
 </footer>
 
 <script src="script.js"></script>
-    <script>
-        function cariIklan() {
-    const kataKunci = document.getElementById("cari").value.trim();
-    const kategoriPilih = document.getElementById("kategori").value;
-    let tujuan = "index.html#iklan?";
-
-    if (kataKunci) tujuan += `q=${encodeURIComponent(kataKunci)}&`;
-    if (kategoriPilih) tujuan += `kategori=${encodeURIComponent(kategoriPilih)}`;
-
-    location.href = tujuan;
-}
-    </script>
+    
 </body>
 </html>
 
