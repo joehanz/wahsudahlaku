@@ -30,10 +30,13 @@
     <div class="container">
         <div class="col-panduan" style="max-width:900px; margin:0 auto;">
 
+            <!-- ✅ BREADCRUMB BERTINGKAT BARU -->
             <div class="breadcrumb" style="padding:10px 0; margin-bottom:20px;">
-                <a href="javascript:history.back()" style="color:#2e7d32;">Beranda</a>
-                <span style="margin:0 8px;">›</span>
-                <span id="adCategory">Memuat...</span>
+                <a href="index.html" style="color:#2e7d32; text-decoration:none;">Beranda</a>
+                <span style="margin:0 8px; color:#666;">›</span>
+                <a id="linkKategoriUtama" href="#" style="color:#2e7d32; text-decoration:none;">Kategori</a>
+                <span style="margin:0 8px; color:#666;">›</span>
+                <span id="subKategori" style="color:#333;">Memuat...</span>
             </div>
 
             <div id="loadingBox" style="text-align:center; padding:40px;">
@@ -65,7 +68,7 @@
                                 </div>
                                 <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
                                 <div style="margin-bottom:12px;">
-                                    <b>Kategori</b>
+                                    <b>Kategori Lengkap</b>
                                     <p id="adCategory2" style="margin:5px 0 0 0; color:#555;">-</p>
                                 </div>
                                 <hr style="border:none; border-bottom:1px solid #eee; margin:15px 0;">
@@ -154,6 +157,74 @@ document.addEventListener('click', e => {
     if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) navMenu.classList.remove('active');
 });
 
+// ✅ DAFTAR PEMETAAN SUBKATEGORI → KATEGORI UTAMA
+const petaKategoriUtama = {
+    "Mobil Baru": "Kendaraan",
+    "Mobil Bekas": "Kendaraan",
+    "Motor Baru": "Kendaraan",
+    "Motor Bekas": "Kendaraan",
+    "Sepeda & Aksesoris": "Kendaraan",
+    "Kendaraan Komersial": "Kendaraan",
+    "Alat Berat & Mesin": "Kendaraan",
+    "Suku Cadang Kendaraan": "Kendaraan",
+    "Sewa Kendaraan": "Kendaraan",
+
+    "Rumah Dijual": "Properti",
+    "Rumah Disewa": "Properti",
+    "Apartemen & Kondominium": "Properti",
+    "Tanah & Kavling": "Properti",
+    "Ruko & Toko & Kantor": "Properti",
+    "Gudang & Tempat Usaha": "Properti",
+    "Kos-kosan & Penginapan": "Properti",
+    "Kontrakan": "Properti",
+
+    "HP & Smartphone": "Elektronik & Gadget",
+    "Laptop & Komputer": "Elektronik & Gadget",
+    "Tablet & Aksesoris": "Elektronik & Gadget",
+    "Kamera & Fotografi": "Elektronik & Gadget",
+    "TV & Audio Video": "Elektronik & Gadget",
+    "Konsol & Game": "Elektronik & Gadget",
+    "Peralatan Rumah Tangga Elektronik": "Elektronik & Gadget",
+
+    "Lowongan Kerja": "Lowongan & Bisnis",
+    "Lowongan Freelance": "Lowongan & Bisnis",
+    "Peluang Usaha & Waralaba": "Lowongan & Bisnis",
+    "Mitra Bisnis": "Lowongan & Bisnis",
+    "Toko & Usaha Dijual": "Lowongan & Bisnis",
+    "Jasa Keuangan & Asuransi": "Lowongan & Bisnis",
+
+    "Jasa Bangunan & Renovasi": "Jasa & Layanan",
+    "Jasa Kebersihan": "Jasa & Layanan",
+    "Jasa Kursus & Pendidikan": "Jasa & Layanan",
+    "Jasa Desain & Percetakan": "Jasa & Layanan",
+    "Jasa Transportasi & Kirim": "Jasa & Layanan",
+    "Jasa Pernikahan & Acara": "Jasa & Layanan",
+    "Jasa Kesehatan & Kecantikan": "Jasa & Layanan",
+    "Jasa Lainnya": "Jasa & Layanan",
+
+    "Pakaian & Sepatu": "Barang & Rumah Tangga",
+    "Perlengkapan Anak & Bayi": "Barang & Rumah Tangga",
+    "Perabotan & Furnitur": "Barang & Rumah Tangga",
+    "Barang Antik & Koleksi": "Barang & Rumah Tangga",
+    "Buku & Alat Tulis": "Barang & Rumah Tangga",
+    "Alat Olahraga & Hobi": "Barang & Rumah Tangga",
+
+    "Hewan Peliharaan": "Hewan & Tanaman",
+    "Hewan Ternak & Unggas": "Hewan & Tanaman",
+    "Perlengkapan Hewan": "Hewan & Tanaman",
+    "Tanaman Hias & Bibit": "Hewan & Tanaman",
+    "Pertanian & Perkebunan": "Hewan & Tanaman",
+
+    "Makanan & Minuman": "Kuliner & Makanan",
+    "Bahan Baku & Bumbu": "Kuliner & Makanan",
+    "Katering & Pesan Makanan": "Kuliner & Makanan",
+    "Usaha Kuliner Dijual": "Kuliner & Makanan",
+
+    "Barang Lainnya": "Lainnya",
+    "Permintaan Pembelian": "Lainnya",
+    "Informasi Umum": "Lainnya"
+};
+
 const API_URL = "https://script.google.com/macros/s/AKfycbzwXBjQbOoHjb5btAFrja7llCgXT1KahBrI2-OyrfERGYy2XXkeXJxNNhdKyupqI6TK7w/exec";
 
 const params = new URLSearchParams(location.search);
@@ -179,6 +250,18 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     const ad = res.ad;
     document.getElementById("detailContent").style.display = "block";
 
+    // ✅ ISI BREADCRUMB OTOMATIS
+    const subKategoriNama = ad.category || "Lainnya";
+    const kategoriUtamaNama = petaKategoriUtama[subKategoriNama] || subKategoriNama;
+
+    // Tautan kategori utama (buka semua iklan di kategori itu)
+    const linkKategoriUtama = document.getElementById("linkKategoriUtama");
+    linkKategoriUtama.textContent = kategoriUtamaNama;
+    linkKategoriUtama.href = `index.html#iklan?cari=${encodeURIComponent(kategoriUtamaNama)}`;
+
+    // Tampilkan subkategori
+    document.getElementById("subKategori").textContent = subKategoriNama;
+
     // ✅ Link kelola otomatis dengan ID iklan
     document.getElementById("kelolaBtn").href = `pasang.html?id=${ad.id}`;
 
@@ -186,8 +269,7 @@ fetch(API_URL + "?action=detail&id=" + encodeURIComponent(id))
     document.getElementById("adImage").src = ad.image;
     document.getElementById("adImage").alt = ad.title;
     document.getElementById("adTitle").textContent = ad.title;
-    document.getElementById("adCategory").textContent = ad.category;
-    document.getElementById("adCategory2").textContent = ad.category;
+    document.getElementById("adCategory2").textContent = subKategoriNama;
     document.getElementById("adLocation").textContent = ad.location;
 
     // Ubah link di deskripsi jadi bisa diklik
