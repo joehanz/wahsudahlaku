@@ -7,22 +7,11 @@ const TAMBAHAN_PER_KLIK = 7;
 let semuaDataIklan = [];
 let jumlahYangDitampilkan = 0;
 
-// Buka tutup menu di HP
-const menuToggle = document.getElementById('mobileMenu');
-const navMenu = document.querySelector('.nav-menu');
-
-menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
-
-document.addEventListener('click', (e) => {
-    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-    }
-});
+// ✅ SEMUA KODE FITUR MENU MOBILE DIHAPUS TOTAL
 
 // Ambil data iklan dari API saat halaman dibuka
 window.addEventListener('load', async () => {
+    const wadah = document.getElementById("daftar-iklan");
     try {
         const res = await fetch(API_URL);
         semuaDataIklan = await res.json();
@@ -32,9 +21,9 @@ window.addEventListener('load', async () => {
         
         tampilkanSebagianIklan();
     } catch (err) {
-        // Ganti pesan memuat dengan pesan error
-        document.getElementById("daftar-iklan").innerHTML = `<p style="color:red; grid-column:1/-1;">Gagal memuat iklan. Silakan coba lagi nanti.</p>`;
-        console.error(err);
+        // Tampilkan pesan error jika gagal ambil data
+        wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat iklan. Silakan segarkan halaman nanti.</p>`;
+        console.error("Error ambil data:", err);
     }
 });
 
@@ -42,16 +31,16 @@ window.addEventListener('load', async () => {
 function tampilkanSebagianIklan() {
     const wadah = document.getElementById("daftar-iklan");
     
-    // HAPUS PESAN "MEMUAT" SEKALI PERTAMA
+    // Hapus pesan memuat & bersihkan wadah
     if (jumlahYangDitampilkan === 0) {
-        wadah.innerHTML = ""; // Kosongkan dulu wadah
+        wadah.innerHTML = "";
     }
     
     // Ambil potongan data yang akan ditampilkan
     const potongan = semuaDataIklan.slice(jumlahYangDitampilkan, jumlahYangDitampilkan + TAMBAHAN_PER_KLIK);
     
     if (potongan.length === 0 && jumlahYangDitampilkan === 0) {
-        wadah.innerHTML = `<p style="grid-column:1/-1;">Belum ada iklan yang tayang. Jadilah yang pertama memasang iklan!</p>`;
+        wadah.innerHTML = `<p style="text-align:center; padding:30px;">📭 Belum ada iklan yang tayang. Jadilah yang pertama memasang iklan!</p>`;
         return;
     }
 
@@ -63,7 +52,7 @@ function tampilkanSebagianIklan() {
             <p>${(iklan.description || "").substring(0, 90)}...</p>
             <span class="lokasi">📍 ${iklan.location || "Lokasi tidak disebutkan"}</span>
             <span class="kategori">📂 ${iklan.category || "Lainnya"}</span>
-            <a href="https://rewangiklan.my.id/iklan.html?id=${iklan.id}" class="btn-detail" >Lihat Detail & Hubungi</a>
+            <a href="https://rewangiklan.my.id/iklan.html?id=${iklan.id}" class="btn-detail">Lihat Detail & Hubungi</a>
         </div>
     `).join("");
 
@@ -78,7 +67,7 @@ function tampilkanSebagianIklan() {
     } else if (semuaDataIklan.length > BATAS_AWAL) {
         htmlIklan += `
         <div class="tombol-navigasi">
-            <p style="color:#666;">Semua iklan sudah ditampilkan (Total: ${semuaDataIklan.length})</p>
+            <p style="color:#666;">✅ Semua iklan sudah ditampilkan (Total: ${semuaDataIklan.length})</p>
         </div>`;
     }
 
@@ -94,9 +83,10 @@ function tambahLagi() {
     tampilkanSebagianIklan();
 }
 
-// Fungsi pencarian iklan (SUDAH DIPERBAIKI)
+// Fungsi pencarian iklan
 async function cariIklan() {
     const kataKunci = document.getElementById("cari").value.toLowerCase().trim();
+    const wadah = document.getElementById("daftar-iklan");
 
     // Jika kolom pencarian kosong, tampilkan semua iklan terbaru
     if (!kataKunci) {
@@ -125,9 +115,8 @@ async function cariIklan() {
         hasil.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // Tampilkan hasil pencarian
-        const wadah = document.getElementById("daftar-iklan");
         if (hasil.length === 0) {
-            wadah.innerHTML = `<p style="grid-column:1/-1;">❌ Tidak ditemukan iklan dengan kata kunci: <strong>${kataKunci}</strong></p>`;
+            wadah.innerHTML = `<p style="text-align:center; padding:30px;">❌ Tidak ditemukan iklan dengan kata kunci: <strong>${kataKunci}</strong></p>`;
             return;
         }
 
@@ -144,6 +133,6 @@ async function cariIklan() {
 
     } catch (err) {
         console.error(err);
-        document.getElementById("daftar-iklan").innerHTML = `<p style="color:red; grid-column:1/-1;">Gagal mencari iklan. Coba lagi nanti.</p>`;
+        wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal mencari iklan. Coba lagi nanti.</p>`;
     }
 }
