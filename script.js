@@ -94,33 +94,40 @@ function tambahLagi() {
     tampilkanSebagianIklan();
 }
 
-// Fungsi pencarian iklan
+// Fungsi pencarian iklan (SUDAH DIPERBAIKI)
 async function cariIklan() {
     const kataKunci = document.getElementById("cari").value.toLowerCase().trim();
-    const katPilih = document.getElementById("kategori").value;
+
+    // Jika kolom pencarian kosong, tampilkan semua iklan terbaru
+    if (!kataKunci) {
+        jumlahYangDitampilkan = 0;
+        tampilkanSebagianIklan();
+        return;
+    }
 
     try {
         const res = await fetch(API_URL);
         const data = await res.json();
 
-        // Filter dulu
+        // Filter: BACA JUDUL, DESKRIPSI, LOKASI, DAN KATEGORI
         let hasil = data.filter(iklan => {
-            const cocokKata = kataKunci === "" 
-                || (iklan.title || "").toLowerCase().includes(kataKunci) 
-                || (iklan.description || "").toLowerCase().includes(kataKunci)
-                || (iklan.location || "").toLowerCase().includes(kataKunci);
+            const teksGabungan = (
+                (iklan.title || "") + " " +
+                (iklan.description || "") + " " +
+                (iklan.location || "") + " " +
+                (iklan.category || "")
+            ).toLowerCase();
             
-            const cocokKategori = katPilih === "" || (iklan.category || "") === katPilih;
-            return cocokKata && cocokKategori;
+            return teksGabungan.includes(kataKunci);
         });
 
         // Urutkan hasil pencarian juga dari terbaru
         hasil.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        // Tampilkan hasil pencarian — langsung ganti isi wadah
+        // Tampilkan hasil pencarian
         const wadah = document.getElementById("daftar-iklan");
         if (hasil.length === 0) {
-            wadah.innerHTML = `<p style="grid-column:1/-1;">Tidak ditemukan iklan yang sesuai kata kunci kamu.</p>`;
+            wadah.innerHTML = `<p style="grid-column:1/-1;">❌ Tidak ditemukan iklan dengan kata kunci: <strong>${kataKunci}</strong></p>`;
             return;
         }
 
@@ -137,7 +144,6 @@ async function cariIklan() {
 
     } catch (err) {
         console.error(err);
+        document.getElementById("daftar-iklan").innerHTML = `<p style="color:red; grid-column:1/-1;">Gagal mencari iklan. Coba lagi nanti.</p>`;
     }
 }
-
-
