@@ -77,28 +77,27 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 100%;
+  top: 100%; /* Tepi atas pantulan = tepat di tepi bawah gambar asli */
   left: 0;
   right: 0;
-  height: 87%; /* Bisa dinaikkan jadi 100% jika ingin setinggi gambar asli */
-  transform-origin: top center;
+  height: 100%; /* Pantulan setinggi gambar asli */
+  transform-origin: top center; /* Balik dari tepi atas pantulan, jadi nyambung */
   transform: scaleY(-1);
-  background-position: center bottom;
+  background-position: center bottom; /* Isi pantulan nyambung sempurna */
   background-size: 100% auto;
   background-repeat: no-repeat;
   filter: blur(1.5px) brightness(.7) saturate(1);
   opacity: .7;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, .7) 40%, rgba(0, 0, 0, .3) 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, .7) 40%, rgba(0, 0, 0, .3) 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.7) 40%, rgba(0,0,0,.3) 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.7) 40%, rgba(0,0,0,.3) 70%, transparent 100%);
   pointer-events: none;
   z-index: 2;
 }
 
 .wadah-gambar {
   position: relative;
-  overflow: visible; /* WAJIB: jangan sembunyikan bagian pantulan */
+  overflow: visible; /* Jangan potong pantulan */
 }
-
 .fade-overlay {
   position: absolute;
   top: 25%;
