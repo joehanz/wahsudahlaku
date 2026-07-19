@@ -77,7 +77,7 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 100%; /* Tepi atas pantulan = tepat di tepi bawah gambar asli */
+  top: 0; 
   left: 0;
   right: 0;
   height: 100%; /* Pantulan setinggi gambar asli */
