@@ -72,27 +72,29 @@ html, body {
   -ms-interpolation-mode: bicubic;
   transform: translateZ(0);
   backface-visibility: hidden;
-  z-index: 1;
+  z-index: 3; /* Lebih tinggi dari refleksi */
   margin-bottom: 0;
   padding-bottom: 0;
-  display: block; /* Hilangkan jarak bawah bawaan gambar */
+  display: block;
+  flex-shrink: 0; /* Wajib! Biar tinggi gambar tidak menyusut */
 }
 
 .reflection-glass {
   position: absolute;
-  top: 100%; /* Tepat di bawah gambar asli */
+  top: 25%; /* TEPAT di batas bawah gambar asli (karena gambar 25% tinggi kartu) */
   left: 0;
   right: 0;
-  height: 100%; /* Tinggi sama persis dengan gambar asli */
-  margin-top: -1px; /* Hilangkan garis celah tipis antar elemen */
-  background-position: center bottom; /* Sesuaikan posisi latar belakang */
-  background-size: 100% auto;
+  height: 20%; /* Tinggi refleksi pas, tidak terlalu panjang */
+  margin-top: -1px; /* Hilangkan celah tipis antar elemen */
+  background-position: center top; /* Sesuai posisi gambar asli */
+  background-size: 100% 25%; /* Sesuai ukuran gambar asli */
   background-repeat: no-repeat;
-  transform: scaleY(-1);
-  filter: blur(1.5px) brightness(.7) saturate(1);
-  opacity: .7;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, .7) 40%, rgba(0, 0, 0, .3) 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, .7) 40%, rgba(0, 0, 0, .3) 70%, transparent 100%);
+  transform: scaleY(-1); /* Balik jadi pantulan */
+  filter: blur(1px) brightness(1.2) saturate(1.1); /* LEBIH TERANG & JELAS */
+  opacity: 0.55; /* Terlihat jelas, tidak hilang */
+  /* Efek pudar refleksi: atas jelas, bawah transparan */
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 70%, transparent 100%);
   pointer-events: none;
   z-index: 2;
 }
