@@ -77,11 +77,10 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 75%;
+  top: 0;
   left: 0;
   right: 0;
   height: 100%;
-  margin-top: -1px;
   background-position: center top;
   background-size: 100% auto;
   background-repeat: no-repeat;
