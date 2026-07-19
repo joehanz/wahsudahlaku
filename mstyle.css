@@ -77,12 +77,12 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 100%; /* Tepat di bawah gambar asli */
+  top: 0;
   left: 0;
   right: 0;
-  height: 100%; /* Tinggi sama persis dengan gambar asli */
-  margin-top: -1px; /* Hilangkan garis celah tipis antar elemen */
-  background-position: center bottom; /* Sesuaikan posisi latar belakang */
+  height: 100%;
+  margin-top: -1px;
+  background-position: center top;
   background-size: 100% auto;
   background-repeat: no-repeat;
   transform: scaleY(-1);
