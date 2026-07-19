@@ -75,7 +75,7 @@ html, body {
   z-index: 1;
 }
 
-bro efek memantu ini agar tepi bawah gambar ori menempel di tepi atas gambar pantulan. yang mana pengaturannya .reflection-glass {
+.reflection-glass {
   position: absolute;
   top: 0;
   left: 0;
