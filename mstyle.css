@@ -77,16 +77,15 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 100%; /* Pindahkan ke TEPI BAWAH gambar asli */
+  top: 100%; /* WAJIB: Posisi awal tepi ATAS pantulan tepat di tepi BAWAH gambar asli */
   left: 0;
   right: 0;
   height: 87%;
-  margin-top: 2px; /* Hilangkan jika masih ada celah, atur negatif (-1px) jika ingin menempel rapat */
-  background-position: center bottom; /* Sesuaikan posisi latar ke BAWAH */
+  transform-origin: top center; /* WAJIB: Balik gambar dari TEPI ATAS pantulan, jadi tidak bergeser */
+  transform: scaleY(-1);
+  background-position: center bottom; /* WAJIB: Isi pantulan sejajar dengan bagian bawah gambar asli */
   background-size: 100% auto;
   background-repeat: no-repeat;
-  transform: scaleY(-1);
-  transform-origin: top center; /* Pastikan pembalikan berpusat di tepi atas elemen pantulan */
   filter: blur(1.5px) brightness(.7) saturate(1);
   opacity: .7;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, .7) 40%, rgba(0, 0, 0, .3) 70%, transparent 100%);
@@ -96,8 +95,8 @@ html, body {
 }
 
 .wadah-gambar {
-  position: relative; /* Wajib: sebagai acuan posisi elemen pantulan */
-  overflow: hidden; /* Opsional: memotong pantulan jika melebihi batas */
+  position: relative; /* Acuan posisi pantulan */
+  display: inline-block; /* Sesuaikan ukuran dengan gambar */
 }
 
 .fade-overlay {
