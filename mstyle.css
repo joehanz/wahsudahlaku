@@ -77,7 +77,7 @@ html, body {
 
 .reflection-glass {
   position: absolute;
-  top: 75%;
+  top: 2px;
   left: 0;
   right: 0;
   height: 100%;
