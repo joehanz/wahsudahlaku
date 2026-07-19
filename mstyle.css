@@ -73,15 +73,19 @@ html, body {
   transform: translateZ(0);
   backface-visibility: hidden;
   z-index: 1;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  display: block; /* Hilangkan jarak bawah bawaan gambar */
 }
 
 .reflection-glass {
   position: absolute;
-  top: 0;
+  top: 100%; /* Tepat di bawah gambar asli */
   left: 0;
   right: 0;
-  height: 100%;
-  background-position: center top;
+  height: 100%; /* Tinggi sama persis dengan gambar asli */
+  margin-top: -1px; /* Hilangkan garis celah tipis antar elemen */
+  background-position: center bottom; /* Sesuaikan posisi latar belakang */
   background-size: 100% auto;
   background-repeat: no-repeat;
   transform: scaleY(-1);
