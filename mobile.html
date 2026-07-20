@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id-ID">
 <head>
-
     <!-- ==========================================
      1. PERFORMANCE & CACHE CONTROL
      ========================================== -->
@@ -16,31 +15,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script>
     (function() {
-        // Fungsi untuk mengecek apakah user mengakses menggunakan PC / Desktop
         function checkDeviceAndRedirect() {
             const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const isLargeScreen = window.innerWidth >= 768;
             const isNotIndex = !window.location.pathname.endsWith("/index.html") && window.location.pathname !== "/";
 
-            // Jika dia pakai PC dan layarnya lebar, kembalikan ke versi desktop (index.html)
             if (isDesktop && isLargeScreen && isNotIndex) {
                 window.location.href = "https://rewangiklan.my.id/index.html";
             }
         }
-
-        // Jalankan langsung saat halaman dimuat
         checkDeviceAndRedirect();
-
-        // Jalankan kembali jika user mengubah ukuran browser (resize)
         window.addEventListener("resize", checkDeviceAndRedirect);
     })();
 </script>
 
 <!-- ==========================================
-     3. SEO METADATA
+     3. SEO METADATA (SAMA DENGAN VERSI UTAMA)
      ========================================== -->
-<title>Rewang Iklan - Tampilan Mobile</title>
-<meta name="description" content="Rewang Iklan - Tampilan khusus HP.">
+<title>Rewang Iklan - Pasang & Cari Iklan Gratis</title>
+<meta name="description" content="Rewang Iklan: Pasang dan cari iklan baris gratis untuk properti, kendaraan, barang, lowongan kerja, jasa, dan bisnis di seluruh Indonesia.">
 <meta name="robots" content="index,follow">
 <meta name="author" content="Rewang Iklan">
 <meta name="theme-color" content="#0F172A">
@@ -57,7 +50,7 @@
 <meta property="og:site_name" content="Rewang Iklan">
 <meta property="og:locale" content="id_ID">
 <meta property="og:title" content="Rewang Iklan - Tampilan Khusus Ponsel">
-<meta property="og:description" content="Pasang iklan lewat HP lebih cepat.">
+<meta property="og:description" content="Pasang dan cari iklan lewat HP lebih cepat dan mudah.">
 <meta property="og:url" content="https://rewangiklan.my.id/mobile.html">
 <meta property="og:image" content="https://raw.githubusercontent.com/joehanz/wahsudahlaku/refs/heads/main/image/template-iklan-dual-view.webp">
 <meta property="og:image:type" content="image/webp">
@@ -83,21 +76,20 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <!-- ==========================================
-     7. STRUCTURED DATA & THIRD PARTY LIBRARIES
+     7. STRUCTURED DATA & LIBRARIES
      ========================================== -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Rewang Iklan",
-  "url": "https://rewangiklan.my.id/mobile.html",
-  "description": "Tampilan khusus ponsel pasang cari iklan baris gratis.",
+  "url": "https://rewangiklan.my.id/",
+  "description": "Pasang dan cari iklan baris gratis untuk properti, kendaraan, barang, jasa, dan bisnis.",
   "inLanguage": "id-ID"
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.424.0/dist/umd/lucide.min.js"></script>    
 <link rel="stylesheet" href="mstyle.css">
-
 </head>
 <body>
 <div class="search-bar" id="searchBar">
