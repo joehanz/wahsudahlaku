@@ -552,7 +552,7 @@ navTop.addEventListener("click", () => { feedContainer.scrollTo({ top: 0, behavi
 // === BAGIKAN ===
 async function bagikanIklan(id) {
     if (!activeAd) return;
-    const tautan = `https://rewangiklan.my.id/iklan-saya.html?id=${id}`;
+    const tautan = `https://rewangiklan.my.id/iklan.html?id=${id}`;
     const data = {
         title: activeAd.title || "Iklan Rewang Iklan",
         text: `Lihat iklan: ${activeAd.title}`,
