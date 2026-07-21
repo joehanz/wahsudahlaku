@@ -223,6 +223,16 @@
 <div class="play-hint">Sentuh layar atau gulir untuk kembali</div>
 
     <script src="mscript.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // === Ubah Link di Deskripsi ===
+    const rawDesc = ad.description || "";
+    const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
+    });
+    document.getElementById("detailDesc").innerHTML = formattedDesc;
+});
+    </script>
 
 </body>
 </html>
