@@ -549,6 +549,13 @@ searchInput.addEventListener("input", () => {
 searchClear.addEventListener("click", () => { searchInput.value = ""; tampilkanAwal(); });
 navTop.addEventListener("click", () => { feedContainer.scrollTo({ top: 0, behavior: "smooth" }); });
 
+// === Ubah Link di Deskripsi ===
+        const rawDesc = ad.description || "";
+        const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
+        });
+        document.getElementById("adDescription").innerHTML = formattedDesc;
+
 // === BAGIKAN ===
 async function bagikanIklan(id) {
     if (!activeAd) return;
@@ -570,9 +577,3 @@ async function bagikanIklan(id) {
 // === MULAI ===
 document.addEventListener("DOMContentLoaded", ambilDataIklan);
 
-// === Ubah Link di Deskripsi ===
-        const rawDesc = ad.description || "";
-        const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
-        });
-        document.getElementById("adDescription").innerHTML = formattedDesc;
