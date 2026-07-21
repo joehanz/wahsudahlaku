@@ -567,5 +567,13 @@ async function bagikanIklan(id) {
     }
 }
 
+// Ubah Link di Deskripsi
+        const rawDesc = ad.description || "";
+        const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
+        });
+        document.getElementById("adDescription").innerHTML = formattedDesc;
+
+
 // === MULAI ===
 document.addEventListener("DOMContentLoaded", ambilDataIklan);
