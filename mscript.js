@@ -285,7 +285,7 @@ async function bukaDetailIklanSaya() {
     document.getElementById("detailDesc").textContent = activeAd.description || "Tidak ada deskripsi";
     document.getElementById("btnWa").onclick = () => {
         const nomor = activeAd.whatsapp.toString().replace(/\D/g, "");
-        const pesan = encodeURIComponent(`Halo, tertarik dengan iklan "${activeAd.title}"`);
+        const pesan = encodeURIComponent(`Halo, saya tertarik dengan iklan "${activeAd.title}" info dari situs https://rewangiklan.my.id`);
         window.open(`https://wa.me/${nomor}?text=${pesan}`, "_blank");
     };
     detailOverlay.classList.add("show");
@@ -548,13 +548,6 @@ searchInput.addEventListener("input", () => {
 
 searchClear.addEventListener("click", () => { searchInput.value = ""; tampilkanAwal(); });
 navTop.addEventListener("click", () => { feedContainer.scrollTo({ top: 0, behavior: "smooth" }); });
-
-// === Ubah Link di Deskripsi ===
-        const rawDesc = ad.description || "";
-        const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
-        });
-        document.getElementById("adDescription").innerHTML = formattedDesc;
 
 // === BAGIKAN ===
 async function bagikanIklan(id) {
