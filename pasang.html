@@ -199,8 +199,8 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
                             <div class="form-group">
                                 <label> Deskripsi Iklan </label>
-                                <textarea id="description" maxlength="500" required placeholder="Jelaskan barang atau jasa yang kamu tawarkan secara jelas..."></textarea>
-                                <div id="charCount" class="char-count">0 / 500</div>
+                                <textarea id="description" maxlength="3000" required placeholder="Jelaskan barang atau jasa yang kamu tawarkan secara jelas..."></textarea>
+                                <div id="charCount" class="char-count">0 / 3000</div>
                             </div>
                         </div>
                     </div>
@@ -295,7 +295,7 @@ async function muatDataIklan(id) {
         document.getElementById("location").value = currentAd.location;
         document.getElementById("whatsapp").value = currentAd.whatsapp;
         document.getElementById("description").value = currentAd.description;
-        count.textContent = currentAd.description.length + " / 500";
+        count.textContent = currentAd.description.length + " / 3000";
         document.getElementById("previewImage").src = currentAd.image;
         imageBase64 = currentAd.image;
 
@@ -305,7 +305,7 @@ async function muatDataIklan(id) {
 }
 
 // HITUNG KARAKTER
-desc.addEventListener("input", () => count.textContent = desc.value.length + " / 500");
+desc.addEventListener("input", () => count.textContent = desc.value.length + " / 3000");
 
 // PREVIEW & KONVERSI GAMBAR
 document.getElementById("imageInput").addEventListener("change", handleImage);
@@ -359,7 +359,7 @@ adForm.addEventListener("submit", async e => {
         if (result.success) {
             alert(`✅ IKLAN BERHASIL DIPASANG!\nID: ${result.id}\nKode Kelola: ${result.secret_code}`);
             simpanKeRiwayat(payload.title, payload.description);
-            adForm.reset(); document.getElementById("previewImage").src = ""; count.textContent = "0 / 500"; imageBase64 = "";
+            adForm.reset(); document.getElementById("previewImage").src = ""; count.textContent = "0 / 3000"; imageBase64 = "";
         } else {
             alert("❌ " + result.error);
         }
