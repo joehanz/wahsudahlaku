@@ -224,13 +224,11 @@
 
     <script src="mscript.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    // === Ubah Link di Deskripsi ===
-    const rawDesc = ad.description || "";
-    const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
-    });
-    document.getElementById("detailDesc").innerHTML = formattedDesc;
+        document.addEventListener("DOMContentLoaded", function(){
+  const el = document.getElementById("detailDesc");
+  if(el){
+    el.innerHTML = el.textContent.replace(/(https?:\/\/\S+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff;text-decoration:none">${u}</a>`);
+  }
 });
     </script>
 
