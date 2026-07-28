@@ -94,8 +94,9 @@ function cariIklan() {
     `).join("");
 }
 
-// === BAGIAN 2: IKLAN MONETAG / N6WXM ===
-(function(s){
-    s.dataset.zone = '11439517';
-    s.src = 'https://n6wxm.com/vignette.min.js';
-})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+// === IKLAN AMAN SAJA ===
+const adScript = document.createElement('script');
+adScript.dataset.zone = '11439517';
+adScript.src = 'https://n6wxm.com/vignette.min.js';
+adScript.async = true;
+document.body.appendChild(adScript);
