@@ -1,4 +1,4 @@
-script iklan saya taruh bawah saya campur dengan script.js ndak apa? coba cek // Link API App Script kamu
+// Link API App Script kamu
 const API_URL = "https://script.google.com/macros/s/AKfycbx-BaNk5IxrhHHp6wSJlBM9OI4t2y1uAjwUlLFAW8whVcI2xtvlj3D8zx3SkN52Fc15Eg/exec";
 
 // Pengaturan tampilan
