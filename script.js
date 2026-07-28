@@ -1,18 +1,22 @@
-// === BAGIAN 1: TAMPILAN DAFTAR IKLAN ===
+script iklan saya taruh bawah saya campur dengan script.js ndak apa? coba cek // Link API App Script kamu
 const API_URL = "https://script.google.com/macros/s/AKfycbx-BaNk5IxrhHHp6wSJlBM9OI4t2y1uAjwUlLFAW8whVcI2xtvlj3D8zx3SkN52Fc15Eg/exec";
 
+// Pengaturan tampilan
 const BATAS_AWAL = 7;
 const TAMBAHAN_PER_KLIK = 7;
 let semuaDataIklan = [];
 let jumlahYangDitampilkan = 0;
 
+// Ambil data CUKUP 1 KALI saat halaman dibuka
 window.addEventListener('load', async () => {
     const wadah = document.getElementById("daftar-iklan");
     try {
         const res = await fetch(API_URL);
         semuaDataIklan = await res.json();
         
+        // Urutkan: Iklan TERBARU paling atas
         semuaDataIklan.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
         tampilkanSebagianIklan();
     } catch (err) {
         wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat iklan. Silakan segarkan halaman.</p>`;
@@ -20,6 +24,7 @@ window.addEventListener('load', async () => {
     }
 });
 
+// Tampilkan iklan bertahap (PAKAI DATA YANG SUDAH ADA, TIDAK PANGGIL API LAGI)
 function tampilkanSebagianIklan() {
     const wadah = document.getElementById("daftar-iklan");
     
@@ -60,6 +65,7 @@ function tambahLagi() {
     tampilkanSebagianIklan();
 }
 
+// Pencarian: PAKAI DATA YANG SUDAH ADA, TIDAK PANGGIL API LAGI
 function cariIklan() {
     const kataKunci = document.getElementById("cari").value.toLowerCase().trim();
     const wadah = document.getElementById("daftar-iklan");
@@ -70,6 +76,7 @@ function cariIklan() {
         return;
     }
 
+    // Filter langsung dari data yang sudah dimuat
     let hasil = semuaDataIklan.filter(iklan => {
         const teksGabungan = ((iklan.title||"") + " " + (iklan.description||"") + " " + (iklan.location||"") + " " + (iklan.category||"")).toLowerCase();
         return teksGabungan.includes(kataKunci);
@@ -93,10 +100,3 @@ function cariIklan() {
         </div>
     `).join("");
 }
-
-// === IKLAN AMAN SAJA ===
-const adScript = document.createElement('script');
-adScript.dataset.zone = '11439517';
-adScript.src = 'https://n6wxm.com/vignette.min.js';
-adScript.async = true;
-document.body.appendChild(adScript);
