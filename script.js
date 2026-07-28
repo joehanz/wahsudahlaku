@@ -100,3 +100,9 @@ function cariIklan() {
         </div>
     `).join("");
 }
+
+// === BAGIAN 2: IKLAN MONETAG (DIPASANG PALING BAWAH) ===
+(function(s){
+    s.dataset.zone='11439624';
+    s.src='https://n6wxm.com/vignette.min.js';
+})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
