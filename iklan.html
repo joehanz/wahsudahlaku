@@ -21,11 +21,11 @@
     <meta property="og:url" id="ogUrl" content="https://rewangiklan.my.id/iklan.html">
     <meta property="og:image" id="ogImage" content="/image/template-iklan-dual-view.webp">
     <meta property="og:image:secure_url" id="ogImageSecure" content="/image/template-iklan-dual-view.webp">
-    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Detail Iklan Rewang Iklan">
-
+    <meta property="og:image:type" content="image/jpeg">
+    
 <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" id="twTitle" content="Detail Iklan | Rewang Iklan">
@@ -72,7 +72,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
             <a href="privacy.html">Kebijakan Privasi</a>
             <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
         </nav>
-        <!-- TOMBOL MENU BURGER DIHAPUS -->
     </div>
 </header>
 
@@ -80,7 +79,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     <div class="container">
         <div class="col-panduan" style="max-width:900px; margin:0 auto;">
 
-            <!-- BREADCRUMB BERTINGKAT -->
             <div class="breadcrumb" style="padding:10px 0; margin-bottom:20px;">
                 <a href="index.html" style="color:#2e7d32; text-decoration:none;">Beranda</a>
                 <span style="margin:0 8px; color:#666;">›</span>
@@ -159,7 +157,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     </div>
 </section>
 
-<!-- Iklan AdSense -->
 <div class="container" style="max-width:900px; margin:30px auto;">
     <div style="text-align:center; margin-top:40px; padding:20px; background:#fff; border-radius:8px;">
         <h4>📚 Ingin Iklanmu Cepat Dilihat Pembeli?</h4>
@@ -178,7 +175,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 </script>
 </div>
 
-<!-- Footer -->
 <footer class="footer">
     <div class="container">
         <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
@@ -186,9 +182,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 </footer>
 
 <script>
-// KODE MENU MOBILE DIHAPUS TOTAL
-
-// PEMETAAN SUBKATEGORI KE KATEGORI UTAMA
 const petaKategoriUtama = {
     "Mobil Baru": "Kendaraan", "Mobil Bekas": "Kendaraan", "Motor Baru": "Kendaraan", "Motor Bekas": "Kendaraan",
     "Sepeda & Aksesoris": "Kendaraan", "Kendaraan Komersial": "Kendaraan", "Alat Berat & Mesin": "Kendaraan",
@@ -238,17 +231,14 @@ if (!id) {
         const ad = res.ad;
         document.getElementById("detailContent").style.display = "block";
 
-        // Isi Breadcrumb
         const subKategoriNama = ad.category || "Lainnya";
         const kategoriUtamaNama = petaKategoriUtama[subKategoriNama] || subKategoriNama;
         document.getElementById("linkKategoriUtama").textContent = kategoriUtamaNama;
         document.getElementById("linkKategoriUtama").href = `index.html#iklan?cari=${encodeURIComponent(kategoriUtamaNama)}`;
         document.getElementById("subKategori").textContent = subKategoriNama;
 
-        // Link Kelola
         document.getElementById("kelolaBtn").href = `pasang.html?id=${ad.id}`;
 
-        // Isi Data Iklan
         document.getElementById("adImage").src = ad.image || "https://rewangiklan.my.id/image/no-image.webp";
         document.getElementById("adImage").alt = ad.title;
         document.getElementById("adTitle").textContent = ad.title;
@@ -258,25 +248,22 @@ if (!id) {
         document.getElementById("adViews").textContent = (ad.views || 0) + " kali";
         document.getElementById("adPhone").textContent = ad.whatsapp || "-";
 
-        // Format Tanggal
         const tgl = new Date(ad.date);
         document.getElementById("adDate").textContent = tgl.toLocaleDateString("id-ID", {
             day: "2-digit", month: "long", year: "numeric"
         });
 
-        // Ubah Link di Deskripsi
         const rawDesc = ad.description || "";
         const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
             return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
         });
         document.getElementById("adDescription").innerHTML = formattedDesc;
 
-       // Link WhatsApp - persis contoh yang kamu inginkan
-document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?text=${encodeURIComponent(
-  `Saya tertarik dengan iklan: "${ad.title}", info dari https://rewangiklan.my.id/iklan.html?slug=${ad.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`
-)}`;
+        // ✅ LINK WA SUDAH BENAR: PAKAI JUDUL DI PESAN, LINK PAKAI ID (TANPA SLUG)
+        document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?text=${encodeURIComponent(
+          `Saya tertarik dengan iklan: "${ad.title}", info dari https://rewangiklan.my.id/iklan.html?id=${ad.id}`
+        )}`;
 
-        // Perbarui SEO Dinamis
         updateSEO(ad);
     })
     .catch(err => {
@@ -286,7 +273,6 @@ document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?t
     });
 }
 
-// Fungsi Perbarui SEO
 function updateSEO(ad) {
     const descPendek = ad.description.length > 155 ? ad.description.substring(0,155) + "..." : ad.description;
     document.title = ad.title + " | Rewang Iklan";
