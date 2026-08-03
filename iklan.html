@@ -223,22 +223,27 @@ if (!id) {
     .then(r => r.json())
     .then(res => {
         document.getElementById("loadingBox").style.display = "none";
-        if (!res.success) {
+        
+        // PAKAI DATA KALAU ADA, TETAP JALANKAN SEO MESKIPUN ADA PERINGATAN
+        if (!res.success && !res.ad) {
             document.getElementById("errorBox").style.display = "block";
             return;
         }
 
-        const ad = res.ad;
+        const ad = res.ad || res;
         document.getElementById("detailContent").style.display = "block";
 
+        // Isi Breadcrumb
         const subKategoriNama = ad.category || "Lainnya";
         const kategoriUtamaNama = petaKategoriUtama[subKategoriNama] || subKategoriNama;
         document.getElementById("linkKategoriUtama").textContent = kategoriUtamaNama;
         document.getElementById("linkKategoriUtama").href = `index.html#iklan?cari=${encodeURIComponent(kategoriUtamaNama)}`;
         document.getElementById("subKategori").textContent = subKategoriNama;
 
+        // Link Kelola
         document.getElementById("kelolaBtn").href = `pasang.html?id=${ad.id}`;
 
+        // Isi Data Iklan
         document.getElementById("adImage").src = ad.image || "https://rewangiklan.my.id/image/no-image.webp";
         document.getElementById("adImage").alt = ad.title;
         document.getElementById("adTitle").textContent = ad.title;
@@ -248,22 +253,25 @@ if (!id) {
         document.getElementById("adViews").textContent = (ad.views || 0) + " kali";
         document.getElementById("adPhone").textContent = ad.whatsapp || "-";
 
+        // Format Tanggal
         const tgl = new Date(ad.date);
         document.getElementById("adDate").textContent = tgl.toLocaleDateString("id-ID", {
             day: "2-digit", month: "long", year: "numeric"
         });
 
+        // Ubah Link di Deskripsi
         const rawDesc = ad.description || "";
         const formattedDesc = rawDesc.replace(/(https?:\/\/[^\s]+)/g, url => {
             return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#00a2ff; text-decoration:none;">${url}</a>`;
         });
         document.getElementById("adDescription").innerHTML = formattedDesc;
 
-        // ✅ LINK WA SUDAH BENAR: PAKAI JUDUL DI PESAN, LINK PAKAI ID (TANPA SLUG)
+        // Link WhatsApp - PERSIS YANG KAMU MAU
         document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?text=${encodeURIComponent(
           `Saya tertarik dengan iklan: "${ad.title}", info dari https://rewangiklan.my.id/iklan.html?id=${ad.id}`
         )}`;
 
+        // ✅ DIPASTIKAN BERJALAN: Judul, Deskripsi, Gambar diambil dari data iklan
         updateSEO(ad);
     })
     .catch(err => {
@@ -274,16 +282,19 @@ if (!id) {
 }
 
 function updateSEO(ad) {
-    const descPendek = ad.description.length > 155 ? ad.description.substring(0,155) + "..." : ad.description;
-    document.title = ad.title + " | Rewang Iklan";
+    const descPendek = ad.description && ad.description.length > 155 
+        ? ad.description.substring(0,155) + "..." 
+        : (ad.description || "Lihat detail lengkap iklan di Rewang Iklan.");
+
+    document.title = (ad.title || "Detail Iklan") + " | Rewang Iklan";
     document.getElementById("metaDesc").setAttribute("content", descPendek);
     document.getElementById("canonicalLink").setAttribute("href", location.href);
-    document.getElementById("ogTitle").setAttribute("content", ad.title);
+    document.getElementById("ogTitle").setAttribute("content", ad.title || "Detail Iklan");
     document.getElementById("ogDesc").setAttribute("content", descPendek);
     document.getElementById("ogUrl").setAttribute("href", location.href);
     document.getElementById("ogImage").setAttribute("content", ad.image || "/image/template-iklan-dual-view.webp");
     document.getElementById("ogImageSecure").setAttribute("content", ad.image || "/image/template-iklan-dual-view.webp");
-    document.getElementById("twTitle").setAttribute("content", ad.title);
+    document.getElementById("twTitle").setAttribute("content", ad.title || "Detail Iklan");
     document.getElementById("twDesc").setAttribute("content", descPendek);
     document.getElementById("twImage").setAttribute("content", ad.image || "https://rewangiklan.my.id/image/iklanbaris3.png");
 }
