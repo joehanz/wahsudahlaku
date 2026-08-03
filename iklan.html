@@ -271,8 +271,10 @@ if (!id) {
         });
         document.getElementById("adDescription").innerHTML = formattedDesc;
 
-        // Link WhatsApp
-        document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?text=${encodeURIComponent("Saya tertarik dengan iklan: " + ad.title)}`;
+       // Link WhatsApp - persis contoh yang kamu inginkan
+document.getElementById("waButton").href = `https://wa.me/${ad.whatsapp || ""}?text=${encodeURIComponent(
+  `Saya tertarik dengan iklan: "${ad.title}", info dari https://rewangiklan.my.id/iklan.html?slug=${ad.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`
+)}`;
 
         // Perbarui SEO Dinamis
         updateSEO(ad);
