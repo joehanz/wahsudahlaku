@@ -174,7 +174,7 @@ function tampilkanDaftarBlog() {
                     ✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}
                 </div>
                 <h4 style="font-size:20px; color:#222; margin-bottom:12px;">${artikel.judul}</h4>
-                <p style="line-height:1.7; color:#555; margin-bottom:15px;">${cuplikan}</p>
+                <p style="line-height:1.7; color:#555; margin-bottom:15px; white-space:pre-wrap;">${cuplikan}</p>
                 <button onclick="bukaArtikel('${artikel.slug}')" style="background:#2e7d32; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:500;">Baca Selengkapnya →</button>
             </div>
         `;
@@ -188,7 +188,10 @@ function bukaArtikel(slug) {
 
     infoPenulis.textContent = `✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}`;
     judulModal.textContent = artikel.judul;
-    isiModal.textContent = artikel.isi;
+
+    // ✅ DIUBAH: pakai innerHTML agar link <a> bisa diklik
+    isiModal.innerHTML = artikel.isi;
+
     modalBlog.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
