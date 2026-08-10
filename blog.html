@@ -161,12 +161,17 @@ fetch('blog.json')
     console.error("Error ambil blog:", err);
 });
 
-// 🔧 FUNGSI: UBAH LINK BIASA JADI LINK BISA DIKLIK OTOMATIS
+// 🔧 FUNGSI: UBAH LINK BIASA JADI BISA DIKLIK — BISA PAKAI https ATAU TIDAK
 function ubahLinkBisaDiklik(teks) {
-  // Ubah tulisan yang berawalan http/https jadi link <a> otomatis
+  // Cocokkan: apa saja yang terlihat seperti alamat situs
+  // Contoh: tukarfollow.web.id | www.rajarayap.com | https://...
   return teks.replace(
-    /(https?:\/\/[^\s]+)/g,
-    '<a href="$1" target="_blank" style="color:#2e7d32; text-decoration:underline;">$1</a>'
+    /((https?:\/\/)?[\w\-]+\.[\w\-\/\.]+[^\s.,;:!?)"']*)/g,
+    function(situs) {
+      // Kalau belum ada https://, tambahkan otomatis
+      const alamat = situs.startsWith('http') ? situs : 'https://' + situs;
+      return `<a href="${alamat}" target="_blank" style="color:#2e7d32; text-decoration:underline;">${situs}</a>`;
+    }
   );
 }
 
@@ -183,7 +188,7 @@ function tampilkanDaftarBlog() {
                     ✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}
                 </div>
                 <h4 style="font-size:20px; color:#222; margin-bottom:12px;">${artikel.judul}</h4>
-                <p style="line-height:1.7; color:#555; margin-bottom:15px; white-space:pre-wrap;">${cuplikan}</p>
+                <p style="line-height:1.7; color:#555; margin-bottom:15px; white-space:pre-wrap;">${ubahLinkBisaDiklik(cuplikan)}</p>
                 <button onclick="bukaArtikel('${artikel.slug}')" style="background:#2e7d32; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:500;">Baca Selengkapnya →</button>
             </div>
         `;
@@ -198,7 +203,7 @@ function bukaArtikel(slug) {
     infoPenulis.textContent = `✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}`;
     judulModal.textContent = artikel.judul;
 
-    // ✅ PAKAI innerHTML + UBAH LINK OTOMATIS
+    // ✅ Link otomatis berfungsi, pakai https atau TIDAK PAKAI juga bisa
     isiModal.innerHTML = ubahLinkBisaDiklik(artikel.isi);
 
     modalBlog.style.display = 'block';
