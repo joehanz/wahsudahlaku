@@ -161,6 +161,15 @@ fetch('blog.json')
     console.error("Error ambil blog:", err);
 });
 
+// 🔧 FUNGSI: UBAH LINK BIASA JADI LINK BISA DIKLIK OTOMATIS
+function ubahLinkBisaDiklik(teks) {
+  // Ubah tulisan yang berawalan http/https jadi link <a> otomatis
+  return teks.replace(
+    /(https?:\/\/[^\s]+)/g,
+    '<a href="$1" target="_blank" style="color:#2e7d32; text-decoration:underline;">$1</a>'
+  );
+}
+
 // TAMPILKAN DAFTAR DENGAN CUPLIKAN
 function tampilkanDaftarBlog() {
     const wadah = document.getElementById('daftar-blog');
@@ -189,8 +198,8 @@ function bukaArtikel(slug) {
     infoPenulis.textContent = `✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}`;
     judulModal.textContent = artikel.judul;
 
-    // ✅ DIUBAH: pakai innerHTML agar link <a> bisa diklik
-    isiModal.innerHTML = artikel.isi;
+    // ✅ PAKAI innerHTML + UBAH LINK OTOMATIS
+    isiModal.innerHTML = ubahLinkBisaDiklik(artikel.isi);
 
     modalBlog.style.display = 'block';
     document.body.style.overflow = 'hidden';
