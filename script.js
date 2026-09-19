@@ -1,9 +1,11 @@
-// Link API App Script kamu
+// Link API App Script Kamu
 const API_URL = "https://script.google.com/macros/s/AKfycbx-BaNk5IxrhHHp6wSJlBM9OI4t2y1uAjwUlLFAW8whVcI2xtvlj3D8zx3SkN52Fc15Eg/exec";
 
 // Pengaturan tampilan
 const BATAS_AWAL = 7;
 const TAMBAHAN_PER_KLIK = 7;
+const GAMBAR_DEFAULT = 'https://via.placeholder.com/400x300/e9e9e9/666?text=Gambar+Tidak+Tersedia';
+
 let semuaDataIklan = [];
 let jumlahYangDitampilkan = 0;
 
@@ -24,7 +26,16 @@ window.addEventListener('load', async () => {
     }
 });
 
-// Tampilkan iklan bertahap (PAKAI DATA YANG SUDAH ADA, TIDAK PANGGIL API LAGI)
+// Format nomor WhatsApp: pastikan pakai awalan 62, bukan 0 atau hilang
+function formatWA(wa) {
+    if (!wa) return "";
+    wa = String(wa).replace(/\D/g, ""); // Hapus karakter non-angka
+    if (wa.startsWith("0")) wa = "62" + wa.slice(1);
+    if (!wa.startsWith("62")) wa = "62" + wa;
+    return wa;
+}
+
+// Tampilkan iklan bertahap
 function tampilkanSebagianIklan() {
     const wadah = document.getElementById("daftar-iklan");
     
@@ -39,7 +50,10 @@ function tampilkanSebagianIklan() {
 
     let htmlIklan = potongan.map(iklan => `
         <div class="card-iklan">
-            <img src="${iklan.image || 'https://rewangiklan.my.id/image/no-image.webp'}" alt="${iklan.title}" loading="lazy">
+            <img src="${iklan.image || GAMBAR_DEFAULT}" 
+                 alt="${iklan.title}" 
+                 loading="lazy"
+                 onerror="this.src='${GAMBAR_DEFAULT}'">
             <h4>${iklan.title}</h4>
             <p>${(iklan.description || "").substring(0, 90)}...</p>
             <span class="lokasi">📍 ${iklan.location || "Lokasi tidak disebutkan"}</span>
@@ -65,18 +79,17 @@ function tambahLagi() {
     tampilkanSebagianIklan();
 }
 
-// Pencarian: PAKAI DATA YANG SUDAH ADA, TIDAK PANGGIL API LAGI
+// Pencarian
 function cariIklan() {
     const kataKunci = document.getElementById("cari").value.toLowerCase().trim();
     const wadah = document.getElementById("daftar-iklan");
-
+    
     if (!kataKunci) {
         jumlahYangDitampilkan = 0;
         tampilkanSebagianIklan();
         return;
     }
 
-    // Filter langsung dari data yang sudah dimuat
     let hasil = semuaDataIklan.filter(iklan => {
         const teksGabungan = ((iklan.title||"") + " " + (iklan.description||"") + " " + (iklan.location||"") + " " + (iklan.category||"")).toLowerCase();
         return teksGabungan.includes(kataKunci);
@@ -91,7 +104,10 @@ function cariIklan() {
 
     wadah.innerHTML = hasil.map(iklan => `
         <div class="card-iklan">
-            <img src="${iklan.image || 'https://rewangiklan.my.id/image/no-image.webp'}" alt="${iklan.title}" loading="lazy">
+            <img src="${iklan.image || GAMBAR_DEFAULT}" 
+                 alt="${iklan.title}" 
+                 loading="lazy"
+                 onerror="this.src='${GAMBAR_DEFAULT}'">
             <h4>${iklan.title}</h4>
             <p>${(iklan.description || "").substring(0, 90)}...</p>
             <span class="lokasi">📍 ${iklan.location || "Lokasi tidak disebutkan"}</span>
@@ -101,7 +117,7 @@ function cariIklan() {
     `).join("");
 }
 
-// === BAGIAN 2: IKLAN MONETAG (DIPASANG PALING BAWAH) ===
+// === Iklan Monetag ===
 (function(s){
     s.dataset.zone='11439624';
     s.src='https://n6wxm.com/vignette.min.js';
