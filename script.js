@@ -122,3 +122,22 @@ function cariIklan() {
     s.dataset.zone='11439624';
     s.src='https://n6wxm.com/vignette.min.js';
 })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+// === MENU HAMBURGER MOBILE ===
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Tutup menu saat klik di luar
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+    }
+});
