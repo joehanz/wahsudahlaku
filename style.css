@@ -271,7 +271,18 @@
 }
 
 /* Tampilan Mobile */
+.menu-toggle {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
     .nav-menu {
         position: absolute;
         top: 70px;
@@ -288,10 +299,6 @@
         left: 0;
     }
 
-    .menu-toggle {
-        display: block;
-    }
-
     .row {
         grid-template-columns: 1fr;
     }
@@ -305,7 +312,6 @@
         max-width: 320px;
     }
 }
-
 /* =========================
 FORM PASANG IKLAN (DARI STYLE LAMA KAMU)
 ========================= */
