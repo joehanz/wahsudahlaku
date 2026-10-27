@@ -301,40 +301,7 @@ function updateSEO(ad) {
 }
 </script>
 
-    <!-- Skrip Menu Hamburger -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-    
-    if (!menuToggle) {
-        console.error("Elemen #menuToggle TIDAK DITEMUKAN!");
-        return;
-    }
-    if (!navMenu) {
-        console.error("Elemen #navMenu TIDAK DITEMUKAN!");
-        return;
-    }
-
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navMenu.classList.toggle('active');
-        console.log("Menu diklik, status aktif:", navMenu.classList.contains('active'));
-    });
-
-    // Tutup menu saat klik di luar
-    document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-            navMenu.classList.remove('active');
-        }
-    });
-
-    // Cegah tutup saat klik di dalam menu
-    navMenu.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-});
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
