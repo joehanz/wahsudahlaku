@@ -21,7 +21,7 @@
     <meta property="og:url" content="https://rewangiklan.my.id/blog.html">
     <meta property="og:image" content="/image/template-iklan-dual-view.webp">
     <meta property="og:image:secure_url" content="/image/template-iklan-dual-view.webp">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:type" content="image/webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Blog Rewang Iklan">
@@ -34,7 +34,7 @@
     <meta name="twitter:image:alt" content="Blog Rewang Iklan">
 
 <!-- Icon & Aset -->
-    <link rel="icon" type="image/webp" href="/image/icon%20tembus%20rewang%20iklan.gif">  
+    <link rel="icon" type="image/gif" href="/image/icon%20tembus%20rewang%20iklan.gif">  
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +51,8 @@
   "@type":"Organization",
   "name":"Rewang Iklan",
   "logo":"/image/template-iklan-dual-view.webp"
- }
+ },
+ "lastReviewed":"2026-10-27"
 }
 </script>
 
@@ -61,17 +62,12 @@
 <link rel="alternate" hreflang="id" href="https://rewangiklan.my.id/blog.html">
 <link rel="alternate" hreflang="x-default" href="https://rewangiklan.my.id/blog.html">
 
-<!-- Detektor Perangkat: Arahkan HP ke mobile.html -->
-<script>
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.location.href = "mobile.html";
-}
-</script>
-    <script>(function(s){s.dataset.zone='11439624',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<!-- Iklan Monetag -->
+<script>(function(s){s.dataset.zone='11439624';s.src='https://n6wxm.com/vignette.min.js';})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </head>
 <body>
 
-<!-- Header Khusus Desktop -->
+<!-- Header -->
 <header class="header">
     <div class="container">
         <div class="logo">
@@ -82,22 +78,27 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
                 REWANG IKLAN
             </h2>
         </div>
-        <nav class="nav-menu">
+        
+        <!-- Tombol Menu Hamburger Mobile -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">
+            ☰
+        </button>
+        
+        <nav class="nav-menu" id="navMenu">
             <a href="index.html">Beranda</a>
             <a href="about.html">Tentang Kami</a>
-            <a href="blog.html">Blog</a>
+            <a href="blog.html" class="aktif">Blog</a>
             <a href="privacy.html">Kebijakan Privasi</a>
-            <a href="contact.html" class="aktif">Hubungi Kami</a>
+            <a href="contact.html">Hubungi Kami</a>
             <button class="btn-pasang" onclick="window.location.href='pasang.html'">Pasang Iklan Gratis</button>
         </nav>
-        <!-- TOMBOL MENU BURGER DIHAPUS -->
     </div>
 </header>
 
 <section class="content-wrapper">
     <div class="container">
-        <div class="col-panduan" style="max-width:900px; margin:0 auto;">
-            <h3>📚 Blog & Panduan Beriklan</h3>
+        <div class="col-panduan" style="max-width:900px; margin:0 auto; padding:20px;">
+            <h1 style="font-size:28px; color:#222; margin-bottom:20px;">📚 Blog & Panduan Beriklan</h1>
             <p class="intro-panduan" style="line-height:1.8; color:#444; margin-bottom:25px;">
                 Kumpulan artikel, tips, dan panduan lengkap cara beriklan yang efektif, jujur, dan disukai pembeli di Rewang Iklan.
             </p>
@@ -120,27 +121,62 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 </div>
 
 <!-- Iklan AdSense -->
-<div class="container" style="max-width:1100px; margin:20px auto;">
+<div class="container" style="max-width:1100px; margin:20px auto; padding:0 15px;">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6458870303612779"
      crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 </div>
 
 <!-- Footer -->
 <footer class="footer">
     <div class="container">
         <p>© 2026 Rewang Iklan — Wadah Beriklan Saling Bantu. Semua Iklan Dijaga Kebenarannya.</p>
+        <p style="margin-top:8px; font-size:14px;">
+            <a href="privacy.html" style="color:inherit; text-decoration:underline;">Kebijakan Privasi</a> | 
+            <a href="contact.html" style="color:inherit; text-decoration:underline;">Hubungi Kami</a>
+        </p>
     </div>
 </footer>
 
 <script>
-// KODE FITUR MENU MOBILE DIHAPUS TOTAL
+// === MENU HAMBURGER MOBILE ===
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (!menuToggle) {
+        console.error("Elemen #menuToggle TIDAK DITEMUKAN!");
+        return;
+    }
+    if (!navMenu) {
+        console.error("Elemen #navMenu TIDAK DITEMUKAN!");
+        return;
+    }
+
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+        console.log("Menu diklik, status aktif:", navMenu.classList.contains('active'));
+    });
+
+    // Tutup menu saat klik di luar
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+        }
+    });
+
+    // Cegah tutup saat klik di dalam menu
+    navMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+});
 
 // ELEMEN MODAL
 const modalBlog = document.getElementById('modalBlog');
@@ -158,18 +194,18 @@ fetch('blog.json')
     tampilkanDaftarBlog();
 })
 .catch(err => {
-    document.getElementById('daftar-blog').innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat artikel.</p>`;
+    const wadah = document.getElementById('daftar-blog');
+    if (wadah) {
+        wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat artikel.</p>`;
+    }
     console.error("Error ambil blog:", err);
 });
 
-// 🔧 FUNGSI: UBAH LINK BIASA JADI BISA DIKLIK — BISA PAKAI https ATAU TIDAK
+// UBAH LINK BIASA JADI BISA DIKLIK
 function ubahLinkBisaDiklik(teks) {
-  // Cocokkan: apa saja yang terlihat seperti alamat situs
-  // Contoh: tukarfollow.web.id | www.rajarayap.com | https://...
   return teks.replace(
     /((https?:\/\/)?[\w\-]+\.[\w\-\/\.]+[^\s.,;:!?)"']*)/g,
     function(situs) {
-      // Kalau belum ada https://, tambahkan otomatis
       const alamat = situs.startsWith('http') ? situs : 'https://' + situs;
       return `<a href="${alamat}" target="_blank" style="color:#2e7d32; text-decoration:underline;">${situs}</a>`;
     }
@@ -179,6 +215,8 @@ function ubahLinkBisaDiklik(teks) {
 // TAMPILKAN DAFTAR DENGAN CUPLIKAN
 function tampilkanDaftarBlog() {
     const wadah = document.getElementById('daftar-blog');
+    if (!wadah) return;
+    
     wadah.innerHTML = dataBlog.map(artikel => {
         const cuplikan = artikel.isi.length > 350 
             ? artikel.isi.substring(0, 350) + "..." 
@@ -188,7 +226,7 @@ function tampilkanDaftarBlog() {
                 <div style="font-size:14px; color:#888; margin-bottom:8px;">
                     ✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}
                 </div>
-                <h4 style="font-size:20px; color:#222; margin-bottom:12px;">${artikel.judul}</h4>
+                <h3 style="font-size:20px; color:#222; margin-bottom:12px; margin-top:0;">${artikel.judul}</h3>
                 <p style="line-height:1.7; color:#555; margin-bottom:15px; white-space:pre-wrap;">${ubahLinkBisaDiklik(cuplikan)}</p>
                 <button onclick="bukaArtikel('${artikel.slug}')" style="background:#2e7d32; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:500;">Baca Selengkapnya →</button>
             </div>
@@ -203,8 +241,6 @@ function bukaArtikel(slug) {
 
     infoPenulis.textContent = `✍️ ${artikel.penerbit} | 📅 ${artikel.rilis}`;
     judulModal.textContent = artikel.judul;
-
-    // ✅ Link otomatis berfungsi, pakai https atau TIDAK PAKAI juga bisa
     isiModal.innerHTML = ubahLinkBisaDiklik(artikel.isi);
 
     modalBlog.style.display = 'block';
