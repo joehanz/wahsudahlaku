@@ -21,7 +21,9 @@ window.addEventListener('load', async () => {
         
         tampilkanSebagianIklan();
     } catch (err) {
-        wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat iklan. Silakan segarkan halaman.</p>`;
+        if (wadah) {
+            wadah.innerHTML = `<p style="color:red; text-align:center; padding:30px;">❌ Gagal memuat iklan. Silakan segarkan halaman.</p>`;
+        }
         console.error("Error:", err);
     }
 });
@@ -38,6 +40,7 @@ function formatWA(wa) {
 // Tampilkan iklan bertahap
 function tampilkanSebagianIklan() {
     const wadah = document.getElementById("daftar-iklan");
+    if (!wadah) return;
     
     if (jumlahYangDitampilkan === 0) wadah.innerHTML = "";
     
@@ -81,8 +84,10 @@ function tambahLagi() {
 
 // Pencarian
 function cariIklan() {
-    const kataKunci = document.getElementById("cari").value.toLowerCase().trim();
+    const kataKunciEl = document.getElementById("cari");
+    const kataKunci = kataKunciEl ? kataKunciEl.value.toLowerCase().trim() : "";
     const wadah = document.getElementById("daftar-iklan");
+    if (!wadah) return;
     
     if (!kataKunci) {
         jumlahYangDitampilkan = 0;
@@ -123,21 +128,35 @@ function cariIklan() {
     s.src='https://n6wxm.com/vignette.min.js';
 })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
 
-// === MENU HAMBURGER MOBILE ===
+// === MENU HAMBURGER MOBILE — DIPERBAIKI ===
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-
-        // Tutup menu saat klik di luar
-        document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-            }
-        });
+    if (!menuToggle) {
+        console.error("Elemen #menuToggle TIDAK DITEMUKAN!");
+        return;
     }
+    if (!navMenu) {
+        console.error("Elemen #navMenu TIDAK DITEMUKAN!");
+        return;
+    }
+
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation(); // cegah langsung tertutup lagi
+        navMenu.classList.toggle('active');
+        console.log("Menu diklik, status aktif:", navMenu.classList.contains('active'));
+    });
+
+    // Tutup menu saat klik di luar
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+        }
+    });
+
+    // Cegah tutup saat klik di dalam menu
+    navMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
 });
